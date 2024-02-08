@@ -1,0 +1,43 @@
+/* styles.scss */
+
+/* Стили для корневого контейнера */
+.root-container {
+  display: flex;
+
+  /* Стили для левой боковой панели */
+  .sidebar {
+    width: 200px;
+    height: 100vh;
+    padding: 20px;
+    background-color: #f0f0f0;
+
+    /* Стили для списка */
+    ul {
+      list-style: none;
+      padding: 0;
+
+      /* Стили для элементов списка */
+      li {
+        margin-bottom: 10px;
+
+        /* Стили для ссылок */
+        a {
+          text-decoration: none;
+          color: blue;
+          font-weight: bold;
+
+          /* Стили при наведении на ссылку */
+          &:hover {
+            color: darkblue;
+          }
+        }
+      }
+    }
+  }
+
+  /* Стили для правого контейнера */
+  .main-content {
+    flex: 1;
+    padding: 20px;
+  }
+}
