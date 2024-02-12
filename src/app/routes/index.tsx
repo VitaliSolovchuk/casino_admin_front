@@ -1,8 +1,9 @@
 import React, { ReactElement } from 'react';
-import { RouteProps } from 'react-router-dom';
-import PartnersTable from '../../Components/PartnersTable/PartnersTable';
-import Players from '../../Components/Players/Players';
-import SessionEvents from '../../Components/SessionEvents/SessionEvents';
+import { Navigate, RouteProps } from 'react-router-dom';
+import PartnersTable from '../../widgets/PartnersTable/PartnersTable';
+import Players from '../../widgets/Players/Players';
+import SessionEvents from '../../widgets/SessionEvents/SessionEvents';
+import Dashboard from '../../pages/Dashboard/Dashboard';
 
 type AppRoute = RouteProps & {
   path: string;
@@ -16,6 +17,14 @@ export const publicRoutes: AppRoute[] = [
 
 // Определение маршрутов для авторизованных пользователей
 export const authProtectedRoutes: AppRoute[] = [
+  {
+    path: '/',
+    element: <Navigate to="/dashboard" replace />,
+  },
+  {
+    path: '/dashboard',
+    element: <Dashboard />,
+  },
   {
     path: '/partners',
     element: <PartnersTable />,
