@@ -1,8 +1,10 @@
-import React, { useState, useEffect, FC } from 'react';
+import React, { useState, FC } from 'react';
 import { useParams } from 'react-router-dom';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import axios from 'axios';
 import { format } from 'date-fns';
+import { useQuery } from 'react-query';
+import Spinner from 'shared/ui/Spinner/Spinner';
 
 interface SessionEvent {
   actionType: string;
@@ -11,30 +13,30 @@ interface SessionEvent {
   amountWin: number;
 }
 
-interface RouteParams {
-  sessionId?: string;
+type routeParams = {
+  sessionId: string;
 }
 
 const SessionEvents: FC = () => {
-  const { sessionId }: RouteParams = useParams();
-  const [sessionEvents, setSessionEvents] = useState<SessionEvent[]>([]);
+  const { sessionId } = useParams<routeParams>();
+  const { data, isLoading, error } = useQuery<SessionEvent[]>(
+    'session',
+    async () => {
+      const response = await axios.get<SessionEvent[]>(
+        `https://dev.jetgames.io/admin-panel/session-for-player?sessionId=${sessionId}`,
+      );
+      return response.data;
+    },
+    {
+      cacheTime: 10 * 60 * 1000,
+      staleTime: 10 * 60 * 1000,
+    },
+  );
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get<{ data: SessionEvent[] }>(
-          `https://dev.jetgames.io/admin-panel/session-for-player?sessionId=${sessionId}`,
-        );
-        setSessionEvents(response.data.data);
-      } catch (error) {
-        console.error('Error fetching session events data:', error);
-      }
-    };
-
-    if (sessionId) {
-      fetchData();
-    }
-  }, [sessionId]);
+  const [paginationModel, setPaginationModel] = useState({
+    pageSize: 25,
+    page: 0,
+  });
 
   const columns: GridColDef[] = [
     { field: 'actionType', headerName: 'Action Type', flex: 1 },
@@ -48,13 +50,22 @@ const SessionEvents: FC = () => {
     { field: 'amountWin', headerName: 'Amount Win', flex: 1 },
   ];
 
+  if (isLoading) return <Spinner />;
+  if (error) {
+    return (
+      <div>
+        Error fetching partners data:
+        {(error as Error).message}
+      </div>
+    );
+  }
   return (
     <div>
       <DataGrid
-        rows={sessionEvents}
+        paginationModel={paginationModel}
+        onPaginationModelChange={setPaginationModel}
+        rows={data || []}
         columns={columns}
-        // pageSize={25}
-        // rowsPerPageOptions={[10, 25, 50, 100]}
         pagination
         getRowId={(row) => row.dataTime}
       />

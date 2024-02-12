@@ -1,10 +1,11 @@
 import React, {
-  FC, useMemo, useState,
+  FC, useState,
 } from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useQuery } from 'react-query';
+import Spinner from 'shared/ui/Spinner/Spinner';
 
 // import { data } from './fakeData';
 
@@ -21,27 +22,27 @@ interface PartnerData {
   totalProfit: number;
 }
 
-interface PaginationModel {
-  pageSize: number;
-  page: number;
-}
-
 const PartnersTable: FC = () => {
   const { data, isLoading, error } = useQuery<PartnerData[]>(
     'partners',
     async () => {
-      const response = await axios.get<PartnerData[]>('https://dev.jetgames.io/admin-panel/partners');
+      const response = await axios.get<PartnerData[]>(
+        'https://dev.jetgames.io/admin-panel/partners',
+      );
       return response.data;
     },
-    { cacheTime: 10 * 60 * 1000 },
+    {
+      cacheTime: 10 * 60 * 1000,
+      staleTime: 10 * 60 * 1000,
+    },
   );
 
-  const [paginationModel, setPaginationModel] = useState<PaginationModel>({
+  const [paginationModel, setPaginationModel] = useState({
     pageSize: 25,
     page: 0,
   });
 
-  const columns: GridColDef[] = useMemo(() => [
+  const columns: GridColDef[] = [
     {
       field: 'partnerName',
       headerName: 'Partner Name',
@@ -58,9 +59,9 @@ const PartnersTable: FC = () => {
     { field: 'totalAmountBet', headerName: 'Total Amount Bet', flex: 1 },
     { field: 'totalAmountWin', headerName: 'Total Amount Win', flex: 1 },
     { field: 'totalProfit', headerName: 'Total Profit', flex: 1 },
-  ], []);
+  ];
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Spinner />;
   if (error) {
     return (
       <div>
