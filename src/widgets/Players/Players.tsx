@@ -42,7 +42,9 @@ const Players: FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get<Player[]>(`https://dev.jetgames.io/admin-panel/players-for-partner?partnerId=${partnerId}`);
+        const response = await axios.get<Player[]>(
+          `https://dev.jetgames.io/admin-panel/players-for-partner?partnerId=${partnerId}`,
+        );
         setPlayersData(response.data);
       } catch (error) {
         console.error('Error fetching partner players data:', error);
