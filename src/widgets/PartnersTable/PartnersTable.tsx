@@ -71,7 +71,7 @@ const PartnersTable: FC = () => {
     );
   }
   return (
-    <div style={{ width: '100%' }}>
+    <div>
       <DataGrid
         paginationModel={paginationModel}
         onPaginationModelChange={setPaginationModel}
