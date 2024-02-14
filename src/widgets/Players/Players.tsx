@@ -1,4 +1,6 @@
-import React, { useState, FC, useEffect } from 'react';
+import React, {
+  useState, FC, useEffect,
+} from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { GridColDef } from '@mui/x-data-grid';
 import axios from 'axios';
@@ -16,17 +18,34 @@ interface Player {
   totalAmountWin: number;
   totalProfit: number;
 }
+
 type routeParams = {
   partnerId: string
 }
 const Players: FC = () => {
   const { partnerId } = useParams<routeParams>();
+  const [paginationModel, setPaginationModel] = useState({
+    pageSize: 25,
+    page: 0,
+  });
+  const [filterModel, setFilterModel] = useState<Record<string, any>>({ items: [] });
+  const [sortModel, setSortModel] = useState<Record<string, any>>([]);
 
-  const { data, isLoading, error } = useQuery<Player[]>(
+  const {
+    data, isLoading, error, refetch,
+  } = useQuery<Player[]>(
     'players',
     async () => {
       const response = await axios.get<Player[]>(
         `https://dev.jetgames.io/admin-panel/players-for-partner?partnerId=${partnerId}`,
+        {
+          params: {
+            page: paginationModel.page,
+            pageSize: paginationModel.pageSize,
+            sortModel,
+            filterModel,
+          },
+        },
       );
       return response.data;
     },
@@ -35,10 +54,12 @@ const Players: FC = () => {
       staleTime: 10 * 60 * 1000,
     },
   );
-  const [paginationModel, setPaginationModel] = useState({
-    pageSize: 25,
-    page: 0,
-  });
+
+  useEffect(() => {
+    refetch();
+    console.log(paginationModel, sortModel, filterModel);
+  }, [paginationModel, sortModel, filterModel]);
+
   const columns: GridColDef[] = [
     { field: 'playerId', headerName: 'Player ID', flex: 1 },
     {
@@ -59,19 +80,18 @@ const Players: FC = () => {
     { field: 'totalAmountWin', headerName: 'Total Amount Win', flex: 1 },
     { field: 'totalProfit', headerName: 'Total Profit', flex: 1 },
   ];
-  useEffect(() => {
-    console.log(paginationModel);
-  }, [paginationModel]);
 
-  const handleFilter = ({ items }: Record<string, any>) => {
-    console.log(items);
-  };
-  const handlePagination = (items: Record<string, any>) => {
-    setPaginationModel((prev) => ({ ...prev, ...items }));
-  };
-  const handleSort = (items: Record<string, any>) => {
-    console.log(items);
-  };
+  const rowCountState = data ? data.length : 0;
+
+  // const handleFilter = useCallback(({ items }: Record<string, any>) => {
+  //   console.log(items);
+  // }, []);
+  // const handlePagination = useCallback((items: Record<string, any>) => {
+  //   setPaginationModel((prev) => ({ ...prev, ...items }));
+  // }, []);
+  // const handleSort = useCallback((items: Record<string, any>) => {
+  //   setSortModel((prev) => ({ ...prev, ...items }));
+  // }, []);
 
   if (isLoading) return <Spinner />;
   if (error) {
@@ -85,30 +105,31 @@ const Players: FC = () => {
   return (
     <div>
       <DataGridPro
-        slotProps={{
-          filterPanel: {
-            filterFormProps: {
-              operatorInputProps: {
-                disabled: true, // If you only want to disable the operator
-                sx: { display: 'none' }, // If you want to remove it completely
-              },
-            },
-          },
-        }}
+        // slotProps={{
+        //   filterPanel: {
+        //     filterFormProps: {
+        //       operatorInputProps: {
+        //         disabled: true, // If you only want to disable the operator
+        //         sx: { display: 'none' }, // If you want to remove it completely
+        //       },
+        //     },
+        //   },
+        // }}
         filterDebounceMs={300}
         paginationModel={paginationModel}
         // onPaginationModelChange={setPaginationModel}
         rows={data || []}
         columns={columns}
+        rowCount={rowCountState}
         pagination
         autoHeight
         getRowId={(row) => `${row.partnerId}-${row.playerId}-${row.sessionId}`} // Use a unique identifier
         sortingMode="server"
         filterMode="server"
         paginationMode="server"
-        onPaginationModelChange={handlePagination}
-        onSortModelChange={handleSort}
-        onFilterModelChange={handleFilter}
+        onPaginationModelChange={setPaginationModel}
+        onSortModelChange={setSortModel}
+        onFilterModelChange={setFilterModel}
         loading={isLoading}
       />
     </div>
