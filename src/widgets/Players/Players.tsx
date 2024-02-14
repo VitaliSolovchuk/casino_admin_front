@@ -1,12 +1,15 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {
-  useState, FC, useEffect,
+  useState, FC, useEffect, useCallback,
 } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { GridColDef } from '@mui/x-data-grid';
+import { GridColDef, GridFilterPanel, GridToolbar } from '@mui/x-data-grid';
 import axios from 'axios';
 import { useQuery } from 'react-query';
 import Spinner from 'shared/ui/Spinner/Spinner';
 import { DataGridPro } from '@mui/x-data-grid-pro';
+import { Button } from '@mui/material';
+import styles from './Players.module.scss';
 
 interface Player {
   playerId: string;
@@ -22,15 +25,19 @@ interface Player {
 type routeParams = {
   partnerId: string
 }
+type pagination = {
+  pageSize: number,
+  page: number
+}
 const Players: FC = () => {
   const { partnerId } = useParams<routeParams>();
-  const [paginationModel, setPaginationModel] = useState({
+  const [paginationModel, setPaginationModel] = useState<pagination>({
     pageSize: 25,
     page: 0,
   });
   const [filterModel, setFilterModel] = useState<Record<string, any>>({ items: [] });
   const [sortModel, setSortModel] = useState<Record<string, any>>([]);
-
+  const [localFilter, setLocalFilter] = useState<Record<string, any>>({ items: [] });
   const {
     data, isLoading, error, refetch,
   } = useQuery<Player[]>(
@@ -57,7 +64,6 @@ const Players: FC = () => {
 
   useEffect(() => {
     refetch();
-    console.log(paginationModel, sortModel, filterModel);
   }, [paginationModel, sortModel, filterModel]);
 
   const columns: GridColDef[] = [
@@ -65,7 +71,6 @@ const Players: FC = () => {
     {
       field: 'sessionId',
       headerName: 'Session ID',
-      // filterOperators: getGridStringOperators().filter((operator) => operator.value === 'contains'),
       flex: 1,
       renderCell: (params) => (
         <Link to={`/partners/${partnerId}/players/${params.row.playerId}/sessions/${params.row.sessionId}`}>
@@ -83,8 +88,8 @@ const Players: FC = () => {
 
   const rowCountState = data ? data.length : 0;
 
-  // const handleFilter = useCallback(({ items }: Record<string, any>) => {
-  //   console.log(items);
+  // const handleFilter = useCallback((items: SetStateAction<Record<string, any>>) => {
+  //   setFilterModel(items);
   // }, []);
   // const handlePagination = useCallback((items: Record<string, any>) => {
   //   setPaginationModel((prev) => ({ ...prev, ...items }));
@@ -92,6 +97,24 @@ const Players: FC = () => {
   // const handleSort = useCallback((items: Record<string, any>) => {
   //   setSortModel((prev) => ({ ...prev, ...items }));
   // }, []);
+
+  const CustomFilterPanel = useCallback(({ ...props }) => {
+    const handleApplyFilter = () => {
+      setFilterModel(localFilter);
+    };
+
+    return (
+      <div>
+        <GridFilterPanel {...props} />
+        <Button
+          onClick={handleApplyFilter}
+          className={styles.button}
+        >
+          Confirm
+        </Button>
+      </div>
+    );
+  }, [localFilter]);
 
   if (isLoading) return <Spinner />;
   if (error) {
@@ -117,7 +140,6 @@ const Players: FC = () => {
         // }}
         filterDebounceMs={300}
         paginationModel={paginationModel}
-        // onPaginationModelChange={setPaginationModel}
         rows={data || []}
         columns={columns}
         rowCount={rowCountState}
@@ -129,8 +151,9 @@ const Players: FC = () => {
         paginationMode="server"
         onPaginationModelChange={setPaginationModel}
         onSortModelChange={setSortModel}
-        onFilterModelChange={setFilterModel}
+        onFilterModelChange={setLocalFilter}
         loading={isLoading}
+        components={{ Toolbar: GridToolbar, FilterPanel: CustomFilterPanel }}
       />
     </div>
   );
