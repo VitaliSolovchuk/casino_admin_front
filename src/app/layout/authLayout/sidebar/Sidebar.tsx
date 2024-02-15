@@ -11,6 +11,9 @@ const Sidebar = () => (
     <div className="sidebar">
       <ul>
         <li>
+          <NavLink to="/dashboard">Dashboard</NavLink>
+        </li>
+        <li>
           <NavLink to="/partners">Partners</NavLink>
         </li>
         {/* Добавьте другие маршруты по мере необходимости */}

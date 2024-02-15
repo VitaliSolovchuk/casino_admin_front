@@ -5,7 +5,8 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useQuery } from 'react-query';
-import Spinner from 'shared/ui/Spinner/Spinner';
+import Spinner from '../../shared/ui/Spinner/Spinner';
+import PageTitle from '../../entities/pageTitle/ui/PageTitle';
 
 // import { data } from './fakeData';
 
@@ -72,6 +73,7 @@ const PartnersTable: FC = () => {
   }
   return (
     <div>
+      <PageTitle title="Partners Table" />
       <DataGrid
         paginationModel={paginationModel}
         onPaginationModelChange={setPaginationModel}

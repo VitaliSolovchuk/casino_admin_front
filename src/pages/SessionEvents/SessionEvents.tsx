@@ -4,7 +4,8 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import axios from 'axios';
 import { format } from 'date-fns';
 import { useQuery } from 'react-query';
-import Spinner from 'shared/ui/Spinner/Spinner';
+import Spinner from '../../shared/ui/Spinner/Spinner';
+import PageTitle from '../../entities/pageTitle/ui/PageTitle';
 
 interface SessionEvent {
   actionType: string;
@@ -61,6 +62,7 @@ const SessionEvents: FC = () => {
   }
   return (
     <div>
+      <PageTitle title="Sessions Table" />
       <DataGrid
         paginationModel={paginationModel}
         onPaginationModelChange={setPaginationModel}

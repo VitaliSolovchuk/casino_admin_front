@@ -1,9 +1,14 @@
 import React from 'react';
-// import styles from './Dashboard.module.scss';
+import { Col } from 'reactstrap';
+import WelcomeComp from '../../entities/welcomeComp/ui/WelcomeComp';
+import PageTitle from '../../entities/pageTitle/ui/PageTitle';
 
 const Dashboard = () => (
   <div>
-    Dashboard
+    <PageTitle title="Dashboard" />
+    <Col xl="4">
+      <WelcomeComp />
+    </Col>
   </div>
 );
 

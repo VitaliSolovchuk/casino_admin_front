@@ -6,6 +6,7 @@ import './index.scss';
 import Authmiddleware from './routes/route';
 import { authProtectedRoutes } from './routes';
 import Layout from './layout/authLayout';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Index: FC = () => (
   <Router>

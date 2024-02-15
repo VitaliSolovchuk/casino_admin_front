@@ -6,10 +6,11 @@ import { Link, useParams } from 'react-router-dom';
 import { GridColDef, GridFilterPanel, GridToolbar } from '@mui/x-data-grid';
 import axios from 'axios';
 import { useQuery } from 'react-query';
-import Spinner from 'shared/ui/Spinner/Spinner';
 import { DataGridPro } from '@mui/x-data-grid-pro';
 import { Button } from '@mui/material';
+import Spinner from '../../shared/ui/Spinner/Spinner';
 import styles from './Players.module.scss';
+import PageTitle from '../../entities/pageTitle/ui/PageTitle';
 
 interface Player {
   playerId: string;
@@ -127,6 +128,7 @@ const Players: FC = () => {
   }
   return (
     <div>
+      <PageTitle title="Players Table" />
       <DataGridPro
         // slotProps={{
         //   filterPanel: {
@@ -138,7 +140,6 @@ const Players: FC = () => {
         //     },
         //   },
         // }}
-        filterDebounceMs={300}
         paginationModel={paginationModel}
         rows={data || []}
         columns={columns}
