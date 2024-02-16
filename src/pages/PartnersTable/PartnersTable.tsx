@@ -1,12 +1,17 @@
 import React, {
-  FC, useState,
+  FC, useCallback, useEffect, useState,
 } from 'react';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import {
+  DataGrid, GridColDef, GridFilterPanel, GridToolbar,
+} from '@mui/x-data-grid';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useQuery } from 'react-query';
+import { Button } from '@mui/material';
+import { DataGridPro } from '@mui/x-data-grid-pro';
 import Spinner from '../../shared/ui/Spinner/Spinner';
 import PageTitle from '../../entities/pageTitle/ui/PageTitle';
+import styles from '../Players/Players.module.scss';
 
 // import { data } from './fakeData';
 
@@ -24,7 +29,17 @@ interface PartnerData {
 }
 
 const PartnersTable: FC = () => {
-  const { data, isLoading, error } = useQuery<PartnerData[]>(
+  const [filterModel, setFilterModel] = useState<Record<string, any>>({ items: [] });
+  const [sortModel, setSortModel] = useState<Record<string, any>>([]);
+  const [localFilter, setLocalFilter] = useState<Record<string, any>>({ items: [] });
+  const [paginationModel, setPaginationModel] = useState({
+    pageSize: 25,
+    page: 0,
+  });
+  const [test, setTest] = useState();
+  const {
+    data, isLoading, error, refetch,
+  } = useQuery<PartnerData[]>(
     'partners',
     async () => {
       const response = await axios.get<PartnerData[]>(
@@ -38,10 +53,27 @@ const PartnersTable: FC = () => {
     },
   );
 
-  const [paginationModel, setPaginationModel] = useState({
-    pageSize: 25,
-    page: 0,
-  });
+  useEffect(() => {
+    const fetchPartners = async () => {
+      try {
+        const response = await axios.post(
+          'https://dev.jetgames.io/admin-panel/partners',
+          {
+            page: paginationModel.page,
+            pageSize: paginationModel.pageSize,
+            sortModel,
+            filterModel,
+          },
+        );
+        setTest(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    fetchPartners();
+    // refetch();
+  }, [paginationModel, sortModel, filterModel]);
+  console.log(test);
 
   const columns: GridColDef[] = [
     {
@@ -62,6 +94,26 @@ const PartnersTable: FC = () => {
     { field: 'totalProfit', headerName: 'Total Profit', flex: 1 },
   ];
 
+  const rowCountState = data ? data.length : 0;
+
+  const CustomFilterPanel = useCallback(({ ...props }) => {
+    const handleApplyFilter = () => {
+      setFilterModel(localFilter);
+    };
+
+    return (
+      <div>
+        <GridFilterPanel {...props} />
+        <Button
+          onClick={handleApplyFilter}
+          className={styles.button}
+        >
+          Confirm
+        </Button>
+      </div>
+    );
+  }, [localFilter]);
+
   if (isLoading) return <Spinner />;
   if (error) {
     return (
@@ -74,14 +126,22 @@ const PartnersTable: FC = () => {
   return (
     <div>
       <PageTitle title="Partners Table" />
-      <DataGrid
+      <DataGridPro
         paginationModel={paginationModel}
-        onPaginationModelChange={setPaginationModel}
         rows={data || []}
         columns={columns}
         pagination
         autoHeight
         getRowId={(row) => `${row.partnerId}-${row.currencyName}`}
+        sortingMode="server"
+        filterMode="server"
+        paginationMode="server"
+        onPaginationModelChange={setPaginationModel}
+        onSortModelChange={setSortModel}
+        onFilterModelChange={setLocalFilter}
+        loading={isLoading}
+        rowCount={rowCountState}
+        components={{ Toolbar: GridToolbar, FilterPanel: CustomFilterPanel }}
       />
     </div>
   );

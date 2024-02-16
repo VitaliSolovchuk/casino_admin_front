@@ -3,7 +3,9 @@ import React, {
   useState, FC, useEffect, useCallback,
 } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { GridColDef, GridFilterPanel, GridToolbar } from '@mui/x-data-grid';
+import {
+  GridColDef, GridFilterPanel, GridToolbar,
+} from '@mui/x-data-grid';
 import axios from 'axios';
 import { useQuery } from 'react-query';
 import { DataGridPro } from '@mui/x-data-grid-pro';
@@ -30,6 +32,7 @@ type pagination = {
   pageSize: number,
   page: number
 }
+
 const Players: FC = () => {
   const { partnerId } = useParams<routeParams>();
   const [paginationModel, setPaginationModel] = useState<pagination>({
@@ -39,6 +42,7 @@ const Players: FC = () => {
   const [filterModel, setFilterModel] = useState<Record<string, any>>({ items: [] });
   const [sortModel, setSortModel] = useState<Record<string, any>>([]);
   const [localFilter, setLocalFilter] = useState<Record<string, any>>({ items: [] });
+
   const {
     data, isLoading, error, refetch,
   } = useQuery<Player[]>(
@@ -66,6 +70,27 @@ const Players: FC = () => {
   useEffect(() => {
     refetch();
   }, [paginationModel, sortModel, filterModel]);
+  // const dateSessionFilterOperators: GridFilterOperator[] = [
+  //   {
+  //     value: '=',
+  //     label: 'Is',
+  //     getApplyFilterFn: (filterItem) => (params) => {
+  //       const value = params.value as Date;
+  //       const filterValue = filterItem.value as Date;
+  //       return value.toDateString() === filterValue.toDateString();
+  //     },
+  //   },
+  //   {
+  //     value: 'range',
+  //     label: 'Range',
+  //     getApplyFilterFn: (filterItem) => (params) => {
+  //       const value = params.value as Date;
+  //       const [startDate, endDate] = filterItem.value as [Date | null, Date | null];
+  //       if (!startDate || !endDate) return true;
+  //       return value >= startDate && value <= endDate;
+  //     },
+  //   },
+  // ];
 
   const columns: GridColDef[] = [
     { field: 'playerId', headerName: 'Player ID', flex: 1 },
@@ -85,6 +110,14 @@ const Players: FC = () => {
     { field: 'totalAmountBet', headerName: 'Total Amount Bet', flex: 1 },
     { field: 'totalAmountWin', headerName: 'Total Amount Win', flex: 1 },
     { field: 'totalProfit', headerName: 'Total Profit', flex: 1 },
+    // {
+    //   field: 'dateSession',
+    //   headerName: 'Date Session',
+    //   flex: 1,
+    //   type: 'date',
+    //   filterable: true,
+    //   filterOperators: dateSessionFilterOperators,
+    // },
   ];
 
   const rowCountState = data ? data.length : 0;
