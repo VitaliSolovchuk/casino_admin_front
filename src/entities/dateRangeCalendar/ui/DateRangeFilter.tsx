@@ -1,46 +1,62 @@
-import React, { FC, SetStateAction, useState } from 'react';
-import { DateRangeCalendar } from '@mui/x-date-pickers-pro/DateRangeCalendar';
+import React, { FC, useState } from 'react';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/lab';
-import {
-  FilledTextFieldProps, OutlinedTextFieldProps, StandardTextFieldProps,
-  TextField,
-  TextFieldVariants,
-} from '@mui/material';
+import { Button } from '@mui/material';
+import dayjs, { Dayjs } from 'dayjs';
+import { DateRange, DateRangePicker } from '@mui/x-date-pickers-pro';
+import styles from './DataRangeFilter.module.scss';
 
-type FilterChangeHandler = (dates: SetStateAction<[Date | null, Date | null]>) => void;
+type FilterChangeHandler = (dates: Record<string, any>) => void;
+
 interface DateRangeFilterProps {
-  onFilterChange: FilterChangeHandler; // Указываем тип параметра onFilterChange
-}
-interface DateFilterProps {
-  value?: Date;
-  onChange: (date: Date | null) => void;
+  onFilterChange: FilterChangeHandler;
+  onSubmit: () => void
+  currentFilters: Record<string, any>;
 }
 
-export const DateRangeFilter: FC<DateRangeFilterProps> = ({ onFilterChange }) => {
-  const [selectedDates, setSelectedDates] = useState<[Date | null, Date | null]>([null, null]);
-  const handleDateChange = (newDates: SetStateAction<[Date | null, Date | null]>) => {
-    setSelectedDates(newDates);
-    onFilterChange(newDates);
+const DateRangeFilter: FC<DateRangeFilterProps> = ({ onFilterChange, onSubmit, currentFilters }) => {
+  const today = dayjs();
+  const [dateRange, setDateRange] = useState<DateRange<Dayjs>>([today, today]);
+
+  const handleMonthClick = () => {
+    const newStartDate = today.subtract(1, 'month');
+    setDateRange([newStartDate, today]);
+  };
+
+  const handleWeekClick = () => {
+    const newStartDate = today.subtract(1, 'week');
+    setDateRange([newStartDate, today]);
+  };
+
+  const handleThreeDaysClick = () => {
+    const newStartDate = today.subtract(3, 'day');
+    setDateRange([newStartDate, today]);
+  };
+
+  const handleOkClick = () => {
+    const updatedFilters: Record<string, any> = {
+      ...currentFilters,
+      dateRange,
+    };
+    onFilterChange(updatedFilters);
+    onSubmit();
   };
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DateRangeCalendar
-        calendars={1}
-        value={selectedDates}
-        onChange={(newValue) => handleDateChange(newValue)}
-      />
-    </LocalizationProvider>
+    <div className={styles.filters}>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DateRangePicker
+          calendars={1}
+          value={dateRange}
+          onChange={(newValue) => setDateRange(newValue)}
+        />
+        <Button onClick={handleMonthClick}>Month</Button>
+        <Button onClick={handleWeekClick}>Week</Button>
+        <Button onClick={handleThreeDaysClick}>3 Days</Button>
+        <Button onClick={handleOkClick}>OK</Button>
+      </LocalizationProvider>
+    </div>
   );
 };
 
-
-export const DateFilter: FC<DateFilterProps> = ({ value, onChange }) => (
-  <DatePicker
-    value={value}
-    onChange={(date: Date | null) => onChange(date)}
-    renderInput={(params: React.JSX.IntrinsicAttributes & { variant?: TextFieldVariants | undefined; } & Omit<FilledTextFieldProps | OutlinedTextFieldProps | StandardTextFieldProps, 'variant'>) => <TextField {...params} />}
-  />
-);
+export default DateRangeFilter;

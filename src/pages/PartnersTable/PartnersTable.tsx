@@ -1,17 +1,9 @@
-import React, {
-  FC, useCallback, useEffect, useState,
-} from 'react';
-import {
-  DataGrid, GridColDef, GridFilterPanel, GridToolbar,
-} from '@mui/x-data-grid';
+import React, { FC, useEffect, useState } from 'react';
+import { GridColDef } from '@mui/x-data-grid';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useQuery } from 'react-query';
-import { Button } from '@mui/material';
-import { DataGridPro } from '@mui/x-data-grid-pro';
-import Spinner from '../../shared/ui/Spinner/Spinner';
-import PageTitle from '../../entities/pageTitle/ui/PageTitle';
-import styles from '../Players/Players.module.scss';
+import TableGrid from '../../widgets/tableGrid/ui/TableGrid';
 
 // import { data } from './fakeData';
 
@@ -29,9 +21,10 @@ interface PartnerData {
 }
 
 const PartnersTable: FC = () => {
-  const [filterModel, setFilterModel] = useState<Record<string, any>>({ items: [] });
+  const [filterModel, setFilterModel] = useState<Record<string, any>>({
+    items: [],
+  });
   const [sortModel, setSortModel] = useState<Record<string, any>>([]);
-  const [localFilter, setLocalFilter] = useState<Record<string, any>>({ items: [] });
   const [paginationModel, setPaginationModel] = useState({
     pageSize: 25,
     page: 0,
@@ -52,7 +45,6 @@ const PartnersTable: FC = () => {
       staleTime: 10 * 60 * 1000,
     },
   );
-
   useEffect(() => {
     const fetchPartners = async () => {
       try {
@@ -71,7 +63,6 @@ const PartnersTable: FC = () => {
       }
     };
     fetchPartners();
-    // refetch();
   }, [paginationModel, sortModel, filterModel]);
   console.log(test);
 
@@ -93,55 +84,24 @@ const PartnersTable: FC = () => {
     { field: 'totalAmountWin', headerName: 'Total Amount Win', flex: 1 },
     { field: 'totalProfit', headerName: 'Total Profit', flex: 1 },
   ];
+  const rowId = (row: { partnerId: any; currencyName: any }) => `${row.partnerId}-${row.currencyName}`;
 
-  const rowCountState = data ? data.length : 0;
-
-  const CustomFilterPanel = useCallback(({ ...props }) => {
-    const handleApplyFilter = () => {
-      setFilterModel(localFilter);
-    };
-
-    return (
-      <div>
-        <GridFilterPanel {...props} />
-        <Button
-          onClick={handleApplyFilter}
-          className={styles.button}
-        >
-          Confirm
-        </Button>
-      </div>
-    );
-  }, [localFilter]);
-
-  if (isLoading) return <Spinner />;
-  if (error) {
-    return (
-      <div>
-        Error fetching partners data:
-        {(error as Error).message}
-      </div>
-    );
-  }
   return (
     <div>
-      <PageTitle title="Partners Table" />
-      <DataGridPro
-        paginationModel={paginationModel}
-        rows={data || []}
+      <TableGrid
+        data={data}
+        rowId={rowId}
+        isLoading={isLoading}
+        error={error as Error}
+        refetch={refetch}
         columns={columns}
-        pagination
-        autoHeight
-        getRowId={(row) => `${row.partnerId}-${row.currencyName}`}
-        sortingMode="server"
-        filterMode="server"
-        paginationMode="server"
-        onPaginationModelChange={setPaginationModel}
-        onSortModelChange={setSortModel}
-        onFilterModelChange={setLocalFilter}
-        loading={isLoading}
-        rowCount={rowCountState}
-        components={{ Toolbar: GridToolbar, FilterPanel: CustomFilterPanel }}
+        paginationModel={paginationModel}
+        setPaginationModel={setPaginationModel}
+        sortModel={sortModel}
+        setSortModel={setSortModel}
+        filterModel={filterModel}
+        setFilterModel={setFilterModel}
+        title="Partners Table"
       />
     </div>
   );

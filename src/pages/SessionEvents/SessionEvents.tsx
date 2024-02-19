@@ -1,11 +1,10 @@
 import React, { useState, FC } from 'react';
 import { useParams } from 'react-router-dom';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { GridColDef } from '@mui/x-data-grid';
 import axios from 'axios';
 import { format } from 'date-fns';
 import { useQuery } from 'react-query';
-import Spinner from '../../shared/ui/Spinner/Spinner';
-import PageTitle from '../../entities/pageTitle/ui/PageTitle';
+import TableGrid from '../../widgets/tableGrid/ui/TableGrid';
 
 interface SessionEvent {
   actionType: string;
@@ -16,11 +15,25 @@ interface SessionEvent {
 
 type routeParams = {
   sessionId: string;
-}
+};
+type pagination = {
+  pageSize: number;
+  page: number;
+};
 
 const SessionEvents: FC = () => {
   const { sessionId } = useParams<routeParams>();
-  const { data, isLoading, error } = useQuery<SessionEvent[]>(
+  const [paginationModel, setPaginationModel] = useState<pagination>({
+    pageSize: 25,
+    page: 0,
+  });
+  const [filterModel, setFilterModel] = useState<Record<string, any>>({
+    items: [],
+  });
+  const [sortModel, setSortModel] = useState<Record<string, any>>([]);
+  const {
+    data, isLoading, error, refetch,
+  } = useQuery<SessionEvent[]>(
     'session',
     async () => {
       const response = await axios.get<SessionEvent[]>(
@@ -34,11 +47,6 @@ const SessionEvents: FC = () => {
     },
   );
 
-  const [paginationModel, setPaginationModel] = useState({
-    pageSize: 25,
-    page: 0,
-  });
-
   const columns: GridColDef[] = [
     { field: 'actionType', headerName: 'Action Type', flex: 1 },
     {
@@ -50,26 +58,24 @@ const SessionEvents: FC = () => {
     { field: 'amountBet', headerName: 'Amount Bet', flex: 1 },
     { field: 'amountWin', headerName: 'Amount Win', flex: 1 },
   ];
+  const rowId = (row: { dataTime: any }) => row.dataTime;
 
-  if (isLoading) return <Spinner />;
-  if (error) {
-    return (
-      <div>
-        Error fetching partners data:
-        {(error as Error).message}
-      </div>
-    );
-  }
   return (
     <div>
-      <PageTitle title="Sessions Table" />
-      <DataGrid
-        paginationModel={paginationModel}
-        onPaginationModelChange={setPaginationModel}
-        rows={data || []}
+      <TableGrid
+        data={data}
+        rowId={rowId}
+        isLoading={isLoading}
+        error={error as Error}
+        refetch={refetch}
         columns={columns}
-        pagination
-        getRowId={(row) => row.dataTime}
+        paginationModel={paginationModel}
+        setPaginationModel={setPaginationModel}
+        sortModel={sortModel}
+        setSortModel={setSortModel}
+        filterModel={filterModel}
+        setFilterModel={setFilterModel}
+        title="Session Table"
       />
     </div>
   );

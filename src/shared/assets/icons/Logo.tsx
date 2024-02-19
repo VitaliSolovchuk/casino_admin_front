@@ -1,7 +1,7 @@
-import React, { FC } from 'react';
+import React, { FC } from "react";
 
 interface Props {
-  className?: string
+  className?: string;
 }
 const Logo: FC<Props> = ({ className }) => (
   <svg
@@ -14,8 +14,16 @@ const Logo: FC<Props> = ({ className }) => (
   >
     <rect x="-7.62939e-06" width="119" height="45" fill="url(#pattern0)" />
     <defs>
-      <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
-        <use xlinkHref="#image0_2_40690" transform="matrix(0.00625782 0 0 0.0165485 -0.00375469 0.222222)" />
+      <pattern
+        id="pattern0"
+        patternContentUnits="objectBoundingBox"
+        width="1"
+        height="1"
+      >
+        <use
+          xlinkHref="#image0_2_40690"
+          transform="matrix(0.00625782 0 0 0.0165485 -0.00375469 0.222222)"
+        />
       </pattern>
       <image
         id="image0_2_40690"
@@ -25,7 +33,6 @@ const Logo: FC<Props> = ({ className }) => (
       />
     </defs>
   </svg>
-
 );
 
 export default Logo;

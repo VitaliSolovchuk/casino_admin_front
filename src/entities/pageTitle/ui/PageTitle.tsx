@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import './PageTitle.scss';
 
 interface title {
-  title: string
+  title: string;
 }
 const PageTitle: FC<title> = ({ title }) => (
   <div className="page-title-box d-sm-flex align-items-center justify-content-between">

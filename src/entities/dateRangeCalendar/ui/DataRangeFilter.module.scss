@@ -1,0 +1,31 @@
+.filters {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.filters input[type="date"],
+.filters button {
+  margin-right: 8px;
+}
+
+.calendar-icon {
+  width: 24px;
+  height: 24px;
+  //background-image: url('calendar-icon.png');
+  background-size: cover;
+}
+
+.calendar-container {
+  position: relative;
+}
+
+.calendar-popup {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 1000;
+  background-color: white;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+  padding: 8px;
+}
