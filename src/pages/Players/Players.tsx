@@ -92,12 +92,12 @@ const Players: FC = () => {
         error={error as Error}
         refetch={refetch}
         columns={columns}
-        paginationModel={paginationModel}
-        setPaginationModel={setPaginationModel}
-        sortModel={sortModel}
-        setSortModel={setSortModel}
-        filterModel={filterModel}
-        setFilterModel={setFilterModel}
+        // paginationModel={paginationModel}
+        // setPaginationModel={setPaginationModel}
+        // sortModel={sortModel}
+        // setSortModel={setSortModel}
+        // filterModel={filterModel}
+        // setFilterModel={setFilterModel}
         title="Players Table"
       />
     </div>

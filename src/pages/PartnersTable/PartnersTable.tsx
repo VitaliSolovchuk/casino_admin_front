@@ -1,9 +1,11 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect } from 'react';
 import { GridColDef } from '@mui/x-data-grid';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useQuery } from 'react-query';
 import TableGrid from '../../widgets/tableGrid/ui/TableGrid';
+import useTableGrid from '../../widgets/tableGrid/model/tableGridStore';
+import useFilterDateRange from '../../entities/dateRangeCalendar/model/dateRangeStore';
 
 // import { data } from './fakeData';
 
@@ -21,15 +23,14 @@ interface PartnerData {
 }
 
 const PartnersTable: FC = () => {
-  const [filterModel, setFilterModel] = useState<Record<string, any>>({
-    items: [],
-  });
-  const [sortModel, setSortModel] = useState<Record<string, any>>([]);
-  const [paginationModel, setPaginationModel] = useState({
-    pageSize: 25,
-    page: 0,
-  });
-  const [test, setTest] = useState();
+  const {
+    filterModel,
+    sortModel,
+    paginationModel,
+  } = useTableGrid((state) => state);
+  const {
+    filterDate,
+  } = useFilterDateRange((state) => state);
   const {
     data, isLoading, error, refetch,
   } = useQuery<PartnerData[]>(
@@ -48,23 +49,21 @@ const PartnersTable: FC = () => {
   useEffect(() => {
     const fetchPartners = async () => {
       try {
-        const response = await axios.post(
+        await axios.post(
           'https://dev.jetgames.io/admin-panel/partners',
           {
-            page: paginationModel.page,
-            pageSize: paginationModel.pageSize,
+            paginationModel,
             sortModel,
             filterModel,
+            filterDate,
           },
         );
-        setTest(response.data);
       } catch (e) {
         console.log(e);
       }
     };
     fetchPartners();
-  }, [paginationModel, sortModel, filterModel]);
-  console.log(test);
+  }, [paginationModel, sortModel, filterModel, filterDate]);
 
   const columns: GridColDef[] = [
     {
@@ -95,12 +94,6 @@ const PartnersTable: FC = () => {
         error={error as Error}
         refetch={refetch}
         columns={columns}
-        paginationModel={paginationModel}
-        setPaginationModel={setPaginationModel}
-        sortModel={sortModel}
-        setSortModel={setSortModel}
-        filterModel={filterModel}
-        setFilterModel={setFilterModel}
         title="Partners Table"
       />
     </div>

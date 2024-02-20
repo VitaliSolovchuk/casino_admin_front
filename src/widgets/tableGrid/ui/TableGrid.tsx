@@ -4,11 +4,9 @@ import React, {
   FC,
   useEffect,
   useCallback,
-  Dispatch,
-  SetStateAction,
 } from 'react';
 import {
-  GridColDef,
+  GridColDef, GridFilterModel,
   GridFilterPanel,
   GridRowIdGetter,
   GridToolbar,
@@ -19,11 +17,7 @@ import Spinner from 'shared/ui/Spinner/Spinner';
 import PageTitle from 'entities/pageTitle/ui/PageTitle';
 import DateRangeFilter from 'entities/dateRangeCalendar/ui/DateRangeFilter';
 import styles from './TableGrid.module.scss';
-
-type pagination = {
-  pageSize: number;
-  page: number;
-};
+import useTableGrid from '../model/tableGridStore';
 
 interface TableGridProps {
   data?: Record<string, any>[];
@@ -32,12 +26,6 @@ interface TableGridProps {
   refetch: () => void;
   columns: GridColDef[];
   rowId?: GridRowIdGetter<any>;
-  paginationModel: pagination;
-  setPaginationModel: Dispatch<SetStateAction<pagination>>;
-  sortModel: Record<string, any>;
-  setSortModel: Dispatch<SetStateAction<Record<string, any>>>;
-  filterModel: Record<string, any>;
-  setFilterModel: Dispatch<SetStateAction<Record<string, any>>>;
   title: string;
 }
 
@@ -48,31 +36,29 @@ const TableGrid: FC<TableGridProps> = ({
   refetch,
   columns,
   rowId,
-  paginationModel,
-  setPaginationModel,
-  sortModel,
-  setSortModel,
-  filterModel,
-  setFilterModel,
   title,
 }) => {
-  const [localFilter, setLocalFilter] = useState<Record<string, any>>({
+  const [localFilter, setLocalFilter] = useState<GridFilterModel>({
     items: [],
+    quickFilterValues: [],
   });
+  const {
+    setFilterModel,
+    paginationModel,
+    sortModel,
+    setSortModel,
+    setPaginationModel,
+    filterModel,
+  } = useTableGrid((state) => state);
 
   const rowCountState = data ? data.length : 0;
-
-  console.log(localFilter);
 
   useEffect(() => {
     refetch();
   }, [paginationModel, sortModel, filterModel]);
 
   const handleApplyFilter = useCallback(() => {
-    setFilterModel((prevFilterModel) => ({
-      ...prevFilterModel,
-      ...localFilter,
-    }));
+    setFilterModel(localFilter);
   }, [localFilter, setFilterModel]);
 
   const CustomFilterPanel = useCallback(
@@ -100,8 +86,6 @@ const TableGrid: FC<TableGridProps> = ({
     <div>
       <PageTitle title={title} />
       <DateRangeFilter
-        currentFilters={filterModel}
-        onFilterChange={setFilterModel}
         onSubmit={refetch}
       />
       <DataGridPro
