@@ -1,11 +1,10 @@
 import React, { FC } from 'react';
-import {
-  BrowserRouter as Router, Routes, Route,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './index.scss';
 import Authmiddleware from './routes/route';
 import { authProtectedRoutes } from './routes';
 import Layout from './layout/authLayout';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Index: FC = () => (
   <Router>

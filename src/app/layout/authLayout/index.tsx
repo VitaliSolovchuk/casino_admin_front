@@ -11,9 +11,7 @@ const Layout: FC<LayoutProps> = ({ children }) => (
     <Header />
     <Sidebar />
     <div className="main-content">
-      <div className="page-content">
-        {children}
-      </div>
+      <div className="page-content">{children}</div>
     </div>
     <Footer />
   </>

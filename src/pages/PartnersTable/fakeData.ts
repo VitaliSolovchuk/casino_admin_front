@@ -1,8 +1,8 @@
 export const data = [
   {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -10,10 +10,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -21,10 +22,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -32,10 +34,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -43,10 +46,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -54,10 +58,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -65,10 +70,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -76,10 +82,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -87,10 +94,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -98,10 +106,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -109,10 +118,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -120,10 +130,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -131,10 +142,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -142,10 +154,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -153,10 +166,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -164,10 +178,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -175,10 +190,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -186,10 +202,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -197,10 +214,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -208,10 +226,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -219,10 +238,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -230,10 +250,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -241,10 +262,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -252,10 +274,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -263,10 +286,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -274,10 +298,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -285,10 +310,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -296,10 +322,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -307,10 +334,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -318,10 +346,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -329,10 +358,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -340,10 +370,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -351,10 +382,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -362,10 +394,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -373,10 +406,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -384,10 +418,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -395,10 +430,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -406,10 +442,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -417,10 +454,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -428,10 +466,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -439,10 +478,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -450,10 +490,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -461,10 +502,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -472,10 +514,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -483,10 +526,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -494,10 +538,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -505,10 +550,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -516,10 +562,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -527,10 +574,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -538,10 +586,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -549,10 +598,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -560,10 +610,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -571,10 +622,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -582,10 +634,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -593,10 +646,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -604,10 +658,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -615,10 +670,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -626,10 +682,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -637,10 +694,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -648,10 +706,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -659,10 +718,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -670,10 +730,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -681,10 +742,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -692,10 +754,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -703,10 +766,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -714,10 +778,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -725,10 +790,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -736,10 +802,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -747,10 +814,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,
@@ -758,10 +826,11 @@ export const data = [
     totalAmountBet: 200.04000000000002,
     totalAmountWin: 38.104,
     totalProfit: 161.93900000000002,
-  }, {
+  },
+  {
     partnerId: 2,
-    partnerName: 'api_partner_dev',
-    currencyName: 'USD',
+    partnerName: "api_partner_dev",
+    currencyName: "USD",
     uniquePlayers: {},
     totalPlayers: 2,
     sessionCount: 100,

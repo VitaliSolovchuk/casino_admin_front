@@ -1,11 +1,11 @@
-import React, {
-  FC, useState,
-} from 'react';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import React, { FC, useEffect } from 'react';
+import { GridColDef } from '@mui/x-data-grid';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useQuery } from 'react-query';
-import Spinner from 'shared/ui/Spinner/Spinner';
+import TableGrid from '../../widgets/tableGrid/ui/TableGrid';
+import useTableGrid from '../../widgets/tableGrid/model/tableGridStore';
+import useFilterDateRange from '../../entities/dateRangeCalendar/model/dateRangeStore';
 
 // import { data } from './fakeData';
 
@@ -23,7 +23,17 @@ interface PartnerData {
 }
 
 const PartnersTable: FC = () => {
-  const { data, isLoading, error } = useQuery<PartnerData[]>(
+  const {
+    filterModel,
+    sortModel,
+    paginationModel,
+  } = useTableGrid((state) => state);
+  const {
+    filterDate,
+  } = useFilterDateRange((state) => state);
+  const {
+    data, isLoading, error, refetch,
+  } = useQuery<PartnerData[]>(
     'partners',
     async () => {
       const response = await axios.get<PartnerData[]>(
@@ -36,11 +46,24 @@ const PartnersTable: FC = () => {
       staleTime: 10 * 60 * 1000,
     },
   );
-
-  const [paginationModel, setPaginationModel] = useState({
-    pageSize: 25,
-    page: 0,
-  });
+  useEffect(() => {
+    const fetchPartners = async () => {
+      try {
+        await axios.post(
+          'https://dev.jetgames.io/admin-panel/partners',
+          {
+            paginationModel,
+            sortModel,
+            filterModel,
+            filterDate,
+          },
+        );
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    fetchPartners();
+  }, [paginationModel, sortModel, filterModel, filterDate]);
 
   const columns: GridColDef[] = [
     {
@@ -60,26 +83,18 @@ const PartnersTable: FC = () => {
     { field: 'totalAmountWin', headerName: 'Total Amount Win', flex: 1 },
     { field: 'totalProfit', headerName: 'Total Profit', flex: 1 },
   ];
+  const rowId = (row: { partnerId: any; currencyName: any }) => `${row.partnerId}-${row.currencyName}`;
 
-  if (isLoading) return <Spinner />;
-  if (error) {
-    return (
-      <div>
-        Error fetching partners data:
-        {(error as Error).message}
-      </div>
-    );
-  }
   return (
-    <div style={{ width: '100%' }}>
-      <DataGrid
-        paginationModel={paginationModel}
-        onPaginationModelChange={setPaginationModel}
-        rows={data || []}
+    <div>
+      <TableGrid
+        data={data}
+        rowId={rowId}
+        isLoading={isLoading}
+        error={error as Error}
+        refetch={refetch}
         columns={columns}
-        pagination
-        autoHeight
-        getRowId={(row) => `${row.partnerId}-${row.currencyName}`}
+        title="Partners Table"
       />
     </div>
   );

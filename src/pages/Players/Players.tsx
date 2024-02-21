@@ -1,9 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, FC } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { GridColDef } from '@mui/x-data-grid';
 import axios from 'axios';
 import { useQuery } from 'react-query';
-import Spinner from 'shared/ui/Spinner/Spinner';
+import TableGrid from '../../widgets/tableGrid/ui/TableGrid';
 
 interface Player {
   playerId: string;
@@ -15,17 +16,41 @@ interface Player {
   totalAmountWin: number;
   totalProfit: number;
 }
+
 type routeParams = {
-  partnerId: string
-}
+  partnerId: string;
+};
+type pagination = {
+  pageSize: number;
+  page: number;
+};
+
 const Players: FC = () => {
   const { partnerId } = useParams<routeParams>();
+  const [paginationModel, setPaginationModel] = useState<pagination>({
+    pageSize: 25,
+    page: 0,
+  });
+  const [filterModel, setFilterModel] = useState<Record<string, any>>({
+    items: [],
+  });
+  const [sortModel, setSortModel] = useState<Record<string, any>>([]);
 
-  const { data, isLoading, error } = useQuery<Player[]>(
+  const {
+    data, isLoading, error, refetch,
+  } = useQuery<Player[]>(
     'players',
     async () => {
       const response = await axios.get<Player[]>(
         `https://dev.jetgames.io/admin-panel/players-for-partner?partnerId=${partnerId}`,
+        {
+          params: {
+            page: paginationModel.page,
+            pageSize: paginationModel.pageSize,
+            sortModel,
+            filterModel,
+          },
+        },
       );
       return response.data;
     },
@@ -35,11 +60,6 @@ const Players: FC = () => {
     },
   );
 
-  const [paginationModel, setPaginationModel] = useState({
-    pageSize: 25,
-    page: 0,
-  });
-
   const columns: GridColDef[] = [
     { field: 'playerId', headerName: 'Player ID', flex: 1 },
     {
@@ -47,7 +67,9 @@ const Players: FC = () => {
       headerName: 'Session ID',
       flex: 1,
       renderCell: (params) => (
-        <Link to={`/partners/${partnerId}/players/${params.row.playerId}/sessions/${params.row.sessionId}`}>
+        <Link
+          to={`/partners/${partnerId}/players/${params.row.playerId}/sessions/${params.row.sessionId}`}
+        >
           {params.row.sessionId}
         </Link>
       ),
@@ -59,26 +81,24 @@ const Players: FC = () => {
     { field: 'totalAmountWin', headerName: 'Total Amount Win', flex: 1 },
     { field: 'totalProfit', headerName: 'Total Profit', flex: 1 },
   ];
+  const rowId = (row: { partnerId: any; playerId: any; sessionId: any }) => `${row.partnerId}-${row.playerId}-${row.sessionId}`;
 
-  if (isLoading) return <Spinner />;
-  if (error) {
-    return (
-      <div>
-        Error fetching partners data:
-        {(error as Error).message}
-      </div>
-    );
-  }
   return (
     <div>
-      <DataGrid
-        paginationModel={paginationModel}
-        onPaginationModelChange={setPaginationModel}
-        rows={data || []}
+      <TableGrid
+        data={data}
+        rowId={rowId}
+        isLoading={isLoading}
+        error={error as Error}
+        refetch={refetch}
         columns={columns}
-        pagination
-        autoHeight
-        getRowId={(row) => `${row.partnerId}-${row.playerId}-${row.sessionId}`} // Use a unique identifier
+        // paginationModel={paginationModel}
+        // setPaginationModel={setPaginationModel}
+        // sortModel={sortModel}
+        // setSortModel={setSortModel}
+        // filterModel={filterModel}
+        // setFilterModel={setFilterModel}
+        title="Players Table"
       />
     </div>
   );

@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react';
 import { Navigate, RouteProps } from 'react-router-dom';
-import PartnersTable from '../../widgets/PartnersTable/PartnersTable';
-import Players from '../../widgets/Players/Players';
-import SessionEvents from '../../widgets/SessionEvents/SessionEvents';
+import PartnersTable from '../../pages/PartnersTable/PartnersTable';
+import Players from '../../pages/Players/Players';
+import SessionEvents from '../../pages/SessionEvents/SessionEvents';
 import Dashboard from '../../pages/Dashboard/Dashboard';
 
 type AppRoute = RouteProps & {
