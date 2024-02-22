@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import React, { ReactNode } from 'react';
-import { Navigate } from 'react-router-dom';
 
 interface AuthmiddlewareProps {
   children: ReactNode;
