@@ -27,6 +27,7 @@ interface TableGridProps {
   columns: GridColDef[];
   rowId?: GridRowIdGetter<any>;
   title: string;
+  handleRowClick?: ({ id }: {id: number}) => void
 }
 
 const TableGrid: FC<TableGridProps> = ({
@@ -37,6 +38,7 @@ const TableGrid: FC<TableGridProps> = ({
   columns,
   rowId,
   title,
+  handleRowClick,
 }) => {
   const [localFilter, setLocalFilter] = useState<GridFilterModel>({
     items: [],
@@ -99,6 +101,11 @@ const TableGrid: FC<TableGridProps> = ({
         //     },
         //   },
         // }}
+        sx={{
+          '& .MuiDataGrid-row:hover': {
+            cursor: 'pointer',
+          },
+        }}
         paginationModel={paginationModel}
         rows={data || []}
         columns={columns}
@@ -113,6 +120,7 @@ const TableGrid: FC<TableGridProps> = ({
         onSortModelChange={setSortModel}
         onFilterModelChange={setLocalFilter}
         loading={isLoading}
+        onRowClick={(params) => handleRowClick && handleRowClick(params.row)}
         components={{ Toolbar: GridToolbar, FilterPanel: CustomFilterPanel }}
       />
     </div>

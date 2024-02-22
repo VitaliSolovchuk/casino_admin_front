@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { Navigate, RouteProps } from 'react-router-dom';
-import PartnersTable from '../../pages/PartnersTable/PartnersTable';
+import Partners from '../../pages/Partners/Partners';
 import Players from '../../pages/Players/Players';
 import SessionEvents from '../../pages/SessionEvents/SessionEvents';
 import Dashboard from '../../pages/Dashboard/Dashboard';
@@ -27,7 +27,7 @@ export const authProtectedRoutes: AppRoute[] = [
   },
   {
     path: '/partners',
-    element: <PartnersTable />,
+    element: <Partners />,
   },
   {
     path: '/partners/:partnerId',

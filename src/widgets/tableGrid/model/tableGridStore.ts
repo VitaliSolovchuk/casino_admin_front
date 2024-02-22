@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
-import dayjs from 'dayjs';
 import { storeShallowHOC } from 'shared/lib/utils/storeWithShallow';
 import { GridFilterModel } from '@mui/x-data-grid';
 import { GridCallbackDetails } from '@mui/x-data-grid/models/api';

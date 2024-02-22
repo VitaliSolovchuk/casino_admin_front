@@ -11,11 +11,11 @@ interface IFilterDateRange {
   },
   setFilterDate: (model: DateRange<Dayjs>) => void
 }
-
+const today = dayjs();
 const useFilterDateRange = storeShallowHOC(
   create(devtools(persist(immer<IFilterDateRange>((set) => ({
     filterDate: {
-      dateRange: [dayjs(), dayjs()],
+      dateRange: [today, today],
     },
 
     setFilterDate: (filterDate) => set((state) => {
