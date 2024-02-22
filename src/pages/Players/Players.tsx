@@ -1,10 +1,13 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, FC } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import React, { FC } from 'react';
+import {
+  Link, useLocation, useNavigate, useParams,
+} from 'react-router-dom';
 import { GridColDef } from '@mui/x-data-grid';
 import axios from 'axios';
 import { useQuery } from 'react-query';
-import TableGrid from '../../widgets/tableGrid/ui/TableGrid';
+import TableGrid from 'widgets/tableGrid/ui/TableGrid';
+import useTableGrid from 'widgets/tableGrid/model/tableGridStore';
+import useFilterDateRange from 'entities/dateRangeCalendar/model/dateRangeStore';
 
 interface Player {
   playerId: string;
@@ -20,22 +23,19 @@ interface Player {
 type routeParams = {
   partnerId: string;
 };
-type pagination = {
-  pageSize: number;
-  page: number;
-};
 
 const Players: FC = () => {
   const { partnerId } = useParams<routeParams>();
-  const [paginationModel, setPaginationModel] = useState<pagination>({
-    pageSize: 25,
-    page: 0,
-  });
-  const [filterModel, setFilterModel] = useState<Record<string, any>>({
-    items: [],
-  });
-  const [sortModel, setSortModel] = useState<Record<string, any>>([]);
-
+  const { state } = useLocation();
+  const navigate = useNavigate();
+  const {
+    filterModel,
+    sortModel,
+    paginationModel,
+  } = useTableGrid((state) => state);
+  const {
+    filterDate,
+  } = useFilterDateRange((state) => state);
   const {
     data, isLoading, error, refetch,
   } = useQuery<Player[]>(
@@ -45,10 +45,10 @@ const Players: FC = () => {
         `https://dev.jetgames.io/admin-panel/players-for-partner?partnerId=${partnerId}`,
         {
           params: {
-            page: paginationModel.page,
-            pageSize: paginationModel.pageSize,
+            paginationModel,
             sortModel,
             filterModel,
+            filterDate,
           },
         },
       );
@@ -81,8 +81,12 @@ const Players: FC = () => {
     { field: 'totalAmountWin', headerName: 'Total Amount Win', flex: 1 },
     { field: 'totalProfit', headerName: 'Total Profit', flex: 1 },
   ];
-  const rowId = (row: { partnerId: any; playerId: any; sessionId: any }) => `${row.partnerId}-${row.playerId}-${row.sessionId}`;
-
+  const rowId = (
+    row: { partnerId: any; playerId: any; sessionId: any },
+  ) => `${row.partnerId}-${row.playerId}-${row.sessionId}`;
+  const handleRowClick = (row: Record<string, number>) => {
+    navigate(`/partners/${partnerId}/players/${row.playerId}/sessions/${row.sessionId}`, { state: `${state}/Players` });
+  };
   return (
     <div>
       <TableGrid
@@ -92,12 +96,7 @@ const Players: FC = () => {
         error={error as Error}
         refetch={refetch}
         columns={columns}
-        // paginationModel={paginationModel}
-        // setPaginationModel={setPaginationModel}
-        // sortModel={sortModel}
-        // setSortModel={setSortModel}
-        // filterModel={filterModel}
-        // setFilterModel={setFilterModel}
+        handleRowClick={handleRowClick}
         title="Players Table"
       />
     </div>

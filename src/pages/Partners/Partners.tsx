@@ -1,13 +1,11 @@
 import React, { FC, useEffect } from 'react';
 import { GridColDef } from '@mui/x-data-grid';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useQuery } from 'react-query';
 import TableGrid from '../../widgets/tableGrid/ui/TableGrid';
 import useTableGrid from '../../widgets/tableGrid/model/tableGridStore';
 import useFilterDateRange from '../../entities/dateRangeCalendar/model/dateRangeStore';
-
-// import { data } from './fakeData';
 
 interface PartnerData {
   partnerId: number;
@@ -22,15 +20,19 @@ interface PartnerData {
   totalProfit: number;
 }
 
-const PartnersTable: FC = () => {
+const Partners: FC = () => {
   const {
     filterModel,
     sortModel,
     paginationModel,
   } = useTableGrid((state) => state);
+
   const {
     filterDate,
   } = useFilterDateRange((state) => state);
+  const { dateRange } = filterDate;
+
+  const navigate = useNavigate();
   const {
     data, isLoading, error, refetch,
   } = useQuery<PartnerData[]>(
@@ -55,7 +57,10 @@ const PartnersTable: FC = () => {
             paginationModel,
             sortModel,
             filterModel,
-            filterDate,
+            filterDate: {
+              startDate: dateRange[0],
+              endDate: dateRange[1],
+            },
           },
         );
       } catch (e) {
@@ -63,7 +68,7 @@ const PartnersTable: FC = () => {
       }
     };
     fetchPartners();
-  }, [paginationModel, sortModel, filterModel, filterDate]);
+  }, [paginationModel, sortModel, filterModel, filterDate, dateRange]);
 
   const columns: GridColDef[] = [
     {
@@ -83,8 +88,10 @@ const PartnersTable: FC = () => {
     { field: 'totalAmountWin', headerName: 'Total Amount Win', flex: 1 },
     { field: 'totalProfit', headerName: 'Total Profit', flex: 1 },
   ];
+  const handleRowClick = (row: Record<string, number>) => {
+    navigate(`/partners/${row.partnerId}`, { state: 'Partners' });
+  };
   const rowId = (row: { partnerId: any; currencyName: any }) => `${row.partnerId}-${row.currencyName}`;
-
   return (
     <div>
       <TableGrid
@@ -94,10 +101,11 @@ const PartnersTable: FC = () => {
         error={error as Error}
         refetch={refetch}
         columns={columns}
+        handleRowClick={handleRowClick}
         title="Partners Table"
       />
     </div>
   );
 };
 
-export default PartnersTable;
+export default Partners;

@@ -1,4 +1,4 @@
-import React, { useState, FC } from 'react';
+import React, { FC } from 'react';
 import { useParams } from 'react-router-dom';
 import { GridColDef } from '@mui/x-data-grid';
 import axios from 'axios';
@@ -16,21 +16,9 @@ interface SessionEvent {
 type routeParams = {
   sessionId: string;
 };
-type pagination = {
-  pageSize: number;
-  page: number;
-};
-
 const SessionEvents: FC = () => {
   const { sessionId } = useParams<routeParams>();
-  const [paginationModel, setPaginationModel] = useState<pagination>({
-    pageSize: 25,
-    page: 0,
-  });
-  const [filterModel, setFilterModel] = useState<Record<string, any>>({
-    items: [],
-  });
-  const [sortModel, setSortModel] = useState<Record<string, any>>([]);
+
   const {
     data, isLoading, error, refetch,
   } = useQuery<SessionEvent[]>(
@@ -52,6 +40,7 @@ const SessionEvents: FC = () => {
     {
       field: 'dataTime',
       headerName: 'Date Time',
+      type: 'date',
       flex: 2,
       valueFormatter: (params) => format(new Date(params.value), 'yyyy-MM-dd HH:mm:ss'),
     },
@@ -59,7 +48,7 @@ const SessionEvents: FC = () => {
     { field: 'amountWin', headerName: 'Amount Win', flex: 1 },
   ];
   const rowId = (row: { dataTime: any }) => row.dataTime;
-
+  // console.log(`${state}/Session Events`);
   return (
     <div>
       <TableGrid
@@ -69,12 +58,6 @@ const SessionEvents: FC = () => {
         error={error as Error}
         refetch={refetch}
         columns={columns}
-        // paginationModel={paginationModel}
-        // setPaginationModel={setPaginationModel}
-        // sortModel={sortModel}
-        // setSortModel={setSortModel}
-        // filterModel={filterModel}
-        // setFilterModel={setFilterModel}
         title="Session Table"
       />
     </div>
