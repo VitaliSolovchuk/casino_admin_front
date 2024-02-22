@@ -11,11 +11,11 @@ module.exports = {
       max_memory_restart: '1G',
       env: {
         NODE_ENV: 'development',
-        PORT: 3001, // Задайте нужный вам порт
+        PORT: 4000, // Задайте нужный вам порт
       },
       env_production: {
         NODE_ENV: 'production',
-        PORT: 3001, // Задайте нужный вам порт
+        PORT: 4000, // Задайте нужный вам порт
       },
     },
   ],
