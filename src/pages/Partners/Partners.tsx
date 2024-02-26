@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from 'react';
 import { GridColDef } from '@mui/x-data-grid';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useQuery } from 'react-query';
 import TableGrid from '../../widgets/tableGrid/ui/TableGrid';
@@ -71,16 +71,7 @@ const Partners: FC = () => {
   }, [paginationModel, sortModel, filterModel, filterDate, dateRange]);
 
   const columns: GridColDef[] = [
-    {
-      field: 'partnerName',
-      headerName: 'Partner Name',
-      flex: 1,
-      renderCell: (params) => (
-        <Link to={`/partners/${params.row.partnerId}`}>
-          {params.row.partnerName}
-        </Link>
-      ),
-    },
+    { field: 'partnerName', headerName: 'Partner Name', flex: 1 },
     { field: 'currencyName', headerName: 'Currency Name', flex: 1 },
     { field: 'sessionCount', headerName: 'Session Count', flex: 1 },
     { field: 'totalActions', headerName: 'Total Actions', flex: 1 },
@@ -89,7 +80,7 @@ const Partners: FC = () => {
     { field: 'totalProfit', headerName: 'Total Profit', flex: 1 },
   ];
   const handleRowClick = (row: Record<string, number>) => {
-    navigate(`/partners/${row.partnerId}`, { state: 'Partners' });
+    navigate(`/partners/players/?id=${row.partnerId}`);
   };
   const rowId = (row: { partnerId: any; currencyName: any }) => `${row.partnerId}-${row.currencyName}`;
   return (

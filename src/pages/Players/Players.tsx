@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import {
-  Link, useLocation, useNavigate, useParams,
+  Link, useLocation, useNavigate,
 } from 'react-router-dom';
 import { GridColDef } from '@mui/x-data-grid';
 import axios from 'axios';
@@ -20,13 +20,11 @@ interface Player {
   totalProfit: number;
 }
 
-type routeParams = {
-  partnerId: string;
-};
-
 const Players: FC = () => {
-  const { partnerId } = useParams<routeParams>();
-  const { state } = useLocation();
+  const { search, state } = useLocation(); // search: "?id=2", state: "partner"
+  const params = new URLSearchParams(search);
+  const partnerId = params.get('id');
+
   const navigate = useNavigate();
   const {
     filterModel,
@@ -85,7 +83,7 @@ const Players: FC = () => {
     row: { partnerId: any; playerId: any; sessionId: any },
   ) => `${row.partnerId}-${row.playerId}-${row.sessionId}`;
   const handleRowClick = (row: Record<string, number>) => {
-    navigate(`/partners/${partnerId}/players/${row.playerId}/sessions/${row.sessionId}`, { state: `${state}/Players` });
+    navigate(`/partners/players/sessions/?id=${row.sessionId}`, { state: { ...state, Players: search } });
   };
   return (
     <div>
