@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import avatar from 'shared/assets/images/users/avatar-6.jpg';
 import './Header.scss';
+import Breadcrumbs from 'entities/breadCrumbs/ui/BreadCrumbs';
 
 const Header = () => {
   const [username, setusername] = useState('Admin');
   return (
     <div className="header">
       <div className="navbar_header">
-        <p>Info Title</p>
+        <Breadcrumbs />
         <div>
           <img
             className="rounded-circle header-profile-user"

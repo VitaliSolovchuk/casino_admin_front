@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { GridColDef } from '@mui/x-data-grid';
 import axios from 'axios';
 import { format } from 'date-fns';
@@ -12,12 +12,15 @@ interface SessionEvent {
   amountBet: number;
   amountWin: number;
 }
-
-type routeParams = {
-  sessionId: string;
-};
+//
+// type routeParams = {
+//   sessionId: string;
+// };
 const SessionEvents: FC = () => {
-  const { sessionId } = useParams<routeParams>();
+  // const { sessionId } = useParams<routeParams>();
+  const { search } = useLocation(); // search: "?id=2", state: "partner"
+  const params = new URLSearchParams(search);
+  const sessionId = params.get('id');
 
   const {
     data, isLoading, error, refetch,

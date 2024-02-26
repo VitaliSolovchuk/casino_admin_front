@@ -7,6 +7,7 @@ import Dashboard from 'pages/Dashboard/Dashboard';
 
 type AppRoute = RouteProps & {
   path: string;
+  name: string;
   element: ReactElement;
 };
 
@@ -19,22 +20,27 @@ export const publicRoutes: AppRoute[] = [
 export const authProtectedRoutes: AppRoute[] = [
   {
     path: '/',
+    name: 'Home',
     element: <Navigate to="/dashboard" replace />,
   },
   {
     path: '/dashboard',
+    name: 'Dashboard',
     element: <Dashboard />,
   },
   {
     path: '/partners',
+    name: 'Partners',
     element: <Partners />,
   },
   {
-    path: '/partners/:partnerId',
+    path: '/partners/players',
+    name: 'Players',
     element: <Players />,
   },
   {
-    path: '/partners/:partnerId/players/:playerId/sessions/:sessionId',
+    path: '/partners/players/sessions',
+    name: 'SessionEvents',
     element: <SessionEvents />,
   },
 ];
