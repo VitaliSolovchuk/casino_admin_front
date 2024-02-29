@@ -12,10 +12,12 @@ module.exports = {
       env: {
         NODE_ENV: 'development',
         PORT: 4000, // Задайте нужный вам порт
+        REACT_APP_BASE_URL: process.env.REACT_APP_BASE_URL,
       },
       env_production: {
         NODE_ENV: 'production',
         PORT: 4000, // Задайте нужный вам порт
+        REACT_APP_BASE_URL: process.env.REACT_APP_BASE_URL,
       },
     },
   ],

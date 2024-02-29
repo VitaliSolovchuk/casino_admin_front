@@ -2,9 +2,11 @@ import React, { FC } from 'react';
 import { useLocation } from 'react-router-dom';
 import { GridColDef } from '@mui/x-data-grid';
 import axios from 'axios';
-import { format } from 'date-fns';
 import { useQuery } from 'react-query';
-import TableGrid from '../../widgets/tableGrid/ui/TableGrid';
+import dayjs from 'dayjs';
+import TableGrid from 'widgets/tableGrid/ui/TableGrid';
+import { baseURL } from 'shared/lib/consts/url';
+import { CACHE_TIME, STALE_TIME } from 'shared/lib/consts/time';
 
 interface SessionEvent {
   actionType: string;
@@ -12,12 +14,11 @@ interface SessionEvent {
   amountBet: number;
   amountWin: number;
 }
-//
-// type routeParams = {
-//   sessionId: string;
-// };
+interface Row {
+  dataTime: string
+}
+
 const SessionEvents: FC = () => {
-  // const { sessionId } = useParams<routeParams>();
   const { search } = useLocation(); // search: "?id=2", state: "partner"
   const params = new URLSearchParams(search);
   const sessionId = params.get('id');
@@ -28,13 +29,13 @@ const SessionEvents: FC = () => {
     'session',
     async () => {
       const response = await axios.get<SessionEvent[]>(
-        `https://dev.jetgames.io/admin-panel/session-for-player?sessionId=${sessionId}`,
+        `${baseURL}/admin-panel/session-for-player?sessionId=${sessionId}`,
       );
       return response.data;
     },
     {
-      cacheTime: 10 * 60 * 1000,
-      staleTime: 10 * 60 * 1000,
+      cacheTime: CACHE_TIME,
+      staleTime: STALE_TIME,
     },
   );
 
@@ -45,13 +46,12 @@ const SessionEvents: FC = () => {
       headerName: 'Date Time',
       type: 'date',
       flex: 2,
-      valueFormatter: (params) => format(new Date(params.value), 'yyyy-MM-dd HH:mm:ss'),
+      valueFormatter: (params) => dayjs(params.value).format('YYYY-MM-DD HH:mm:ss'),
     },
     { field: 'amountBet', headerName: 'Amount Bet', flex: 1 },
     { field: 'amountWin', headerName: 'Amount Win', flex: 1 },
   ];
-  const rowId = (row: { dataTime: any }) => row.dataTime;
-  // console.log(`${state}/Session Events`);
+  const rowId = (row: Row) => row.dataTime;
   return (
     <div>
       <TableGrid
