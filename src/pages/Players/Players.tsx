@@ -1,27 +1,23 @@
 import React, { FC } from 'react';
 import {
-  Link, useLocation, useNavigate,
+  useLocation, useNavigate,
 } from 'react-router-dom';
 import { GridColDef } from '@mui/x-data-grid';
-import axios from 'axios';
-import { useQuery } from 'react-query';
 import TableGrid from 'widgets/tableGrid/ui/TableGrid';
 import useTableGrid from 'widgets/tableGrid/model/tableGridStore';
 import useFilterDateRange from 'entities/dateRangeCalendar/model/dateRangeStore';
+import { useDataRequest } from 'shared/lib/hooks/useDataRequest';
+import { Player } from 'features/players/types/types';
+import { getPlayersData } from 'features/players/api';
 
-interface Player {
+interface Row {
+  partnerId: string;
   playerId: string;
   sessionId: string;
-  currencyName: string;
-  gameName: string;
-  totalActions: number;
-  totalAmountBet: number;
-  totalAmountWin: number;
-  totalProfit: number;
 }
 
 const Players: FC = () => {
-  const { search, state } = useLocation(); // search: "?id=2", state: "partner"
+  const { search, state } = useLocation();
   const params = new URLSearchParams(search);
   const partnerId = params.get('id');
 
@@ -34,44 +30,25 @@ const Players: FC = () => {
   const {
     filterDate,
   } = useFilterDateRange((state) => state);
+
   const {
-    data, isLoading, error, refetch,
-  } = useQuery<Player[]>(
-    'players',
-    async () => {
-      const response = await axios.get<Player[]>(
-        `https://dev.jetgames.io/admin-panel/players-for-partner?partnerId=${partnerId}`,
-        {
-          params: {
-            paginationModel,
-            sortModel,
-            filterModel,
-            filterDate,
-          },
-        },
-      );
-      return response.data;
+    data,
+    isLoading,
+    error,
+    refetch,
+  } = useDataRequest<Player[]>('players', () => getPlayersData({
+    partnerId,
+    params: {
+      paginationModel,
+      sortModel,
+      filterModel,
+      filterDate,
     },
-    {
-      cacheTime: 10 * 60 * 1000,
-      staleTime: 10 * 60 * 1000,
-    },
-  );
+  }));
 
   const columns: GridColDef[] = [
     { field: 'playerId', headerName: 'Player ID', flex: 1 },
-    {
-      field: 'sessionId',
-      headerName: 'Session ID',
-      flex: 1,
-      renderCell: (params) => (
-        <Link
-          to={`/partners/${partnerId}/players/${params.row.playerId}/sessions/${params.row.sessionId}`}
-        >
-          {params.row.sessionId}
-        </Link>
-      ),
-    },
+    { field: 'sessionId', headerName: 'Session ID', flex: 1 },
     { field: 'currencyName', headerName: 'Currency Name', flex: 1 },
     { field: 'gameName', headerName: 'Game Name', flex: 1 },
     { field: 'totalActions', headerName: 'Total Actions', flex: 1 },
@@ -79,11 +56,11 @@ const Players: FC = () => {
     { field: 'totalAmountWin', headerName: 'Total Amount Win', flex: 1 },
     { field: 'totalProfit', headerName: 'Total Profit', flex: 1 },
   ];
-  const rowId = (
-    row: { partnerId: any; playerId: any; sessionId: any },
-  ) => `${row.partnerId}-${row.playerId}-${row.sessionId}`;
+  const rowId = (row: Row) => `${row.partnerId}-${row.playerId}-${row.sessionId}`;
   const handleRowClick = (row: Record<string, number>) => {
-    navigate(`/partners/players/sessions/?id=${row.sessionId}`, { state: { ...state, Players: search } });
+    if (row.sessionId) {
+      navigate(`/partners/players/sessions/?id=${row.sessionId}`, { state: { ...state, Players: search } });
+    }
   };
   return (
     <div>

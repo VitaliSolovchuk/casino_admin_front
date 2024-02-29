@@ -1,25 +1,17 @@
 import React, { FC, useEffect } from 'react';
 import { GridColDef } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { useQuery } from 'react-query';
-import TableGrid from '../../widgets/tableGrid/ui/TableGrid';
-import useTableGrid from '../../widgets/tableGrid/model/tableGridStore';
-import useFilterDateRange from '../../entities/dateRangeCalendar/model/dateRangeStore';
+import TableGrid from 'widgets/tableGrid/ui/TableGrid';
+import useTableGrid from 'widgets/tableGrid/model/tableGridStore';
+import useFilterDateRange from 'entities/dateRangeCalendar/model/dateRangeStore';
+import { useDataRequest } from 'shared/lib/hooks/useDataRequest';
+import { PartnerData } from 'features/partners/types/types';
+import { fetchPartnersData, getPartnersData } from '../../features/partners/api';
 
-interface PartnerData {
+interface Row {
   partnerId: number;
-  partnerName: string;
-  currencyName: string;
-  uniquePlayers: Record<string, any>;
-  totalPlayers: number;
-  sessionCount: number;
-  totalActions: number;
-  totalAmountBet: number;
-  totalAmountWin: number;
-  totalProfit: number;
+  currencyName: string
 }
-
 const Partners: FC = () => {
   const {
     filterModel,
@@ -30,44 +22,27 @@ const Partners: FC = () => {
   const {
     filterDate,
   } = useFilterDateRange((state) => state);
-  const { dateRange } = filterDate;
 
+  const { dateRange } = filterDate;
   const navigate = useNavigate();
+
   const {
-    data, isLoading, error, refetch,
-  } = useQuery<PartnerData[]>(
-    'partners',
-    async () => {
-      const response = await axios.get<PartnerData[]>(
-        'https://dev.jetgames.io/admin-panel/partners',
-      );
-      return response.data;
-    },
-    {
-      cacheTime: 10 * 60 * 1000,
-      staleTime: 10 * 60 * 1000,
-    },
-  );
+    data,
+    isLoading,
+    error,
+    refetch,
+  } = useDataRequest<PartnerData[]>('partners', getPartnersData);
+
   useEffect(() => {
-    const fetchPartners = async () => {
-      try {
-        await axios.post(
-          'https://dev.jetgames.io/admin-panel/partners',
-          {
-            paginationModel,
-            sortModel,
-            filterModel,
-            filterDate: {
-              startDate: dateRange[0],
-              endDate: dateRange[1],
-            },
-          },
-        );
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    fetchPartners();
+    fetchPartnersData({
+      paginationModel,
+      sortModel,
+      filterModel,
+      filterDate: {
+        startDate: dateRange[0],
+        endDate: dateRange[1],
+      },
+    });
   }, [paginationModel, sortModel, filterModel, filterDate, dateRange]);
 
   const columns: GridColDef[] = [
@@ -80,9 +55,11 @@ const Partners: FC = () => {
     { field: 'totalProfit', headerName: 'Total Profit', flex: 1 },
   ];
   const handleRowClick = (row: Record<string, number>) => {
-    navigate(`/partners/players/?id=${row.partnerId}`);
+    if (row.partnerId) {
+      navigate(`/partners/players/?id=${row.partnerId}`);
+    }
   };
-  const rowId = (row: { partnerId: any; currencyName: any }) => `${row.partnerId}-${row.currencyName}`;
+  const rowId = (row: Row) => `${row.partnerId}-${row.currencyName}`;
   return (
     <div>
       <TableGrid
