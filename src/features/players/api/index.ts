@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { baseURL } from '../../../shared/lib/consts/url';
+import { baseURL } from 'shared/lib/consts/url';
 import { getPlayersProps, Player } from '../types/types';
 
 export const getPlayersData = async (props: getPlayersProps) => {
