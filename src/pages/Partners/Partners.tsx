@@ -34,7 +34,6 @@ const Partners: FC = () => {
     error,
     refetch,
   } = useDataRequest<PartnerData[]>('partners', getPartnersData);
-
   useEffect(() => {
     mutate({
       paginationModel,
@@ -55,6 +54,7 @@ const Partners: FC = () => {
     { field: 'totalAmountBet', headerName: 'Total Amount Bet', flex: 1 },
     { field: 'totalAmountWin', headerName: 'Total Amount Win', flex: 1 },
     { field: 'totalProfit', headerName: 'Total Profit', flex: 1 },
+    { field: 'totalProfitUSD', headerName: 'Total Profit USD', flex: 1 },
   ], []);
   const handleRowClick = (row: Record<string, number>) => {
     if (row.partnerId) {
