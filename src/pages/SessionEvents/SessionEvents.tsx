@@ -25,7 +25,6 @@ const SessionEvents: FC = () => {
     'session',
     () => getSessionsData({ sessionId }),
   );
-
   const columns: GridColDef[] = useMemo(() => [
     { field: 'actionType', headerName: 'Action Type', flex: 1 },
     {
@@ -37,6 +36,8 @@ const SessionEvents: FC = () => {
     },
     { field: 'amountBet', headerName: 'Amount Bet', flex: 1 },
     { field: 'amountWin', headerName: 'Amount Win', flex: 1 },
+    { field: 'totalProfitUSD', headerName: 'Total Profit USD', flex: 1 },
+
   ], []);
   const rowId = (row: Row) => row.dataTime;
   return (
