@@ -1,3 +1,7 @@
+const dotenv = require('dotenv');
+
+// Load environment variables from .env.dev
+dotenv.config({ path: '.env.dev' });
 module.exports = {
   apps: [
     {
