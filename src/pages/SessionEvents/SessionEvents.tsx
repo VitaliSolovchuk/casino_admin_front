@@ -1,45 +1,32 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { GridColDef } from '@mui/x-data-grid';
-import axios from 'axios';
-import { useQuery } from 'react-query';
 import dayjs from 'dayjs';
 import TableGrid from 'widgets/tableGrid/ui/TableGrid';
-import { baseURL } from 'shared/lib/consts/url';
-import { CACHE_TIME, STALE_TIME } from 'shared/lib/consts/time';
+import { SessionEvent } from '../../features/sessions/types/types';
+import { useDataRequest } from '../../shared/lib/hooks/useDataRequest';
+import { getSessionsData } from '../../features/sessions/api';
 
-interface SessionEvent {
-  actionType: string;
-  dataTime: string;
-  amountBet: number;
-  amountWin: number;
-}
 interface Row {
   dataTime: string
 }
 
 const SessionEvents: FC = () => {
-  const { search } = useLocation(); // search: "?id=2", state: "partner"
+  const { search } = useLocation();
   const params = new URLSearchParams(search);
   const sessionId = params.get('id');
 
   const {
-    data, isLoading, error, refetch,
-  } = useQuery<SessionEvent[]>(
+    data,
+    isLoading,
+    error,
+    refetch,
+  } = useDataRequest<SessionEvent[]>(
     'session',
-    async () => {
-      const response = await axios.get<SessionEvent[]>(
-        `${baseURL}/admin-panel/session-for-player?sessionId=${sessionId}`,
-      );
-      return response.data;
-    },
-    {
-      cacheTime: CACHE_TIME,
-      staleTime: STALE_TIME,
-    },
+    () => getSessionsData({ sessionId }),
   );
 
-  const columns: GridColDef[] = [
+  const columns: GridColDef[] = useMemo(() => [
     { field: 'actionType', headerName: 'Action Type', flex: 1 },
     {
       field: 'dataTime',
@@ -50,7 +37,7 @@ const SessionEvents: FC = () => {
     },
     { field: 'amountBet', headerName: 'Amount Bet', flex: 1 },
     { field: 'amountWin', headerName: 'Amount Win', flex: 1 },
-  ];
+  ], []);
   const rowId = (row: Row) => row.dataTime;
   return (
     <div>

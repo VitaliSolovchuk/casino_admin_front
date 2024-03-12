@@ -5,7 +5,7 @@ import Players from 'pages/Players/Players';
 import SessionEvents from 'pages/SessionEvents/SessionEvents';
 import Dashboard from 'pages/Dashboard/Dashboard';
 
-type AppRoute = RouteProps & {
+export type AppRoute = RouteProps & {
   path: string;
   name: string;
   element: ReactElement;

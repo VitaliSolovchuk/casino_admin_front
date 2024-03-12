@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import {
   useLocation, useNavigate,
 } from 'react-router-dom';
@@ -46,7 +46,7 @@ const Players: FC = () => {
     },
   }));
 
-  const columns: GridColDef[] = [
+  const columns: GridColDef[] = useMemo(() => [
     { field: 'playerId', headerName: 'Player ID', flex: 1 },
     { field: 'sessionId', headerName: 'Session ID', flex: 1 },
     { field: 'currencyName', headerName: 'Currency Name', flex: 1 },
@@ -55,7 +55,7 @@ const Players: FC = () => {
     { field: 'totalAmountBet', headerName: 'Total Amount Bet', flex: 1 },
     { field: 'totalAmountWin', headerName: 'Total Amount Win', flex: 1 },
     { field: 'totalProfit', headerName: 'Total Profit', flex: 1 },
-  ];
+  ], []);
   const rowId = (row: Row) => `${row.partnerId}-${row.playerId}-${row.sessionId}`;
   const handleRowClick = (row: Record<string, number>) => {
     if (row.sessionId) {

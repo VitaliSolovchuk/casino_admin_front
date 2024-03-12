@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { GridColDef } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
 import TableGrid from 'widgets/tableGrid/ui/TableGrid';
@@ -6,6 +6,7 @@ import useTableGrid from 'widgets/tableGrid/model/tableGridStore';
 import useFilterDateRange from 'entities/dateRangeCalendar/model/dateRangeStore';
 import { useDataRequest } from 'shared/lib/hooks/useDataRequest';
 import { PartnerData } from 'features/partners/types/types';
+import { useMutation } from 'react-query';
 import { fetchPartnersData, getPartnersData } from '../../features/partners/api';
 
 interface Row {
@@ -25,6 +26,7 @@ const Partners: FC = () => {
 
   const { dateRange } = filterDate;
   const navigate = useNavigate();
+  const { mutate } = useMutation(fetchPartnersData);
 
   const {
     data,
@@ -34,7 +36,7 @@ const Partners: FC = () => {
   } = useDataRequest<PartnerData[]>('partners', getPartnersData);
 
   useEffect(() => {
-    fetchPartnersData({
+    mutate({
       paginationModel,
       sortModel,
       filterModel,
@@ -43,9 +45,9 @@ const Partners: FC = () => {
         endDate: dateRange[1],
       },
     });
-  }, [paginationModel, sortModel, filterModel, filterDate, dateRange]);
+  }, [paginationModel, sortModel, filterModel, filterDate, dateRange, mutate]);
 
-  const columns: GridColDef[] = [
+  const columns: GridColDef[] = useMemo(() => [
     { field: 'partnerName', headerName: 'Partner Name', flex: 1 },
     { field: 'currencyName', headerName: 'Currency Name', flex: 1 },
     { field: 'sessionCount', headerName: 'Session Count', flex: 1 },
@@ -53,7 +55,7 @@ const Partners: FC = () => {
     { field: 'totalAmountBet', headerName: 'Total Amount Bet', flex: 1 },
     { field: 'totalAmountWin', headerName: 'Total Amount Win', flex: 1 },
     { field: 'totalProfit', headerName: 'Total Profit', flex: 1 },
-  ];
+  ], []);
   const handleRowClick = (row: Record<string, number>) => {
     if (row.partnerId) {
       navigate(`/partners/players/?id=${row.partnerId}`);
