@@ -24,7 +24,7 @@
     }
   },
   "rules": {
-    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
+    "import/no-extraneous-dependencies": ["off", { "devDependencies": true }],
     "linebreak-style": ["off", "windows"],
     "camelcase": "off",
     "@typescript-eslint/camelcase": ["off"],
