@@ -25,7 +25,7 @@ const renderProtectedRoutes = (routes: AppRoute[]) => routes.map((route) => (
     key={route.path}
   />
 ));
-const Index: FC = () => (
+const App: FC = () => (
   <Router>
     <div className="root-container">
       <Routes>
@@ -38,4 +38,4 @@ const Index: FC = () => (
   </Router>
 );
 
-export default Index;
+export default App;
