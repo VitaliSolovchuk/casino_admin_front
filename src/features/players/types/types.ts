@@ -14,6 +14,7 @@ export interface Player {
   totalAmountWin: number;
   totalProfit: number;
 }
+
 export interface getPlayersProps {
   partnerId: string | null,
   params: {
@@ -23,5 +24,15 @@ export interface getPlayersProps {
     filterDate: {
       dateRange: DateRange<Dayjs>
     },
+  }
+}
+
+export interface postPlayersProps {
+  partnerId: string | null,
+  filterModel: GridFilterModel,
+  sortModel: GridSortModel
+  paginationModel: GridPaginationModel,
+  filterDate: {
+    dateRange: DateRange<Dayjs>
   }
 }

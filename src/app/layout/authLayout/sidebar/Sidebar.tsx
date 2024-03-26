@@ -16,6 +16,9 @@ const Sidebar = () => (
         <li>
           <NavLink to="/partners">Partners</NavLink>
         </li>
+        <li>
+          <NavLink to="/partners2">Partners 2</NavLink>
+        </li>
         {/* Добавьте другие маршруты по мере необходимости */}
       </ul>
     </div>
