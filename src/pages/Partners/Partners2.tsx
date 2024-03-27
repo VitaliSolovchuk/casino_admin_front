@@ -1,4 +1,6 @@
-import React, { FC, useEffect, useMemo } from 'react';
+import React, {
+  FC, useEffect, useMemo, useRef, useState,
+} from 'react';
 import { GridColDef } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
 import TableGrid from 'widgets/tableGrid/ui/TableGrid';
@@ -26,13 +28,13 @@ const Partners2: FC = () => {
 
   const { dateRange } = filterDate;
   const navigate = useNavigate();
-  // const { mutate } = useMutation(fetchPartnersData);
+  const { mutate } = useMutation(fetchPartnersData);
+  const isFirstRender = useRef(true);
   const {
     data,
     isLoading,
     error,
-    mutate,
-  } = useMutation<PartnerData[], Error>(
+  } = useDataRequest<PartnerData[]>(
     'partners',
     () => fetchPartnersData({
       paginationModel,
@@ -46,7 +48,19 @@ const Partners2: FC = () => {
   );
 
   useEffect(() => {
-    mutate();
+    if (!isFirstRender.current) {
+      mutate({
+        paginationModel,
+        sortModel,
+        filterModel,
+        filterDate: {
+          startDate: dateRange[0],
+          endDate: dateRange[1],
+        },
+      });
+    } else {
+      isFirstRender.current = false;
+    }
   }, [paginationModel, sortModel, filterModel, filterDate, dateRange, mutate]);
 
   const columns: GridColDef[] = useMemo(() => [

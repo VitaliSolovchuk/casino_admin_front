@@ -34,6 +34,7 @@ const Partners: FC = () => {
     error,
     refetch,
   } = useDataRequest<PartnerData[]>('partners', getPartnersData);
+
   useEffect(() => {
     mutate({
       paginationModel,
