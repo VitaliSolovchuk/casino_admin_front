@@ -11,11 +11,13 @@ export const getPartnersData = async () => {
 
 export const fetchPartnersData = async (props: PartnersDataProps) => {
   try {
-    await axios.post(
+    const response = await axios.post<PartnerData[]>(
       `${baseURL}/admin-panel/partners`,
       props,
     );
-  } catch (e) {
-    console.log(e);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
 };

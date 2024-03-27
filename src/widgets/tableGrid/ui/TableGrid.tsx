@@ -55,9 +55,9 @@ const TableGrid: FC<TableGridProps> = ({
 
   const rowCountState = data ? data.length : 0;
 
-  useEffect(() => {
-    refetch();
-  }, [paginationModel, sortModel, filterModel]);
+  // useEffect(() => {
+  //   refetch();
+  // }, [paginationModel, sortModel, filterModel]);
 
   const handleApplyFilter = useCallback(() => {
     setFilterModel(localFilter);

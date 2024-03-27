@@ -7,7 +7,7 @@ import useFilterDateRange from 'entities/dateRangeCalendar/model/dateRangeStore'
 import { useDataRequest } from 'shared/lib/hooks/useDataRequest';
 import { PartnerData } from 'features/partners/types/types';
 import { useMutation } from 'react-query';
-import { fetchPartnersData, getPartnersData } from '../../features/partners/api';
+import { fetchPartnersData } from 'features/partners/api';
 
 interface Row {
   partnerId: number;
@@ -26,17 +26,15 @@ const Partners2: FC = () => {
 
   const { dateRange } = filterDate;
   const navigate = useNavigate();
-  const { mutate } = useMutation(fetchPartnersData);
-
+  // const { mutate } = useMutation(fetchPartnersData);
   const {
     data,
     isLoading,
     error,
-    refetch,
-  } = useDataRequest<PartnerData[]>('partners', getPartnersData);
-
-  useEffect(() => {
-    mutate({
+    mutate,
+  } = useMutation<PartnerData[], Error>(
+    'partners',
+    () => fetchPartnersData({
       paginationModel,
       sortModel,
       filterModel,
@@ -44,7 +42,11 @@ const Partners2: FC = () => {
         startDate: dateRange[0],
         endDate: dateRange[1],
       },
-    });
+    }),
+  );
+
+  useEffect(() => {
+    mutate();
   }, [paginationModel, sortModel, filterModel, filterDate, dateRange, mutate]);
 
   const columns: GridColDef[] = useMemo(() => [
@@ -70,7 +72,7 @@ const Partners2: FC = () => {
         rowId={rowId}
         isLoading={isLoading}
         error={error as Error}
-        refetch={refetch}
+        refetch={() => console.log()}
         columns={columns}
         handleRowClick={handleRowClick}
         title="Partners Table"
