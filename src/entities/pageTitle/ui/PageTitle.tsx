@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import './PageTitle.scss';
+import { Typography } from '@mui/material';
 
 interface title {
   title: string;

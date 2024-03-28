@@ -33,7 +33,7 @@ const Partners: FC = () => {
     isLoading,
     error,
     refetch,
-  } = useDataRequest<PartnerData[]>('partners', getPartnersData);
+  } = useDataRequest<PartnerData>('partners', getPartnersData);
 
   useEffect(() => {
     mutate({
@@ -66,7 +66,7 @@ const Partners: FC = () => {
   return (
     <div>
       <TableGrid
-        data={data}
+        data={data?.partnerCurrencyStatistic}
         rowId={rowId}
         isLoading={isLoading}
         error={error as Error}

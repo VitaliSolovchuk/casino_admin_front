@@ -18,6 +18,7 @@
   }
   /* Стили для левой боковой панели */
   .sidebar {
+    display: flex;
     width: 250px;
     z-index: 10;
     background: #2a3042;
@@ -27,6 +28,8 @@
     top: 0;
     padding-top: 70px;
     box-shadow: 0 0.75rem 1.5rem rgba(18, 38, 63, 0.03);
+    flex-direction: column;
+    justify-content: space-between;
 
     /* Стили для списка */
     ul {
@@ -34,7 +37,7 @@
       padding: 0;
 
       /* Стили для элементов списка */
-      li {
+      li, {
         margin-bottom: 10px;
 
         /* Стили для ссылок */

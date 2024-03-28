@@ -2,7 +2,6 @@
 import React, {
   useState,
   FC,
-  useEffect,
   useCallback,
 } from 'react';
 import {
@@ -12,7 +11,7 @@ import {
   GridToolbar,
 } from '@mui/x-data-grid';
 import { DataGridPro } from '@mui/x-data-grid-pro';
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import Spinner from 'shared/ui/Spinner/Spinner';
 import PageTitle from 'entities/pageTitle/ui/PageTitle';
 import DateRangeFilter from 'entities/dateRangeCalendar/ui/DateRangeFilter';
@@ -86,7 +85,8 @@ const TableGrid: FC<TableGridProps> = ({
   }
   return (
     <div>
-      <PageTitle title={title} />
+      {/* <PageTitle title={title} /> */}
+      <Typography variant="h6" sx={{ mb: 2 }}>{title.toUpperCase()}</Typography>
       <DateRangeFilter
         onSubmit={refetch}
       />
