@@ -30,21 +30,13 @@ const Partners2: FC = () => {
   const { dateRange } = filterDate;
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  // const { mutate } = useMutation(
-  //   fetchPartnersData,
-  //   {
-  //     onSuccess: () => {
-  //       queryClient.invalidateQueries('partners');
-  //     },
-  //   },
-  // );
-  // const isFirstRender = useRef(true);
+  const isFirstRender = useRef(true);
+
   const {
     data,
     isLoading,
     error,
-    mutate,
-  } = useMutation<PartnerData>(
+  } = useDataRequest<PartnerData>(
     'partners',
     () => fetchPartnersData({
       paginationModel,
@@ -55,18 +47,33 @@ const Partners2: FC = () => {
         endDate: dateRange[1],
       },
     }),
+  );
+
+  const { mutate } = useMutation<PartnerData>(
+    () => fetchPartnersData(
+      {
+        paginationModel,
+        sortModel,
+        filterModel,
+        filterDate: {
+          startDate: dateRange[0],
+          endDate: dateRange[1],
+        },
+      },
+    ),
     {
       onSuccess: (data) => {
         queryClient.setQueryData('partners', data);
       },
     },
   );
+
   useEffect(() => {
-    // if (!isFirstRender.current) {
-    mutate();
-    // } else {
-    //   isFirstRender.current = false;
-    // }
+    if (!isFirstRender.current) {
+      mutate();
+    } else {
+      isFirstRender.current = false;
+    }
   }, [mutate, paginationModel, sortModel, filterModel, filterDate, dateRange]);
   // useEffect(() => {
   //   if (!isFirstRender.current) {
@@ -96,7 +103,12 @@ const Partners2: FC = () => {
       flex: 1,
     },
     {
-      field: 'sessionCount',
+      field: 'totalPlayers',
+      headerName: 'Players Count',
+      flex: 1,
+    },
+    {
+      field: 'totalSession',
       headerName: 'Session Count',
       flex: 1,
     },
