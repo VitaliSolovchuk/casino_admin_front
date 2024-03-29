@@ -22,7 +22,7 @@ interface TableGridProps {
   data?: Record<string, any>[];
   isLoading: boolean;
   error: Error;
-  refetch: () => void;
+  refetch?: () => void;
   columns: GridColDef[];
   rowId?: GridRowIdGetter<any>;
   title: string;
@@ -87,9 +87,7 @@ const TableGrid: FC<TableGridProps> = ({
     <div>
       {/* <PageTitle title={title} /> */}
       <Typography variant="h6" sx={{ mb: 2 }}>{title.toUpperCase()}</Typography>
-      <DateRangeFilter
-        onSubmit={refetch}
-      />
+      <DateRangeFilter />
       <DataGridPro
         // slotProps={{
         //   filterPanel: {

@@ -11,16 +11,8 @@ import 'dayjs/locale/en';
 import useFilterDateRange from '../model/dateRangeStore';
 import compareDates from '../lib/compareDates';
 
-interface DateRangeFilterProps {
-  onSubmit: () => void;
-}
-
 dayjs.extend(utc);
-const DateRangeFilter: FC<DateRangeFilterProps> = (
-  {
-    onSubmit,
-  },
-) => {
+const DateRangeFilter: FC = () => {
   const today = dayjs();
   const [dateRangeLocal, setDateRangeLocal] = useState<DateRange<Dayjs>>([null, null]);
   const {
@@ -46,13 +38,11 @@ const DateRangeFilter: FC<DateRangeFilterProps> = (
 
   const handleOkClick = () => {
     setFilterDate(dateRangeLocal);
-    onSubmit();
   };
 
   const handleResetClick = () => {
     setDateRangeLocal([null, null]);
     setFilterDate([null, null]);
-    onSubmit();
   };
 
   useEffect(() => {

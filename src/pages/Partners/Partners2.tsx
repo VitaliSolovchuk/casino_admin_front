@@ -13,8 +13,9 @@ import { fetchPartnersData } from 'features/partners/api';
 
 interface Row {
   partnerId: number;
-  currencyName: string
+  currencyName: string;
 }
+
 const Partners2: FC = () => {
   const {
     filterModel,
@@ -28,13 +29,22 @@ const Partners2: FC = () => {
 
   const { dateRange } = filterDate;
   const navigate = useNavigate();
-  const { mutate } = useMutation(fetchPartnersData);
+  const queryClient = useQueryClient();
+  // const { mutate } = useMutation(
+  //   fetchPartnersData,
+  //   {
+  //     onSuccess: () => {
+  //       queryClient.invalidateQueries('partners');
+  //     },
+  //   },
+  // );
   const isFirstRender = useRef(true);
   const {
     data,
     isLoading,
     error,
-  } = useDataRequest<PartnerData>(
+    mutate,
+  } = useMutation<PartnerData>(
     'partners',
     () => fetchPartnersData({
       paginationModel,
@@ -45,34 +55,81 @@ const Partners2: FC = () => {
         endDate: dateRange[1],
       },
     }),
+    {
+      onSuccess: (data) => {
+        queryClient.setQueryData('partners', data);
+      },
+    },
   );
-
   useEffect(() => {
     if (!isFirstRender.current) {
-      mutate({
-        paginationModel,
-        sortModel,
-        filterModel,
-        filterDate: {
-          startDate: dateRange[0],
-          endDate: dateRange[1],
-        },
-      });
+      mutate();
     } else {
       isFirstRender.current = false;
     }
-  }, [paginationModel, sortModel, filterModel, filterDate, dateRange, mutate]);
+  }, [mutate, paginationModel, sortModel, filterModel, filterDate, dateRange]);
+  // useEffect(() => {
+  //   if (!isFirstRender.current) {
+  //     mutate({
+  //       paginationModel,
+  //       sortModel,
+  //       filterModel,
+  //       filterDate: {
+  //         startDate: dateRange[0],
+  //         endDate: dateRange[1],
+  //       },
+  //     });
+  //   } else {
+  //     isFirstRender.current = false;
+  //   }
+  // }, [paginationModel, sortModel, filterModel, filterDate, dateRange, mutate]);
 
   const columns: GridColDef[] = useMemo(() => [
-    { field: 'partnerName', headerName: 'Partner Name', flex: 1 },
-    { field: 'currencyName', headerName: 'Currency Name', flex: 1 },
-    { field: 'sessionCount', headerName: 'Session Count', flex: 1 },
-    { field: 'totalActions', headerName: 'Total Actions', flex: 1 },
-    { field: 'totalAmountBet', headerName: 'Total Amount Bet', flex: 1 },
-    { field: 'totalAmountWin', headerName: 'Total Amount Win', flex: 1 },
-    { field: 'totalProfit', headerName: 'Total Profit', flex: 1 },
-    { field: 'totalProfitUSD', headerName: 'Total Profit USD', flex: 1 },
-    { field: 'RTP', headerName: 'RTP %', flex: 1 },
+    {
+      field: 'partnerName',
+      headerName: 'Partner Name',
+      flex: 1,
+    },
+    {
+      field: 'currencyName',
+      headerName: 'Currency Name',
+      flex: 1,
+    },
+    {
+      field: 'sessionCount',
+      headerName: 'Session Count',
+      flex: 1,
+    },
+    {
+      field: 'totalActions',
+      headerName: 'Total Actions',
+      flex: 1,
+    },
+    {
+      field: 'totalAmountBet',
+      headerName: 'Total Amount Bet',
+      flex: 1,
+    },
+    {
+      field: 'totalAmountWin',
+      headerName: 'Total Amount Win',
+      flex: 1,
+    },
+    {
+      field: 'totalProfit',
+      headerName: 'Total Profit',
+      flex: 1,
+    },
+    {
+      field: 'totalProfitUSD',
+      headerName: 'Total Profit USD',
+      flex: 1,
+    },
+    {
+      field: 'RTP',
+      headerName: 'RTP %',
+      flex: 1,
+    },
   ], []);
   const handleRowClick = (row: Record<string, number>) => {
     if (row.partnerId) {
@@ -95,5 +152,4 @@ const Partners2: FC = () => {
     </div>
   );
 };
-
 export default Partners2;
