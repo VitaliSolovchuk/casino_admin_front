@@ -94,27 +94,27 @@ const Partners2: FC = () => {
   const columns: GridColDef[] = useMemo(() => [
     {
       field: 'partnerName',
-      headerName: 'Partner Name',
+      headerName: 'Partner',
       flex: 1,
     },
     {
       field: 'currencyName',
-      headerName: 'Currency Name',
+      headerName: 'Currency',
       flex: 1,
     },
     {
       field: 'totalPlayers',
-      headerName: 'Players Count',
+      headerName: 'Players',
       flex: 1,
     },
     {
       field: 'totalSessions',
-      headerName: 'Session Count',
+      headerName: 'Sessions',
       flex: 1,
     },
     {
       field: 'totalActions',
-      headerName: 'Total Actions',
+      headerName: 'Actions',
       flex: 1,
     },
     {
