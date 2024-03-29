@@ -108,7 +108,7 @@ const Partners2: FC = () => {
       flex: 1,
     },
     {
-      field: 'totalSession',
+      field: 'totalSessions',
       headerName: 'Session Count',
       flex: 1,
     },
