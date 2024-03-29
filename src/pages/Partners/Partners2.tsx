@@ -38,7 +38,7 @@ const Partners2: FC = () => {
   //     },
   //   },
   // );
-  const isFirstRender = useRef(true);
+  // const isFirstRender = useRef(true);
   const {
     data,
     isLoading,
@@ -62,11 +62,11 @@ const Partners2: FC = () => {
     },
   );
   useEffect(() => {
-    if (!isFirstRender.current) {
-      mutate();
-    } else {
-      isFirstRender.current = false;
-    }
+    // if (!isFirstRender.current) {
+    mutate();
+    // } else {
+    //   isFirstRender.current = false;
+    // }
   }, [mutate, paginationModel, sortModel, filterModel, filterDate, dateRange]);
   // useEffect(() => {
   //   if (!isFirstRender.current) {
