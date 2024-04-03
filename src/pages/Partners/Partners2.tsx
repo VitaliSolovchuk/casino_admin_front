@@ -75,21 +75,6 @@ const Partners2: FC = () => {
       isFirstRender.current = false;
     }
   }, [mutate, paginationModel, sortModel, filterModel, filterDate, dateRange]);
-  // useEffect(() => {
-  //   if (!isFirstRender.current) {
-  //     mutate({
-  //       paginationModel,
-  //       sortModel,
-  //       filterModel,
-  //       filterDate: {
-  //         startDate: dateRange[0],
-  //         endDate: dateRange[1],
-  //       },
-  //     });
-  //   } else {
-  //     isFirstRender.current = false;
-  //   }
-  // }, [paginationModel, sortModel, filterModel, filterDate, dateRange, mutate]);
 
   const columns: GridColDef[] = useMemo(() => [
     {

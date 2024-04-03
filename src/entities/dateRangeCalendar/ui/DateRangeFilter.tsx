@@ -21,6 +21,8 @@ const DateRangeFilter: FC = () => {
   } = useFilterDateRange((state) => state);
   const { dateRange } = filterDate;
 
+  const [shouldShowConfirmButton, setShouldShowConfirmButton] = useState(false);
+
   const [activeButton, setActiveButton] = useState<string | null>(null);
   const month = today.subtract(1, 'month');
   const week = today.subtract(1, 'week');
@@ -54,6 +56,15 @@ const DateRangeFilter: FC = () => {
     setActiveButton(range);
   }, [dateRangeLocal]);
 
+  useEffect(() => {
+    const isDateRangeEqual = (
+      String(dateRange[0]) !== String(dateRangeLocal[0])
+      || String(dateRange[1]) !== String(dateRangeLocal[1])
+    );
+    if (isDateRangeEqual !== shouldShowConfirmButton) {
+      setShouldShowConfirmButton(isDateRangeEqual);
+    }
+  }, [dateRange, dateRangeLocal, shouldShowConfirmButton]);
   // const shortcutsItems: PickersShortcutsItem<DateRange<Dayjs>>[] = [
   //   {
   //     label: 'Day',
@@ -97,8 +108,18 @@ const DateRangeFilter: FC = () => {
             Day
           </Button>
         </ButtonGroup>
-        <ButtonGroup variant="text" sx={{ m: 1 }}>
-          <Button onClick={handleOkClick}>OK</Button>
+        <ButtonGroup
+          variant="outlined"
+          sx={{
+            m: 1,
+            ml: 'auto',
+            '& .MuiButton-root:hover': {
+              backgroundColor: 'primary.main',
+              color: 'white',
+            },
+          }}
+        >
+          {shouldShowConfirmButton && <Button variant="contained" onClick={handleOkClick}>Confirm</Button>}
           <Button onClick={handleResetClick}>Reset</Button>
         </ButtonGroup>
       </LocalizationProvider>
