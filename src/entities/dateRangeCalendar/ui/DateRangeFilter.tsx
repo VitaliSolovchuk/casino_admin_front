@@ -45,6 +45,7 @@ const DateRangeFilter: FC = () => {
   const handleResetClick = () => {
     setDateRangeLocal([null, null]);
     setFilterDate([null, null]);
+    setShouldShowConfirmButton(false);
   };
 
   useEffect(() => {
@@ -58,9 +59,10 @@ const DateRangeFilter: FC = () => {
 
   useEffect(() => {
     const isDateRangeEqual = (
-      String(dateRange[0]) !== String(dateRangeLocal[0])
-      || String(dateRange[1]) !== String(dateRangeLocal[1])
-    );
+      (String(dateRange[0]) === 'null' && String(dateRangeLocal[0]) === 'Invalid Date') ? false
+        : (String(dateRange[0]) !== String(dateRangeLocal[0]) || String(dateRange[1]) !== String(dateRangeLocal[1])
+        ));
+
     if (isDateRangeEqual !== shouldShowConfirmButton) {
       setShouldShowConfirmButton(isDateRangeEqual);
     }
