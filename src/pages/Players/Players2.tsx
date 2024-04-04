@@ -30,18 +30,21 @@ const Players2: FC = () => {
   const {
     filterDate,
   } = useFilterDateRange((state) => state);
+  const { dateRange } = filterDate;
 
   const {
     data,
     isLoading,
     error,
-    refetch,
   } = useDataRequest<Player[]>('players', () => postPlayersData({
     partnerId,
-    paginationModel,
-    sortModel,
-    filterModel,
-    filterDate,
+    // paginationModel,
+    // sortModel,
+    // filterModel,
+    filterDate: {
+      startDate: dateRange[0],
+      endDate: dateRange[1],
+    },
   }));
   const columns: GridColDef[] = useMemo(() => [
     { field: 'playerId', headerName: 'Player ID', flex: 1 },
@@ -67,7 +70,6 @@ const Players2: FC = () => {
         rowId={rowId}
         isLoading={isLoading}
         error={error as Error}
-        refetch={refetch}
         columns={columns}
         handleRowClick={handleRowClick}
         title="Players Table"

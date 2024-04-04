@@ -9,7 +9,7 @@ export const getPartnersData = async () => {
   return response.data;
 };
 
-export const fetchPartnersData = async (props: PartnersDataProps) => {
+export const postPartnersData = async (props: PartnersDataProps) => {
   try {
     const response = await axios.post<PartnerData>(
       `${baseURL}/admin-panel/partners`,

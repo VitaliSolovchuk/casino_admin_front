@@ -91,7 +91,6 @@ const TableGrid: FC<TableGridProps> = ({
   if (error) {
     return (
       <div>
-        Error fetching partners data:
         {(error as Error).message}
       </div>
     );

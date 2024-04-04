@@ -1,14 +1,13 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 import Logo from 'shared/assets/icons/Logo';
 import { Typography } from '@mui/material';
-import { useQueryClient } from 'react-query';
 import { PartnerData } from 'features/partners/types/types';
+import { useDataRequest } from 'shared/lib/hooks/useDataRequest';
+import { postPartnersData } from 'features/partners/api';
+import useTableGrid from 'widgets/tableGrid/model/tableGridStore';
+import useFilterDateRange from 'entities/dateRangeCalendar/model/dateRangeStore';
 import styles from './Sidebar.module.scss';
-import { useDataRequest } from '../../../../shared/lib/hooks/useDataRequest';
-import { fetchPartnersData } from '../../../../features/partners/api';
-import useTableGrid from '../../../../widgets/tableGrid/model/tableGridStore';
-import useFilterDateRange from '../../../../entities/dateRangeCalendar/model/dateRangeStore';
 
 const Sidebar: FC = () => {
   const {
@@ -24,7 +23,7 @@ const Sidebar: FC = () => {
   const { dateRange } = filterDate;
   const { data } = useDataRequest<PartnerData>(
     'partners',
-    () => fetchPartnersData({
+    () => postPartnersData({
       paginationModel,
       sortModel,
       filterModel,

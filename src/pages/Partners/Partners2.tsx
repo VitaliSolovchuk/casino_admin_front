@@ -9,7 +9,7 @@ import useFilterDateRange from 'entities/dateRangeCalendar/model/dateRangeStore'
 import { useDataRequest } from 'shared/lib/hooks/useDataRequest';
 import { PartnerData } from 'features/partners/types/types';
 import { useMutation, useQueryClient } from 'react-query';
-import { fetchPartnersData } from 'features/partners/api';
+import { postPartnersData } from 'features/partners/api';
 
 interface Row {
   partnerId: number;
@@ -38,7 +38,7 @@ const Partners2: FC = () => {
     error,
   } = useDataRequest<PartnerData>(
     'partners',
-    () => fetchPartnersData({
+    () => postPartnersData({
       paginationModel,
       sortModel,
       filterModel,
@@ -50,7 +50,7 @@ const Partners2: FC = () => {
   );
 
   const { mutate } = useMutation<PartnerData>(
-    () => fetchPartnersData(
+    () => postPartnersData(
       {
         paginationModel,
         sortModel,
@@ -141,7 +141,6 @@ const Partners2: FC = () => {
         rowId={rowId}
         isLoading={isLoading}
         error={error as Error}
-        refetch={() => console.log()}
         columns={columns}
         handleRowClick={handleRowClick}
         title="Partners Table"
