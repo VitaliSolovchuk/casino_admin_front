@@ -2,16 +2,17 @@
 import React, {
   useState,
   FC,
-  useCallback, useRef, useEffect,
+  useRef, useEffect,
 } from 'react';
 import {
   GridColDef,
   GridFilterModel,
-  GridFilterPanel, gridPageSizeSelector,
-  GridRowIdGetter, GridRowParams,
+  GridFilterPanel,
+  GridRowIdGetter,
+  GridRowParams,
   GridToolbar,
 } from '@mui/x-data-grid';
-import { DataGridPro, GridApiPro, useGridApiRef } from '@mui/x-data-grid-pro';
+import { DataGridPro } from '@mui/x-data-grid-pro';
 import { Button, Typography } from '@mui/material';
 import Spinner from 'shared/ui/Spinner/Spinner';
 import DateRangeFilter from 'entities/dateRangeCalendar/ui/DateRangeFilter';

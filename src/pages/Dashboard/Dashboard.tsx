@@ -1,11 +1,11 @@
 import React from 'react';
 import { Col } from 'reactstrap';
-import WelcomeComp from '../../entities/welcomeComp/ui/WelcomeComp';
-import PageTitle from '../../entities/pageTitle/ui/PageTitle';
+import WelcomeComp from 'entities/welcomeComp/ui/WelcomeComp';
+import { Typography } from '@mui/material';
 
 const Dashboard = () => (
   <div>
-    <PageTitle title="Dashboard" />
+    <Typography variant="h6" sx={{ mb: 2 }}>Dashboard</Typography>
     <Col xl="4">
       <WelcomeComp />
     </Col>

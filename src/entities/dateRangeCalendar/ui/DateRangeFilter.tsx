@@ -14,13 +14,9 @@ import compareDates from '../lib/compareDates';
 dayjs.extend(utc);
 const DateRangeFilter: FC = () => {
   const today = dayjs();
+  const { filterDate, setFilterDate } = useFilterDateRange((state) => state);
   const [dateRangeLocal, setDateRangeLocal] = useState<DateRange<Dayjs>>([null, null]);
-  const {
-    filterDate,
-    setFilterDate,
-  } = useFilterDateRange((state) => state);
   const { dateRange } = filterDate;
-
   const [shouldShowConfirmButton, setShouldShowConfirmButton] = useState(false);
 
   const [activeButton, setActiveButton] = useState<string | null>(null);
@@ -59,7 +55,8 @@ const DateRangeFilter: FC = () => {
 
   useEffect(() => {
     const isDateRangeEqual = (
-      (String(dateRange[0]) === 'null' && String(dateRangeLocal[0]) === 'Invalid Date') ? false
+      (String(dateRange[0]) === 'null' && String(dateRangeLocal[0]) === 'Invalid Date')
+        ? false
         : (String(dateRange[0]) !== String(dateRangeLocal[0]) || String(dateRange[1]) !== String(dateRangeLocal[1])
         ));
 
@@ -121,7 +118,11 @@ const DateRangeFilter: FC = () => {
             },
           }}
         >
-          {shouldShowConfirmButton && <Button variant="contained" onClick={handleOkClick}>Confirm</Button>}
+          {shouldShowConfirmButton && (
+            <Button variant="contained" onClick={handleOkClick}>
+              Confirm
+            </Button>
+          )}
           <Button onClick={handleResetClick}>Reset</Button>
         </ButtonGroup>
       </LocalizationProvider>

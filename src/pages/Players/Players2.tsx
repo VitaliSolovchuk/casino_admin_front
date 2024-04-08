@@ -1,4 +1,6 @@
-import React, { FC, useMemo } from 'react';
+import React, {
+  FC, useEffect, useMemo, useRef,
+} from 'react';
 import {
   useLocation, useNavigate,
 } from 'react-router-dom';
@@ -9,6 +11,7 @@ import useFilterDateRange from 'entities/dateRangeCalendar/model/dateRangeStore'
 import { useDataRequest } from 'shared/lib/hooks/useDataRequest';
 import { Player } from 'features/players/types/types';
 import { postPlayersData } from 'features/players/api';
+import { useMutation, useQueryClient } from 'react-query';
 
 interface Row {
   partnerId: string;
@@ -27,10 +30,10 @@ const Players2: FC = () => {
     sortModel,
     paginationModel,
   } = useTableGrid((state) => state);
-  const {
-    filterDate,
-  } = useFilterDateRange((state) => state);
+  const { filterDate } = useFilterDateRange((state) => state);
   const { dateRange } = filterDate;
+  const queryClient = useQueryClient();
+  const isFirstRender = useRef(true);
 
   const {
     data,
@@ -46,6 +49,34 @@ const Players2: FC = () => {
       endDate: dateRange[1],
     },
   }));
+
+  const { mutate } = useMutation<Player[]>(
+    'players',
+    () => postPlayersData({
+      partnerId,
+      // paginationModel,
+      // sortModel,
+      // filterModel,
+      filterDate: {
+        startDate: dateRange[0],
+        endDate: dateRange[1],
+      },
+    }),
+    {
+      onSuccess: (data) => {
+        queryClient.setQueryData('players', data);
+      },
+    },
+  );
+
+  useEffect(() => {
+    if (!isFirstRender.current) {
+      mutate();
+    } else {
+      isFirstRender.current = false;
+    }
+  }, [mutate, paginationModel, sortModel, filterModel, filterDate, dateRange]);
+
   const columns: GridColDef[] = useMemo(() => [
     { field: 'playerId', headerName: 'Player ID', flex: 1 },
     { field: 'sessionId', headerName: 'Session ID', flex: 1 },
