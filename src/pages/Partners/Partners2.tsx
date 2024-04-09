@@ -131,7 +131,8 @@ const Partners2: FC = () => {
   ], []);
   const handleRowClick = (row: Record<string, number>) => {
     if (row.partnerId) {
-      navigate(`/partners2/players2/?id=${row.partnerId}&currency=${row.currencyName}`);
+      queryClient.invalidateQueries({ queryKey: 'players' })
+        .then(() => navigate(`/partners2/players2/?id=${row.partnerId}&currency=${row.currencyName}`));
     }
   };
   const rowId = (row: Row) => `${row.partnerId}-${row.currencyName}`;

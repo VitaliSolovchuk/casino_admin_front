@@ -40,17 +40,20 @@ const Players2: FC = () => {
     data,
     isLoading,
     error,
-  } = useDataRequest<Player[]>('players', () => postPlayersData({
-    partnerId,
-    currency,
-    // paginationModel,
-    // sortModel,
-    // filterModel,
-    filterDate: {
-      startDate: dateRange[0],
-      endDate: dateRange[1],
-    },
-  }));
+  } = useDataRequest<Player[]>(
+    'players',
+    () => postPlayersData({
+      partnerId,
+      currency,
+      // paginationModel,
+      // sortModel,
+      // filterModel,
+      filterDate: {
+        startDate: dateRange[0],
+        endDate: dateRange[1],
+      },
+    }),
+  );
 
   const { mutate } = useMutation<Player[]>(
     'players',
