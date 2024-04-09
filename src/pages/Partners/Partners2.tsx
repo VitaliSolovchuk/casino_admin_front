@@ -105,12 +105,12 @@ const Partners2: FC = () => {
     },
     {
       field: 'totalAmountBet',
-      headerName: 'Total Amount Bet',
+      headerName: 'Total Bet',
       flex: 1,
     },
     {
       field: 'totalAmountWin',
-      headerName: 'Total Amount Win',
+      headerName: 'Total Win',
       flex: 1,
     },
     {
