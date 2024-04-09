@@ -81,6 +81,7 @@ function ResponsiveAppBar() {
                   sx: {
                     backgroundColor: '#2a3042',
                     color: '#79829c',
+                    left: 0,
                   },
                 },
               }}
@@ -130,6 +131,7 @@ function ResponsiveAppBar() {
                   sx: {
                     backgroundColor: '#2a3042',
                     color: '#79829c',
+                    right: 0,
                   },
                 },
               }}

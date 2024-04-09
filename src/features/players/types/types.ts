@@ -29,6 +29,7 @@ export interface getPlayersProps {
 
 export interface postPlayersProps {
   partnerId: string | null,
+  currency: string | null,
   // filterModel: GridFilterModel,
   // sortModel: GridSortModel
   // paginationModel: GridPaginationModel,

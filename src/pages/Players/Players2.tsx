@@ -23,6 +23,7 @@ const Players2: FC = () => {
   const { search, state } = useLocation();
   const params = new URLSearchParams(search);
   const partnerId = params.get('id');
+  const currency = params.get('currency');
 
   const navigate = useNavigate();
   const {
@@ -41,6 +42,7 @@ const Players2: FC = () => {
     error,
   } = useDataRequest<Player[]>('players', () => postPlayersData({
     partnerId,
+    currency,
     // paginationModel,
     // sortModel,
     // filterModel,
@@ -54,6 +56,7 @@ const Players2: FC = () => {
     'players',
     () => postPlayersData({
       partnerId,
+      currency,
       // paginationModel,
       // sortModel,
       // filterModel,
@@ -80,11 +83,11 @@ const Players2: FC = () => {
   const columns: GridColDef[] = useMemo(() => [
     { field: 'playerId', headerName: 'Player ID', flex: 1 },
     { field: 'sessionId', headerName: 'Session ID', flex: 1 },
-    { field: 'currencyName', headerName: 'Currency Name', flex: 1 },
+    { field: 'currencyName', headerName: 'Currency', flex: 1 },
     { field: 'gameName', headerName: 'Game Name', flex: 1 },
-    { field: 'totalActions', headerName: 'Total Actions', flex: 1 },
-    { field: 'totalAmountBet', headerName: 'Total Amount Bet', flex: 1 },
-    { field: 'totalAmountWin', headerName: 'Total Amount Win', flex: 1 },
+    { field: 'actions', headerName: 'Actions', flex: 1 },
+    { field: 'betAmount', headerName: 'Total Amount Bet', flex: 1 },
+    { field: 'winAmount', headerName: 'Total Amount Win', flex: 1 },
     { field: 'totalProfit', headerName: 'Total Profit', flex: 1 },
     { field: 'totalProfitUSD', headerName: 'Total Profit USD', flex: 1 },
   ], []);
