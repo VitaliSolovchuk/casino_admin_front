@@ -5,6 +5,8 @@ import { Button, ButtonGroup } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { DateRange, DateRangePicker } from '@mui/x-date-pickers-pro';
+import Box from '@mui/material/Box';
+import { useMediaQuery } from 'react-responsive';
 import styles from './DataRangeFilter.module.scss';
 import 'dayjs/locale/ru';
 import 'dayjs/locale/en';
@@ -22,6 +24,9 @@ const DateRangeFilter: FC = () => {
   const [activeButton, setActiveButton] = useState<string | null>(null);
   const month = today.subtract(1, 'month');
   const week = today.subtract(1, 'week');
+
+  const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
+
   const handleMonthClick = () => {
     setDateRangeLocal([month, today]);
   };
@@ -86,45 +91,69 @@ const DateRangeFilter: FC = () => {
           timezone="UTC"
           value={dateRangeLocal}
           onChange={(newValue) => setDateRangeLocal(newValue)}
-        />
-        <ButtonGroup variant="text" sx={{ m: 1 }}>
-          <Button
-            variant={activeButton === 'month' ? 'contained' : 'text'}
-            onClick={handleMonthClick}
-          >
-            Month
-          </Button>
-          <Button
-            variant={activeButton === 'week' ? 'contained' : 'text'}
-            onClick={handleWeekClick}
-          >
-            Week
-          </Button>
-          <Button
-            variant={activeButton === 'day' ? 'contained' : 'text'}
-            onClick={handleOneDayClick}
-          >
-            Day
-          </Button>
-        </ButtonGroup>
-        <ButtonGroup
-          variant="outlined"
-          sx={{
-            m: 1,
-            ml: 'auto',
-            '& .MuiButton-root:hover': {
-              backgroundColor: 'primary.main',
-              color: 'white',
+          slotProps={{
+            textField: {
+              size: isMobile ? 'small' : 'medium',
             },
           }}
+        />
+        <Box
+          sx={{
+            display: 'flex',
+            flex: 1,
+            justifyContent: 'space-between',
+          }}
         >
-          {shouldShowConfirmButton && (
-            <Button variant="contained" onClick={handleOkClick}>
-              Confirm
+          <ButtonGroup variant="text" sx={{ m: 1 }}>
+            <Button
+              variant={activeButton === 'month' ? 'contained' : 'text'}
+              size={isMobile ? 'small' : 'medium'}
+              onClick={handleMonthClick}
+            >
+              Month
             </Button>
-          )}
-          <Button onClick={handleResetClick}>Reset</Button>
-        </ButtonGroup>
+            <Button
+              variant={activeButton === 'week' ? 'contained' : 'text'}
+              size={isMobile ? 'small' : 'medium'}
+              onClick={handleWeekClick}
+            >
+              Week
+            </Button>
+            <Button
+              variant={activeButton === 'day' ? 'contained' : 'text'}
+              size={isMobile ? 'small' : 'medium'}
+              onClick={handleOneDayClick}
+            >
+              Day
+            </Button>
+          </ButtonGroup>
+          <ButtonGroup
+            variant="outlined"
+            sx={{
+              m: 1,
+              '& .MuiButton-root:hover': {
+                backgroundColor: 'primary.main',
+                color: 'white',
+              },
+            }}
+          >
+            {shouldShowConfirmButton && (
+              <Button
+                variant="contained"
+                size={isMobile ? 'small' : 'medium'}
+                onClick={handleOkClick}
+              >
+                Confirm
+              </Button>
+            )}
+            <Button
+              size={isMobile ? 'small' : 'medium'}
+              onClick={handleResetClick}
+            >
+              Reset
+            </Button>
+          </ButtonGroup>
+        </Box>
       </LocalizationProvider>
     </div>
   );

@@ -63,18 +63,18 @@
   }
 
   /* Стили для правого контейнера */
-  .main-content {
-    flex: 1;
-    margin-left: 250px;
-    overflow: hidden;
-    @media screen and (max-width: 768px) {
-      margin-left: 0;
-    }
-
-    .page-content {
-      padding: 90px 20px 180px;
-    }
-  }
+  //.main-content {
+  //  flex: 1;
+  //  margin-left: 250px;
+  //  overflow: hidden;
+  //  @media screen and (max-width: 768px) {
+  //    margin-left: 0;
+  //  }
+  //
+  //  .page-content {
+  //    padding: 90px 20px 180px;
+  //  }
+  //}
 
   .footer {
     bottom: 0;

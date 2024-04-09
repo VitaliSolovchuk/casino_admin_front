@@ -8,15 +8,13 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
 import Logo from 'shared/assets/icons/Logo';
 import avatar from 'shared/assets/images/users/avatar-6.jpg';
+import { NavLink } from 'react-router-dom';
 
-const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Profile', 'Account', 'Logout'];
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -80,31 +78,29 @@ function ResponsiveAppBar() {
                 paper: {
                   sx: {
                     backgroundColor: '#2a3042',
-                    color: '#79829c',
-                    left: 0,
+                    left: 'auto !important',
                   },
                 },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Typography textAlign="center" color="#79829c">
+                  <NavLink to="/dashboard" style={{ color: '#79829c' }}>Dashboard</NavLink>
+                </Typography>
+              </MenuItem>
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">
+                  <NavLink to="/partners" style={{ color: '#79829c' }}>Partners</NavLink>
+                </Typography>
+              </MenuItem>
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">
+                  <NavLink to="/partners2" style={{ color: '#79829c' }}>Partners 2</NavLink>
+                </Typography>
+              </MenuItem>
             </Menu>
           </Box>
           <Logo />
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
-            ))}
-          </Box>
 
           <Box>
             <Tooltip title="Open settings">
@@ -131,6 +127,7 @@ function ResponsiveAppBar() {
                   sx: {
                     backgroundColor: '#2a3042',
                     color: '#79829c',
+                    left: 'auto !important',
                     right: 0,
                   },
                 },

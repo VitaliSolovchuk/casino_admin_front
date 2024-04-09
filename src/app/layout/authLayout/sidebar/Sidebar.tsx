@@ -18,7 +18,6 @@ const Sidebar: FC = () => {
   const { filterModel, sortModel, paginationModel } = useTableGrid((state) => state);
   const { filterDate } = useFilterDateRange((state) => state);
   const { dateRange } = filterDate;
-  const location = useLocation();
 
   const { data } = useDataRequest<PartnerData>('partners', () => postPartnersData({
     paginationModel,
@@ -40,10 +39,6 @@ const Sidebar: FC = () => {
     <>
       {isMobile && showAppBar && (
         <AppBar />
-        // <div className={styles.appBar}>
-        //   <Logo />
-        //   <Button onClick={() => console.log('Открыто меню')}>Burger Button</Button>
-        // </div>
       )}
       {!isMobile && (
         <>
@@ -52,7 +47,7 @@ const Sidebar: FC = () => {
           </div>
           <div className="sidebar">
             <ul>
-              <li><NavLink color="red" to="/dashboard">Dashboard</NavLink></li>
+              <li><NavLink to="/dashboard">Dashboard</NavLink></li>
               <li><NavLink to="/partners">Partners</NavLink></li>
               <li><NavLink to="/partners2">Partners 2</NavLink></li>
               {/* Добавьте другие маршруты по мере необходимости */}

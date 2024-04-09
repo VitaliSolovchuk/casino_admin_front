@@ -16,6 +16,7 @@ import { DataGridPro } from '@mui/x-data-grid-pro';
 import { Button, Typography } from '@mui/material';
 import Spinner from 'shared/ui/Spinner/Spinner';
 import DateRangeFilter from 'entities/dateRangeCalendar/ui/DateRangeFilter';
+import { useMediaQuery } from 'react-responsive';
 import styles from './TableGrid.module.scss';
 import useTableGrid from '../model/tableGridStore';
 
@@ -49,6 +50,7 @@ const TableGrid: FC<TableGridProps> = ({
     setSortModel,
     setPaginationModel,
   } = useTableGrid((state) => state);
+  const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
 
   const rowCountState = data?.length ?? 0;
 
@@ -105,20 +107,21 @@ const TableGrid: FC<TableGridProps> = ({
       <Typography variant="h6" sx={{ mb: 2 }}>{title.toUpperCase()}</Typography>
       <DateRangeFilter />
       <DataGridPro
-        // slotProps={{
-        //   filterPanel: {
-        //     filterFormProps: {
-        //       operatorInputProps: {
-        //         disabled: true, // If you only want to disable the operator
-        //         sx: { display: 'none' }, // If you want to remove it completely
-        //       },
-        //     },
-        //   },
-        // }}
+          // slotProps={{
+          //   filterPanel: {
+          //     filterFormProps: {
+          //       operatorInputProps: {
+          //         disabled: true, // If you only want to disable the operator
+          //         sx: { display: 'none' }, // If you want to remove it completely
+          //       },
+          //     },
+          //   },
+          // }}
         sx={{
           '& .MuiDataGrid-row:hover': {
             cursor: 'pointer',
           },
+          mx: isMobile ? -2 : 0,
         }}
         filterDebounceMs={2000}
         paginationModel={paginationModel}
@@ -127,6 +130,7 @@ const TableGrid: FC<TableGridProps> = ({
         rowCount={rowCountState}
         pagination
         autoHeight
+        autoPageSize
         getRowId={rowId}
         sortingMode="server"
         filterMode="server"
