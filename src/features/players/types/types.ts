@@ -29,10 +29,12 @@ export interface getPlayersProps {
 
 export interface postPlayersProps {
   partnerId: string | null,
-  filterModel: GridFilterModel,
-  sortModel: GridSortModel
-  paginationModel: GridPaginationModel,
+  currency: string | null,
+  // filterModel: GridFilterModel,
+  // sortModel: GridSortModel
+  // paginationModel: GridPaginationModel,
   filterDate: {
-    dateRange: DateRange<Dayjs>
-  }
+    startDate: Dayjs | null,
+    endDate: Dayjs | null,
+  },
 }

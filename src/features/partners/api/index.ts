@@ -3,19 +3,21 @@ import { baseURL } from 'shared/lib/consts/url';
 import { PartnerData, PartnersDataProps } from '../types/types';
 
 export const getPartnersData = async () => {
-  const response = await axios.get<PartnerData[]>(
+  const response = await axios.get<PartnerData>(
     `${baseURL}/admin-panel/partners`,
   );
   return response.data;
 };
 
-export const fetchPartnersData = async (props: PartnersDataProps) => {
+export const postPartnersData = async (props: PartnersDataProps) => {
   try {
-    await axios.post(
+    const response = await axios.post<PartnerData>(
       `${baseURL}/admin-panel/partners`,
       props,
     );
-  } catch (e) {
-    console.log(e);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
 };

@@ -6,6 +6,7 @@
   flex-direction: column;
   position: relative;
   min-height: 100vh;
+
   .header {
     position: fixed;
     padding: 5px 20px;
@@ -16,8 +17,10 @@
     background-color: white;
     box-shadow: 0 0.75rem 1.5rem rgba(18, 38, 63, 0.03);
   }
+
   /* Стили для левой боковой панели */
   .sidebar {
+    display: flex;
     width: 250px;
     z-index: 10;
     background: #2a3042;
@@ -27,6 +30,8 @@
     top: 0;
     padding-top: 70px;
     box-shadow: 0 0.75rem 1.5rem rgba(18, 38, 63, 0.03);
+    flex-direction: column;
+    justify-content: space-between;
 
     /* Стили для списка */
     ul {
@@ -36,7 +41,6 @@
       /* Стили для элементов списка */
       li {
         margin-bottom: 10px;
-
         /* Стили для ссылок */
         a {
           text-decoration: none;
@@ -58,15 +62,6 @@
     }
   }
 
-  /* Стили для правого контейнера */
-  .main-content {
-    flex: 1;
-    margin-left: 250px;
-    overflow: hidden;
-    .page-content {
-      padding: 90px 20px 180px;
-    }
-  }
   .footer {
     bottom: 0;
     padding: 20px;
@@ -76,6 +71,10 @@
     left: 250px;
     height: 60px;
     background-color: #f2f2f5;
+    @media screen and (max-width: 768px) {
+      position: static;
+    }
+
     .footer-container {
       display: flex;
       justify-content: space-between;

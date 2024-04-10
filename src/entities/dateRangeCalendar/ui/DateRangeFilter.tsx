@@ -5,33 +5,28 @@ import { Button, ButtonGroup } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { DateRange, DateRangePicker } from '@mui/x-date-pickers-pro';
+import Box from '@mui/material/Box';
+import { useMediaQuery } from 'react-responsive';
 import styles from './DataRangeFilter.module.scss';
 import 'dayjs/locale/ru';
 import 'dayjs/locale/en';
 import useFilterDateRange from '../model/dateRangeStore';
 import compareDates from '../lib/compareDates';
 
-interface DateRangeFilterProps {
-  onSubmit: () => void;
-}
-
 dayjs.extend(utc);
-const DateRangeFilter: FC<DateRangeFilterProps> = (
-  {
-    onSubmit,
-  },
-) => {
+const DateRangeFilter: FC = () => {
   const today = dayjs();
+  const { filterDate, setFilterDate } = useFilterDateRange((state) => state);
   const [dateRangeLocal, setDateRangeLocal] = useState<DateRange<Dayjs>>([null, null]);
-  const {
-    filterDate,
-    setFilterDate,
-  } = useFilterDateRange((state) => state);
   const { dateRange } = filterDate;
+  const [shouldShowConfirmButton, setShouldShowConfirmButton] = useState(false);
 
   const [activeButton, setActiveButton] = useState<string | null>(null);
   const month = today.subtract(1, 'month');
   const week = today.subtract(1, 'week');
+
+  const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
+
   const handleMonthClick = () => {
     setDateRangeLocal([month, today]);
   };
@@ -46,13 +41,12 @@ const DateRangeFilter: FC<DateRangeFilterProps> = (
 
   const handleOkClick = () => {
     setFilterDate(dateRangeLocal);
-    onSubmit();
   };
 
   const handleResetClick = () => {
     setDateRangeLocal([null, null]);
     setFilterDate([null, null]);
-    onSubmit();
+    setShouldShowConfirmButton(false);
   };
 
   useEffect(() => {
@@ -64,6 +58,17 @@ const DateRangeFilter: FC<DateRangeFilterProps> = (
     setActiveButton(range);
   }, [dateRangeLocal]);
 
+  useEffect(() => {
+    const isDateRangeEqual = (
+      (String(dateRange[0]) === 'null' && String(dateRangeLocal[0]) === 'Invalid Date')
+        ? false
+        : (String(dateRange[0]) !== String(dateRangeLocal[0]) || String(dateRange[1]) !== String(dateRangeLocal[1])
+        ));
+
+    if (isDateRangeEqual !== shouldShowConfirmButton) {
+      setShouldShowConfirmButton(isDateRangeEqual);
+    }
+  }, [dateRange, dateRangeLocal, shouldShowConfirmButton]);
   // const shortcutsItems: PickersShortcutsItem<DateRange<Dayjs>>[] = [
   //   {
   //     label: 'Day',
@@ -86,31 +91,69 @@ const DateRangeFilter: FC<DateRangeFilterProps> = (
           timezone="UTC"
           value={dateRangeLocal}
           onChange={(newValue) => setDateRangeLocal(newValue)}
+          slotProps={{
+            textField: {
+              size: isMobile ? 'small' : 'medium',
+            },
+          }}
         />
-        <ButtonGroup variant="text" sx={{ m: 1 }}>
-          <Button
-            variant={activeButton === 'month' ? 'contained' : 'text'}
-            onClick={handleMonthClick}
+        <Box
+          sx={{
+            display: 'flex',
+            flex: 1,
+            justifyContent: 'space-between',
+          }}
+        >
+          <ButtonGroup variant="text" sx={{ m: 1 }}>
+            <Button
+              variant={activeButton === 'month' ? 'contained' : 'text'}
+              size={isMobile ? 'small' : 'medium'}
+              onClick={handleMonthClick}
+            >
+              Month
+            </Button>
+            <Button
+              variant={activeButton === 'week' ? 'contained' : 'text'}
+              size={isMobile ? 'small' : 'medium'}
+              onClick={handleWeekClick}
+            >
+              Week
+            </Button>
+            <Button
+              variant={activeButton === 'day' ? 'contained' : 'text'}
+              size={isMobile ? 'small' : 'medium'}
+              onClick={handleOneDayClick}
+            >
+              Day
+            </Button>
+          </ButtonGroup>
+          <ButtonGroup
+            variant="outlined"
+            sx={{
+              m: 1,
+              '& .MuiButton-root:hover': {
+                backgroundColor: 'primary.main',
+                color: 'white',
+              },
+            }}
           >
-            Month
-          </Button>
-          <Button
-            variant={activeButton === 'week' ? 'contained' : 'text'}
-            onClick={handleWeekClick}
-          >
-            Week
-          </Button>
-          <Button
-            variant={activeButton === 'day' ? 'contained' : 'text'}
-            onClick={handleOneDayClick}
-          >
-            Day
-          </Button>
-        </ButtonGroup>
-        <ButtonGroup variant="text" sx={{ m: 1 }}>
-          <Button onClick={handleOkClick}>OK</Button>
-          <Button onClick={handleResetClick}>Reset</Button>
-        </ButtonGroup>
+            {shouldShowConfirmButton && (
+              <Button
+                variant="contained"
+                size={isMobile ? 'small' : 'medium'}
+                onClick={handleOkClick}
+              >
+                Confirm
+              </Button>
+            )}
+            <Button
+              size={isMobile ? 'small' : 'medium'}
+              onClick={handleResetClick}
+            >
+              Reset
+            </Button>
+          </ButtonGroup>
+        </Box>
       </LocalizationProvider>
     </div>
   );

@@ -3,18 +3,6 @@ import { GridSortModel } from '@mui/x-data-grid/models/gridSortModel';
 import { GridPaginationModel } from '@mui/x-data-grid/models/gridPaginationProps';
 import { Dayjs } from 'dayjs';
 
-export interface PartnerData {
-  partnerId: number;
-  partnerName: string;
-  currencyName: string;
-  uniquePlayers: Record<string, any>;
-  totalPlayers: number;
-  sessionCount: number;
-  totalActions: number;
-  totalAmountBet: number;
-  totalAmountWin: number;
-  totalProfit: number;
-}
 export interface PartnersDataProps {
   filterModel: GridFilterModel,
   sortModel: GridSortModel
@@ -23,4 +11,23 @@ export interface PartnersDataProps {
     startDate: Dayjs | null,
     endDate: Dayjs | null,
   },
+}
+
+interface PartnerCurrencyStatistic {
+  partnerId: number;
+  partnerName: string;
+  currencyName: string;
+  totalPlayers: number;
+  totalSessions: number;
+  totalActions: number;
+  totalAmountBet: string;
+  totalAmountWin: string;
+  totalProfit: string;
+  totalProfitUSD: number;
+  RTP: number;
+}
+
+export interface PartnerData {
+  totalGGR: number;
+  partnerCurrencyStatistic: PartnerCurrencyStatistic[];
 }

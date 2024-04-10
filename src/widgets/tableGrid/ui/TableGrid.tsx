@@ -2,20 +2,21 @@
 import React, {
   useState,
   FC,
-  useEffect,
-  useCallback,
+  useRef, useEffect,
 } from 'react';
 import {
-  GridColDef, GridFilterModel,
+  GridColDef,
+  GridFilterModel,
   GridFilterPanel,
   GridRowIdGetter,
+  GridRowParams,
   GridToolbar,
 } from '@mui/x-data-grid';
 import { DataGridPro } from '@mui/x-data-grid-pro';
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import Spinner from 'shared/ui/Spinner/Spinner';
-import PageTitle from 'entities/pageTitle/ui/PageTitle';
 import DateRangeFilter from 'entities/dateRangeCalendar/ui/DateRangeFilter';
+import { useMediaQuery } from 'react-responsive';
 import styles from './TableGrid.module.scss';
 import useTableGrid from '../model/tableGridStore';
 
@@ -23,11 +24,11 @@ interface TableGridProps {
   data?: Record<string, any>[];
   isLoading: boolean;
   error: Error;
-  refetch: () => void;
+  refetch?: () => void;
   columns: GridColDef[];
   rowId?: GridRowIdGetter<any>;
   title: string;
-  handleRowClick?: ({ id }: {id: number}) => void
+  handleRowClick?: ({ id }: { id: number }) => void;
 }
 
 const TableGrid: FC<TableGridProps> = ({
@@ -40,78 +41,102 @@ const TableGrid: FC<TableGridProps> = ({
   title,
   handleRowClick,
 }) => {
-  const [localFilter, setLocalFilter] = useState<GridFilterModel>({
-    items: [],
-    quickFilterValues: [],
-  });
+  const [localFilter, setLocalFilter] = useState<GridFilterModel>({ items: [], quickFilterValues: [] });
   const {
+    filterModel,
+    resetFilterModel,
     setFilterModel,
     paginationModel,
-    sortModel,
     setSortModel,
     setPaginationModel,
-    filterModel,
   } = useTableGrid((state) => state);
+  const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
 
-  const rowCountState = data ? data.length : 0;
+  const rowCountState = data?.length ?? 0;
 
-  useEffect(() => {
-    refetch();
-  }, [paginationModel, sortModel, filterModel]);
-
-  const handleApplyFilter = useCallback(() => {
+  const handleApplyFilter = () => {
     setFilterModel(localFilter);
-  }, [localFilter, setFilterModel]);
+  };
 
-  const CustomFilterPanel = useCallback(
-    ({ ...props }) => (
+  // eslint-disable-next-line react/no-unstable-nested-components
+  const CustomFilterPanel: FC = () => {
+    const filterPanelRef = useRef<HTMLDivElement>(null);
+    const shouldShowConfirmButton = localFilter.items.length > 0 && localFilter.items.every((item) => item.value);
+    useEffect(() => {
+      const buttons = filterPanelRef.current?.querySelectorAll('.MuiDataGrid-panelFooter button');
+      const removeAllButton = buttons?.item(1);
+
+      if (removeAllButton instanceof HTMLButtonElement) {
+        // removeAllButton.childNodes[1].textContent = 'Custom Remove All';
+        removeAllButton.addEventListener('click', () => {
+          if (filterModel.items.length > 0) {
+            // Добавляем пустой сеттаймаут, так как иначе синхронное действие чистки инпута блокирутся запросом
+            setTimeout(() => resetFilterModel());
+          }
+        });
+      }
+    }, []);
+
+    return (
       <div>
-        <GridFilterPanel {...props} />
+        <GridFilterPanel ref={filterPanelRef} />
+        {shouldShowConfirmButton && (
         <Button onClick={handleApplyFilter} className={styles.button}>
           Confirm
         </Button>
+        )}
       </div>
-    ),
-    [localFilter],
-  );
+    );
+  };
 
   if (isLoading) return <Spinner />;
+
   if (error) {
     return (
       <div>
-        Error fetching partners data:
         {(error as Error).message}
       </div>
     );
   }
+
+  const handleRowClickWrapper = ((params: GridRowParams) => {
+    if (handleRowClick) handleRowClick(params.row);
+  });
   return (
     <div>
-      <PageTitle title={title} />
-      <DateRangeFilter
-        onSubmit={refetch}
-      />
+      <Typography variant="h6" sx={{ mb: 2 }}>{title.toUpperCase()}</Typography>
+      <DateRangeFilter />
       <DataGridPro
-        // slotProps={{
-        //   filterPanel: {
-        //     filterFormProps: {
-        //       operatorInputProps: {
-        //         disabled: true, // If you only want to disable the operator
-        //         sx: { display: 'none' }, // If you want to remove it completely
-        //       },
-        //     },
-        //   },
-        // }}
+          // slotProps={{
+          //   filterPanel: {
+          //     filterFormProps: {
+          //       operatorInputProps: {
+          //         disabled: true, // If you only want to disable the operator
+          //         sx: { display: 'none' }, // If you want to remove it completely
+          //       },
+          //     },
+          //   },
+          // }}
         sx={{
           '& .MuiDataGrid-row:hover': {
             cursor: 'pointer',
           },
+          '& .MuiDataGrid-cell, .MuiDataGrid-columnHeader': {
+            minWidth: '100px !important',
+          },
+          '& .MuiDataGrid-iconButtonContainer': {
+            width: '0 !important',
+          },
+          mx: isMobile ? -2 : 0,
         }}
+        filterDebounceMs={2000}
         paginationModel={paginationModel}
         rows={data || []}
         columns={columns}
         rowCount={rowCountState}
         pagination
         autoHeight
+        autoPageSize
         getRowId={rowId}
         sortingMode="server"
         filterMode="server"
@@ -120,8 +145,11 @@ const TableGrid: FC<TableGridProps> = ({
         onSortModelChange={setSortModel}
         onFilterModelChange={setLocalFilter}
         loading={isLoading}
-        onRowClick={(params) => handleRowClick && handleRowClick(params.row)}
-        components={{ Toolbar: GridToolbar, FilterPanel: CustomFilterPanel }}
+        onRowClick={handleRowClickWrapper}
+        slots={{
+          toolbar: GridToolbar,
+          filterPanel: CustomFilterPanel,
+        }}
       />
     </div>
   );

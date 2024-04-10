@@ -7,7 +7,7 @@ import useFilterDateRange from 'entities/dateRangeCalendar/model/dateRangeStore'
 import { useDataRequest } from 'shared/lib/hooks/useDataRequest';
 import { PartnerData } from 'features/partners/types/types';
 import { useMutation } from 'react-query';
-import { fetchPartnersData, getPartnersData } from '../../features/partners/api';
+import { postPartnersData, getPartnersData } from 'features/partners/api';
 
 interface Row {
   partnerId: number;
@@ -26,14 +26,15 @@ const Partners: FC = () => {
 
   const { dateRange } = filterDate;
   const navigate = useNavigate();
-  const { mutate } = useMutation(fetchPartnersData);
+  const { mutate } = useMutation(postPartnersData);
 
   const {
     data,
     isLoading,
     error,
     refetch,
-  } = useDataRequest<PartnerData[]>('partners', getPartnersData);
+  } = useDataRequest<PartnerData>('partners', getPartnersData);
+
   useEffect(() => {
     mutate({
       paginationModel,
@@ -65,7 +66,7 @@ const Partners: FC = () => {
   return (
     <div>
       <TableGrid
-        data={data}
+        data={data?.partnerCurrencyStatistic}
         rowId={rowId}
         isLoading={isLoading}
         error={error as Error}
