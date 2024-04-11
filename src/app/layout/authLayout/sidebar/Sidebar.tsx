@@ -1,16 +1,12 @@
 import React, { FC, useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import Logo from 'shared/assets/icons/Logo';
-import { Typography } from '@mui/material';
 import { PartnerData } from 'features/partners/types/types';
 import { useDataRequest } from 'shared/lib/hooks/useDataRequest';
 import { postPartnersData } from 'features/partners/api';
 import useTableGrid from 'widgets/tableGrid/model/tableGridStore';
 import useFilterDateRange from 'entities/dateRangeCalendar/model/dateRangeStore';
 import { useMediaQuery } from 'react-responsive';
-import { useQueryClient } from 'react-query';
 import AppBarMob from 'entities/appBars/appBarMob/ui/AppBarMob';
-import AppBarDesk from '../../../../entities/appBars/appBarDesk/ui/AppBarDesk';
+import AppBarDesk from 'entities/appBars/appBarDesk/ui/AppBarDesk';
 
 const Sidebar: FC = () => {
   const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
