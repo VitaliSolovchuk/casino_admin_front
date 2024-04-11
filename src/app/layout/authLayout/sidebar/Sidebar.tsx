@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import Logo from 'shared/assets/icons/Logo';
-import { Button, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { PartnerData } from 'features/partners/types/types';
 import { useDataRequest } from 'shared/lib/hooks/useDataRequest';
 import { postPartnersData } from 'features/partners/api';

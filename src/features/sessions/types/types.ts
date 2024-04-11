@@ -1,3 +1,8 @@
+import { GridFilterModel } from '@mui/x-data-grid';
+import { GridSortModel } from '@mui/x-data-grid/models/gridSortModel';
+import { GridPaginationModel } from '@mui/x-data-grid/models/gridPaginationProps';
+import { Dayjs } from 'dayjs';
+
 export interface SessionEvent {
   actionType: string;
   dataTime: string;
@@ -5,5 +10,12 @@ export interface SessionEvent {
   amountWin: number;
 }
 export interface getSessionsProps {
-  sessionId: string | null
+  sessionId: string | null,
+  filterModel: GridFilterModel,
+  sortModel: GridSortModel
+  paginationModel: GridPaginationModel,
+  filterDate: {
+    startDate: Dayjs | null,
+    endDate: Dayjs | null,
+  },
 }

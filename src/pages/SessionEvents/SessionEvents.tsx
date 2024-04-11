@@ -3,9 +3,11 @@ import { useLocation } from 'react-router-dom';
 import { GridColDef } from '@mui/x-data-grid';
 import dayjs from 'dayjs';
 import TableGrid from 'widgets/tableGrid/ui/TableGrid';
-import { SessionEvent } from '../../features/sessions/types/types';
-import { useDataRequest } from '../../shared/lib/hooks/useDataRequest';
-import { getSessionsData } from '../../features/sessions/api';
+import { SessionEvent } from 'features/sessions/types/types';
+import { useDataRequest } from 'shared/lib/hooks/useDataRequest';
+import { getSessionsData } from 'features/sessions/api';
+import useTableGrid from '../../widgets/tableGrid/model/tableGridStore';
+import useFilterDateRange from '../../entities/dateRangeCalendar/model/dateRangeStore';
 
 interface Row {
   dataTime: string
@@ -15,6 +17,13 @@ const SessionEvents: FC = () => {
   const { search } = useLocation();
   const params = new URLSearchParams(search);
   const sessionId = params.get('id');
+  const {
+    filterModel,
+    sortModel,
+    paginationModel,
+  } = useTableGrid((state) => state);
+  const { filterDate } = useFilterDateRange((state) => state);
+  const { dateRange } = filterDate;
 
   const {
     data,
@@ -23,7 +32,16 @@ const SessionEvents: FC = () => {
     refetch,
   } = useDataRequest<SessionEvent[]>(
     'session',
-    () => getSessionsData({ sessionId }),
+    () => getSessionsData({
+      sessionId,
+      paginationModel,
+      sortModel,
+      filterModel,
+      filterDate: {
+        startDate: dateRange[0],
+        endDate: dateRange[1],
+      },
+    }),
   );
   const columns: GridColDef[] = useMemo(() => [
     { field: 'actionType', headerName: 'Action Type', flex: 1 },

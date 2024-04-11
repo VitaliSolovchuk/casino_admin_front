@@ -45,9 +45,9 @@ const Players2: FC = () => {
     () => postPlayersData({
       partnerId,
       currency,
-      // paginationModel,
-      // sortModel,
-      // filterModel,
+      paginationModel,
+      sortModel,
+      filterModel,
       filterDate: {
         startDate: dateRange[0],
         endDate: dateRange[1],
@@ -60,9 +60,9 @@ const Players2: FC = () => {
     () => postPlayersData({
       partnerId,
       currency,
-      // paginationModel,
-      // sortModel,
-      // filterModel,
+      paginationModel,
+      sortModel,
+      filterModel,
       filterDate: {
         startDate: dateRange[0],
         endDate: dateRange[1],
@@ -97,7 +97,7 @@ const Players2: FC = () => {
   const rowId = (row: Row) => `${row.partnerId}-${row.playerId}-${row.sessionId}`;
   const handleRowClick = (row: Record<string, number>) => {
     if (row.sessionId) {
-      navigate(`/partners/players/sessions/?id=${row.sessionId}`, { state: { ...state, Players: search } });
+      navigate(`/partners2/players2/sessions2/?id=${row.sessionId}`, { state: { ...state, Players: search } });
     }
   };
   return (

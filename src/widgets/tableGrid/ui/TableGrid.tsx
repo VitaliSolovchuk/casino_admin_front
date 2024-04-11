@@ -118,16 +118,18 @@ const TableGrid: FC<TableGridProps> = ({
           //   },
           // }}
         sx={{
+          ...(isMobile && {
+            '& .MuiDataGrid-cell, .MuiDataGrid-columnHeader': {
+              minWidth: '100px !important',
+            },
+            '& .MuiDataGrid-iconButtonContainer': {
+              width: '0 !important',
+            },
+            mx: -2,
+          }),
           '& .MuiDataGrid-row:hover': {
             cursor: 'pointer',
           },
-          '& .MuiDataGrid-cell, .MuiDataGrid-columnHeader': {
-            minWidth: '100px !important',
-          },
-          '& .MuiDataGrid-iconButtonContainer': {
-            width: '0 !important',
-          },
-          mx: isMobile ? -2 : 0,
         }}
         filterDebounceMs={2000}
         paginationModel={paginationModel}
