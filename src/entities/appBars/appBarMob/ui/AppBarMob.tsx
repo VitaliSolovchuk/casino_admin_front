@@ -10,9 +10,9 @@ import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import { NavLink } from 'react-router-dom';
 import Logo from 'shared/assets/icons/Logo';
 import avatar from 'shared/assets/images/users/avatar-6.jpg';
-import { NavLink } from 'react-router-dom';
 
 const settings = ['Profile', 'Account', 'Logout'];
 

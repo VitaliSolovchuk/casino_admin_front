@@ -47,7 +47,6 @@ const SessionEvents2: FC = () => {
       },
     }),
   );
-
   const { mutate } = useMutation<SessionEvent[]>(
     'session',
     () => postSessionsData({
@@ -73,7 +72,7 @@ const SessionEvents2: FC = () => {
     } else {
       isFirstRender.current = false;
     }
-  }, [mutate]);
+  }, [mutate, paginationModel, sortModel, filterModel, filterDate, dateRange]);
 
   const columns: GridColDef[] = useMemo(() => [
     { field: 'betId', headerName: 'Bet ID', flex: 1 },

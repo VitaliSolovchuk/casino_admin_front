@@ -138,7 +138,6 @@ const TableGrid: FC<TableGridProps> = ({
         rowCount={rowCountState}
         pagination
         autoHeight
-        autoPageSize
         getRowId={rowId}
         sortingMode="server"
         filterMode="server"

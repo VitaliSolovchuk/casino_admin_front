@@ -68,6 +68,11 @@ const Partners2: FC = () => {
       },
     },
   );
+  // useEffect(() => {
+  //   if (data?.totalGGR) {
+  //     setTotalGGR(data?.totalGGR);
+  //   }
+  // }, [data?.totalGGR, setTotalGGR]);
 
   useEffect(() => {
     if (!isFirstRender.current) {
