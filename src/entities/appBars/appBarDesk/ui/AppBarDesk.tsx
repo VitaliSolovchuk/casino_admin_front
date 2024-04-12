@@ -3,6 +3,8 @@ import styles from 'app/layout/authLayout/sidebar/Sidebar.module.scss';
 import Logo from 'shared/assets/icons/Logo';
 import { NavLink } from 'react-router-dom';
 import { Typography } from '@mui/material';
+import { names } from 'shared/lib/consts/names';
+import { paths } from 'shared/lib/consts/paths';
 
 type Props = {
   totalGGR?: number;
@@ -14,9 +16,8 @@ const AppBarDesk: FC<Props> = ({ totalGGR }) => (
     </div>
     <div className="sidebar">
       <ul>
-        <li><NavLink to="/dashboard">Dashboard</NavLink></li>
-        <li><NavLink to="/partners">Partners</NavLink></li>
-        <li><NavLink to="/partners2">Partners 2</NavLink></li>
+        <li><NavLink to={paths.dashboard}>{names.Dashboard}</NavLink></li>
+        <li><NavLink to={paths.partners}>{names.Partners}</NavLink></li>
         {/* Добавьте другие маршруты по мере необходимости */}
       </ul>
       {totalGGR && (
