@@ -11,7 +11,7 @@ import { PartnerData } from 'features/partners/types/types';
 import { useQueryClient } from 'react-query';
 import { postPartnersData } from 'features/partners/api';
 import { paths } from 'shared/lib/consts/paths';
-import { useMutationRequest } from '../../shared/lib/hooks/useMutationRequest';
+import { useMutationRequest } from 'shared/lib/hooks/useMutationRequest';
 
 interface Row {
   partnerId: number;
