@@ -24,7 +24,6 @@ interface TableGridProps {
   data?: Record<string, any>[];
   isLoading: boolean;
   error: Error;
-  refetch?: () => void;
   columns: GridColDef[];
   rowId?: GridRowIdGetter<any>;
   title: string;
@@ -35,7 +34,6 @@ const TableGrid: FC<TableGridProps> = ({
   data,
   isLoading,
   error,
-  refetch,
   columns,
   rowId,
   title,
@@ -139,6 +137,7 @@ const TableGrid: FC<TableGridProps> = ({
         pagination
         autoHeight
         getRowId={rowId}
+        pageSizeOptions={[3, 25, 50, 100]}
         sortingMode="server"
         filterMode="server"
         paginationMode="server"
