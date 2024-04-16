@@ -32,7 +32,7 @@
     "zustand": "^4.5.1"
   },
   "scripts": {
-    "start": "env-cmd -f .env.dev react-scripts start",
+    "start": "env-cmd -f .env react-scripts start",
     "build": "react-scripts build",
     "eject": "react-scripts eject",
     "pm2:dev": "pm2 start ecosystem.config.js --env development",

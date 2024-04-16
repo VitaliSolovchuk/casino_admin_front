@@ -31,6 +31,7 @@ const renderProtectedRoutes = (routes: AppRoute[]) => routes.map((route) => (
 ));
 
 const App: FC = () => {
+  console.log(process.env);
   let theme = createTheme();
   theme = responsiveFontSizes(theme);
   return (
