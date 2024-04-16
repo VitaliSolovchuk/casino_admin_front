@@ -1,10 +1,10 @@
-const dotenv = require('dotenv');
+// const dotenv = require('dotenv');
 
 // Определяем, в каком режиме запущено приложение
-const isProduction = process.env.NODE_ENV === 'production';
+// const isProduction = process.env.NODE_ENV === 'production';
 
 // Загружаем переменные окружения из соответствующего файла
-dotenv.config({ path: isProduction ? '.env.prod' : '.env.dev' });
+// dotenv.config({ path: isProduction ? '.env.prod' : '.env.dev' });
 
 module.exports = {
   apps: [
@@ -20,12 +20,14 @@ module.exports = {
       env: {
         NODE_ENV: 'development',
         PORT: 4000, // Задайте нужный вам порт
-        REACT_APP_BASE_URL: process.env.REACT_APP_BASE_URL,
+        // REACT_APP_BASE_URL: process.env.REACT_APP_BASE_URL,
+        REACT_APP_BASE_URL: 'https://dev.jetgames.io',
       },
       env_production: {
         NODE_ENV: 'production',
         PORT: 4000, // Задайте нужный вам порт
-        REACT_APP_BASE_URL: process.env.REACT_APP_BASE_URL,
+        // REACT_APP_BASE_URL: process.env.REACT_APP_BASE_URL,
+        REACT_APP_BASE_URL: 'https://prod.jetgames.io',
       },
     },
   ],
