@@ -16,7 +16,6 @@ interface ITableGrid {
   setSortModel: (model: GridSortModel, details: GridCallbackDetails) => void;
   setPaginationModel: (model: GridPaginationModel) => void
 }
-
 const useTableGrid = storeShallowHOC(
   create(devtools(persist(immer<ITableGrid>((set) => ({
     filterModel: {

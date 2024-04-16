@@ -24,7 +24,6 @@ interface TableGridProps {
   data?: Record<string, any>[];
   isLoading: boolean;
   error: Error;
-  refetch?: () => void;
   columns: GridColDef[];
   rowId?: GridRowIdGetter<any>;
   title: string;
@@ -35,7 +34,6 @@ const TableGrid: FC<TableGridProps> = ({
   data,
   isLoading,
   error,
-  refetch,
   columns,
   rowId,
   title,
@@ -118,16 +116,18 @@ const TableGrid: FC<TableGridProps> = ({
           //   },
           // }}
         sx={{
+          ...(isMobile && {
+            '& .MuiDataGrid-cell, .MuiDataGrid-columnHeader': {
+              minWidth: '100px !important',
+            },
+            '& .MuiDataGrid-iconButtonContainer': {
+              width: '0 !important',
+            },
+            mx: -2,
+          }),
           '& .MuiDataGrid-row:hover': {
             cursor: 'pointer',
           },
-          '& .MuiDataGrid-cell, .MuiDataGrid-columnHeader': {
-            minWidth: '100px !important',
-          },
-          '& .MuiDataGrid-iconButtonContainer': {
-            width: '0 !important',
-          },
-          mx: isMobile ? -2 : 0,
         }}
         filterDebounceMs={2000}
         paginationModel={paginationModel}
@@ -136,8 +136,8 @@ const TableGrid: FC<TableGridProps> = ({
         rowCount={rowCountState}
         pagination
         autoHeight
-        autoPageSize
         getRowId={rowId}
+        pageSizeOptions={[3, 25, 50, 100]} // убрать после тестов
         sortingMode="server"
         filterMode="server"
         paginationMode="server"

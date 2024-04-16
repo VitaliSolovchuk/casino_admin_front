@@ -1,7 +1,11 @@
 const dotenv = require('dotenv');
 
-// Load environment variables from .env.dev
-dotenv.config({ path: '.env.dev' });
+// Определяем, в каком режиме запущено приложение
+const isProduction = process.env.NODE_ENV === 'production';
+
+// Загружаем переменные окружения из соответствующего файла
+dotenv.config({ path: isProduction ? '.env.prod' : '.env.dev' });
+
 module.exports = {
   apps: [
     {

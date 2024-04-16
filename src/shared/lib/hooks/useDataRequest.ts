@@ -9,7 +9,6 @@ export const useDataRequest = <T>(
     data,
     isLoading,
     error,
-    refetch,
   } = useQuery(
     queryKey,
     queryFn,
@@ -22,6 +21,5 @@ export const useDataRequest = <T>(
     data,
     isLoading,
     error,
-    refetch,
   };
 };

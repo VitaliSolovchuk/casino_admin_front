@@ -10,9 +10,11 @@ import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import { NavLink } from 'react-router-dom';
 import Logo from 'shared/assets/icons/Logo';
 import avatar from 'shared/assets/images/users/avatar-6.jpg';
-import { NavLink } from 'react-router-dom';
+import { names } from 'shared/lib/consts/names';
+import { paths } from 'shared/lib/consts/paths';
 
 const settings = ['Profile', 'Account', 'Logout'];
 
@@ -85,17 +87,12 @@ function ResponsiveAppBar() {
             >
               <MenuItem onClick={handleCloseNavMenu}>
                 <Typography textAlign="center" color="#79829c">
-                  <NavLink to="/dashboard" style={{ color: '#79829c' }}>Dashboard</NavLink>
+                  <NavLink to={paths.dashboard} style={{ color: '#79829c' }}>{names.Dashboard}</NavLink>
                 </Typography>
               </MenuItem>
               <MenuItem onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">
-                  <NavLink to="/partners" style={{ color: '#79829c' }}>Partners</NavLink>
-                </Typography>
-              </MenuItem>
-              <MenuItem onClick={handleCloseNavMenu}>
-                <Typography textAlign="center">
-                  <NavLink to="/partners2" style={{ color: '#79829c' }}>Partners 2</NavLink>
+                  <NavLink to={paths.partners} style={{ color: '#79829c' }}>{names.Partners}</NavLink>
                 </Typography>
               </MenuItem>
             </Menu>
