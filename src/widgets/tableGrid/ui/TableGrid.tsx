@@ -137,7 +137,7 @@ const TableGrid: FC<TableGridProps> = ({
         pagination
         autoHeight
         getRowId={rowId}
-        pageSizeOptions={[3, 25, 50, 100]}
+        pageSizeOptions={[3, 25, 50, 100]} // убрать после тестов
         sortingMode="server"
         filterMode="server"
         paginationMode="server"
