@@ -4,4 +4,5 @@ export const paths = {
   partners: '/partners',
   players: '/partners/players',
   sessionEvents: '/partners/players/sessions',
+  login: '/login',
 };

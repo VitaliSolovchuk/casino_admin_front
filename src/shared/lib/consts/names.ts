@@ -4,4 +4,5 @@ export const names = {
   Partners: 'Partners',
   Players: 'Players',
   SessionEvents: 'Session Events',
+  Login: 'Login',
 };

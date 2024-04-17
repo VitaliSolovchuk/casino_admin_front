@@ -6,9 +6,9 @@ import { Typography } from '@mui/material';
 import { names } from 'shared/lib/consts/names';
 import { paths } from 'shared/lib/consts/paths';
 
-type Props = {
+interface Props {
   totalGGR?: number;
-};
+}
 const AppBarDesk: FC<Props> = ({ totalGGR }) => (
   <>
     <div className={styles.logo}>

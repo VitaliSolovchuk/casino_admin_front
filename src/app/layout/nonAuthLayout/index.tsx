@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { FC, ReactNode } from 'react';
 
-const Index = ({ children }: any) => (
+interface Props {
+  children: ReactNode
+}
+const nonAuthLayout: FC<Props> = ({ children }) => (
   <div>
     {children}
   </div>
 );
 
-export default Index;
+export default nonAuthLayout;
