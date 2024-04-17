@@ -6,6 +6,7 @@ import SessionEvents from 'pages/SessionEvents/SessionEvents';
 import Dashboard from 'pages/Dashboard/Dashboard';
 import { paths } from 'shared/lib/consts/paths';
 import { names } from 'shared/lib/consts/names';
+import Auth from '../../widgets/auth/ui/Auth';
 
 export type AppRoute = RouteProps & {
   path: string;
@@ -16,6 +17,11 @@ export type AppRoute = RouteProps & {
 // Определение маршрутов для неавторизованных пользователей
 export const publicRoutes: AppRoute[] = [
   // Список маршрутов для неавторизованных пользователей
+  {
+    path: paths.login,
+    name: names.Login,
+    element: <Auth />,
+  },
 ];
 
 // Определение маршрутов для авторизованных пользователей
@@ -23,6 +29,11 @@ export const authProtectedRoutes: AppRoute[] = [
   {
     path: paths.home,
     name: names.Home,
+    element: <Navigate to={paths.dashboard} replace />,
+  },
+  {
+    path: paths.login,
+    name: names.Login,
     element: <Navigate to={paths.dashboard} replace />,
   },
   {
