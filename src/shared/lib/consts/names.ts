@@ -5,4 +5,5 @@ export const names = {
   Players: 'Players',
   SessionEvents: 'Session Events',
   Login: 'Login',
+  Games: 'Games',
 };

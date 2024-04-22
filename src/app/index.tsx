@@ -36,15 +36,7 @@ const renderProtectedRoutes = (routes: AppRoute[]) => routes.map((route) => (
 ));
 
 const App: FC = () => {
-  let theme = createTheme(
-    {
-      palette: {
-        primary: {
-          main: '#2a3042',
-        },
-      },
-    },
-  );
+  let theme = createTheme();
   theme = responsiveFontSizes(theme);
   // const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
   return (

@@ -5,4 +5,5 @@ export const paths = {
   players: '/partners/players',
   sessionEvents: '/partners/players/sessions',
   login: '/login',
+  games: '/games',
 };

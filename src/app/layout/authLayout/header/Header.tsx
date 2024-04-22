@@ -13,8 +13,6 @@ import Box from '@mui/material/Box';
 import { useNavigate } from 'react-router-dom';
 import { paths } from 'shared/lib/consts/paths';
 
-const settings = ['Profile', 'Account'];
-
 const Header: FC = () => {
   const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
   const [username, setUsername] = useState('Admin');
@@ -26,11 +24,17 @@ const Header: FC = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-
   const handleLogout = () => {
     localStorage.removeItem('loggedIn');
     navigate(paths.login);
   };
+
+  const settings = [
+    { name: 'Profile', fn: handleCloseUserMenu },
+    { name: 'Settings', fn: handleCloseUserMenu },
+    { name: 'Logout', fn: handleLogout },
+  ];
+
   return (
     !isMobile ? (
       <div className="header">
@@ -69,17 +73,12 @@ const Header: FC = () => {
             >
               {settings.map((setting) => (
                 <MenuItem
-                  key={setting}
-                  onClick={handleCloseUserMenu}
+                  key={setting.name}
+                  onClick={setting.fn}
                 >
-                  <Typography textAlign="center">{setting}</Typography>
+                  <Typography textAlign="center">{setting.name}</Typography>
                 </MenuItem>
               ))}
-              <MenuItem
-                onClick={handleLogout}
-              >
-                <Typography textAlign="center">Logout</Typography>
-              </MenuItem>
             </Menu>
           </Box>
         </div>

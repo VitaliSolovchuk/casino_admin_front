@@ -12,6 +12,7 @@ import { useQueryClient } from 'react-query';
 import { postPartnersData } from 'features/partners/api';
 import { paths } from 'shared/lib/consts/paths';
 import { useMutationRequest } from 'shared/lib/hooks/useMutationRequest';
+import useGgr from 'entities/appBars/model/appBarStore';
 
 interface Row {
   partnerId: number;
@@ -29,6 +30,7 @@ const Partners: FC = () => {
     filterDate,
   } = useFilterDateRange((state) => state);
 
+  const { setGgr } = useGgr((state) => state);
   const { dateRange } = filterDate;
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -65,6 +67,10 @@ const Partners: FC = () => {
       },
     ),
   );
+
+  useEffect(() => {
+    setGgr(data?.totalGGR || 0);
+  }, [data?.totalGGR, setGgr]);
 
   useEffect(() => {
     if (!isFirstRender.current) {

@@ -6,7 +6,8 @@ import SessionEvents from 'pages/SessionEvents/SessionEvents';
 import Dashboard from 'pages/Dashboard/Dashboard';
 import { paths } from 'shared/lib/consts/paths';
 import { names } from 'shared/lib/consts/names';
-import Auth from '../../widgets/auth/ui/Auth';
+import Auth from 'widgets/auth/ui/Auth';
+import Games from 'pages/Games/Games';
 
 export type AppRoute = RouteProps & {
   path: string;
@@ -55,5 +56,10 @@ export const authProtectedRoutes: AppRoute[] = [
     path: paths.sessionEvents,
     name: names.SessionEvents,
     element: <SessionEvents />,
+  },
+  {
+    path: paths.games,
+    name: names.Games,
+    element: <Games />,
   },
 ];
