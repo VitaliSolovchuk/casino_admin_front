@@ -100,6 +100,7 @@ const TableGrid: FC<TableGridProps> = ({
   const handleRowClickWrapper = ((params: GridRowParams) => {
     if (handleRowClick) handleRowClick(params.row);
   });
+  console.log('tableGrid', data);
   return (
     <div>
       <Typography variant="h6" sx={{ mb: 2 }}>{title.toUpperCase()}</Typography>

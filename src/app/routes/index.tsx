@@ -1,13 +1,13 @@
 import React, { ReactElement } from 'react';
 import { Navigate, RouteProps } from 'react-router-dom';
-import Partners from 'pages/Partners/Partners';
-import Players from 'pages/Players/Players';
-import SessionEvents from 'pages/SessionEvents/SessionEvents';
 import Dashboard from 'pages/Dashboard/Dashboard';
 import { paths } from 'shared/lib/consts/paths';
 import { names } from 'shared/lib/consts/names';
 import Auth from 'widgets/auth/ui/Auth';
 import Games from 'pages/Games/Games';
+import Partners from 'pages/Partners/ui/Partners';
+import Players from 'pages/Players/ui/Players';
+import SessionEvents from 'pages/SessionEvents/ui/SessionEvents';
 
 export type AppRoute = RouteProps & {
   path: string;
