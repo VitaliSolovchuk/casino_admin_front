@@ -39,7 +39,7 @@ const Partners: FC = () => {
     isLoading,
     error,
   } = useDataRequest<PartnerData>(
-    'partnersnew',
+    'partners',
     () => postPartnersData({
       paginationModel,
       sortModel,
@@ -52,7 +52,7 @@ const Partners: FC = () => {
   );
 
   const { mutate } = useMutationRequest<PartnerData>(
-    'partnersnew',
+    'partners',
     () => postPartnersData(
       {
         paginationModel,
