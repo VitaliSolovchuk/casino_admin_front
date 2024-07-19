@@ -39,7 +39,7 @@ const Partners: FC = () => {
     isLoading,
     error,
   } = useDataRequest<PartnerData>(
-    'partners',
+    'partnersnew',
     () => postPartnersData({
       paginationModel,
       sortModel,
