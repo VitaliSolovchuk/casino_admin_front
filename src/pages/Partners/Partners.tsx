@@ -74,6 +74,24 @@ const Partners: FC = () => {
     }
   }, [mutate, paginationModel, sortModel, filterModel, filterDate, dateRange]);
 
+  // {
+  //   "totalAmountBet": "1.6200",
+  //   "totalAmountWin": "3.1200",
+  //   "totalUniquePlayers": 2,
+  //   "totalSessions": 2,
+  //   "totalActions": 2,
+  //   "partnerName": "coinsbet",
+  //   "currencyName": "USD",
+  //   "partnerId": 5,
+  //   "currencyId": 1,
+  //   "date": "2024-07-18T00:00:00.000Z",
+  //   "totalGGR": "-1.500",
+  //   "totalGGRUSD": "-1.5",
+  //   "RTP": "192.59",
+  //   "totalAmountBetUSD": "1.62",
+  //   "totalAmountWinUSD": "3.12"
+  // }
+
   const columns: GridColDef[] = useMemo(() => [
     {
       field: 'partnerName',
@@ -86,7 +104,7 @@ const Partners: FC = () => {
       flex: 1,
     },
     {
-      field: 'totalPlayers',
+      field: 'totalUniquePlayers',
       headerName: 'Players',
       flex: 1,
     },
@@ -101,22 +119,22 @@ const Partners: FC = () => {
       flex: 1,
     },
     {
-      field: 'totalAmountBet',
+      field: 'totalAmountBetUSD',
       headerName: 'Total Bet',
       flex: 1,
     },
     {
-      field: 'totalAmountWin',
+      field: 'totalAmountWinUSD',
       headerName: 'Total Win',
       flex: 1,
     },
+    // {
+    //   field: 'totalProfit',
+    //   headerName: 'Total Profit',
+    //   flex: 1,
+    // },
     {
-      field: 'totalProfit',
-      headerName: 'Total Profit',
-      flex: 1,
-    },
-    {
-      field: 'totalProfitUSD',
+      field: 'totalGGRUSD',
       headerName: 'Total Profit USD',
       flex: 1,
     },
