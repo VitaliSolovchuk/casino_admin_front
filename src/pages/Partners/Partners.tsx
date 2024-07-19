@@ -52,7 +52,7 @@ const Partners: FC = () => {
   );
 
   const { mutate } = useMutationRequest<PartnerData>(
-    'partners',
+    'partnersnew',
     () => postPartnersData(
       {
         paginationModel,
