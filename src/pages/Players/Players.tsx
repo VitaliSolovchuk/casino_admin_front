@@ -80,16 +80,35 @@ const Players: FC = () => {
     }
   }, [mutate, paginationModel, sortModel, filterModel, filterDate, dateRange]);
 
+  // {
+  //   "totalAmountBet": "0.5600",
+  //   "totalAmountWin": "0.2840",
+  //   "totalActions": 5,
+  //   "partnerName": "coinsgame",
+  //   "currencyName": "USD",
+  //   "partnerId": 5,
+  //   "currencyId": 1,
+  //   "playerId": 1397569,
+  //   "sessionId": null,
+  //   "firstBetTime": "2024-07-21T15:10:18.046Z",
+  //   "lastBetTime": "2024-07-21T15:11:10.026Z",
+  //   "totalGGR": "0.2760",
+  //   "totalGGRUSD": "0.28",
+  //   "RTP": "50.71",
+  //   "totalAmountBetUSD": "0.56",
+  //   "totalAmountWinUSD": "0.28"
+  // }
+
   const columns: GridColDef[] = useMemo(() => [
     { field: 'playerId', headerName: 'Player ID', flex: 1 },
     { field: 'sessionId', headerName: 'Session ID', flex: 1 },
     { field: 'currencyName', headerName: 'Currency', flex: 1 },
     { field: 'gameName', headerName: 'Game Name', flex: 1 },
-    { field: 'actions', headerName: 'Actions', flex: 1 },
-    { field: 'betAmount', headerName: 'Total Bet', flex: 1 },
-    { field: 'winAmount', headerName: 'Total Win', flex: 1 },
-    { field: 'totalProfit', headerName: 'Total Profit', flex: 1 },
-    { field: 'totalProfitUSD', headerName: 'Total Profit USD', flex: 1 },
+    { field: 'totalActions', headerName: 'Actions', flex: 1 },
+    { field: 'totalAmountBetUSD', headerName: 'Total Bet', flex: 1 },
+    { field: 'totalAmountWinUSD', headerName: 'Total Win', flex: 1 },
+    // { field: 'totalProfit', headerName: 'Total Profit', flex: 1 },
+    { field: 'totalGGRUSD', headerName: 'Total Profit USD', flex: 1 },
   ], []);
   const rowId = (row: Row) => `${row.partnerId}-${row.playerId}-${row.sessionId}`;
   const handleRowClick = (row: Record<string, number>) => {
