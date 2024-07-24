@@ -15,9 +15,11 @@ import compareDates from '../lib/compareDates';
 
 dayjs.extend(utc);
 const DateRangeFilter: FC = () => {
-  const today = dayjs();
+  const today = dayjs().startOf('day');
+  const tomorrow = today.add(1, 'day');
+
   const { filterDate, setFilterDate } = useFilterDateRange((state) => state);
-  const [dateRangeLocal, setDateRangeLocal] = useState<DateRange<Dayjs>>([null, null]);
+  const [dateRangeLocal, setDateRangeLocal] = useState<DateRange<Dayjs>>([today, tomorrow]);
   const { dateRange } = filterDate;
   const [shouldShowConfirmButton, setShouldShowConfirmButton] = useState(false);
 

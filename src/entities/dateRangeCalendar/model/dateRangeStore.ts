@@ -11,8 +11,8 @@ interface IFilterDateRange {
   };
   setFilterDate: (model: DateRange<Dayjs>) => void;
 }
-const today = dayjs();
-const tomorrow = dayjs().add(1, 'day');
+const today = dayjs().startOf('day');
+const tomorrow = today.add(1, 'day');
 
 const useFilterDateRange = storeShallowHOC(
   create(
