@@ -38,7 +38,7 @@ const DateRangeFilter: FC = () => {
   };
 
   const handleOneDayClick = () => {
-    setDateRangeLocal([today, today]);
+    setDateRangeLocal([today, tomorrow]);
   };
 
   const handleOkClick = () => {
