@@ -19,7 +19,7 @@ const DateRangeFilter: FC = () => {
   const tomorrow = today.add(1, 'day');
 
   const { filterDate, setFilterDate } = useFilterDateRange((state) => state);
-  const [dateRangeLocal, setDateRangeLocal] = useState<DateRange<Dayjs>>([today, tomorrow]);
+  const [dateRangeLocal, setDateRangeLocal] = useState<DateRange<Dayjs>>([today, today]);
   const { dateRange } = filterDate;
   const [shouldShowConfirmButton, setShouldShowConfirmButton] = useState(false);
 
