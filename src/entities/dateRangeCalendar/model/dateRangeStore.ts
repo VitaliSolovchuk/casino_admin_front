@@ -1,9 +1,9 @@
-import { create } from "zustand";
-import { devtools, persist } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
-import dayjs, { Dayjs } from "dayjs";
-import { storeShallowHOC } from "shared/lib/utils/storeWithShallow";
-import { DateRange } from "@mui/x-date-pickers-pro";
+import { create } from 'zustand';
+import { devtools, persist } from 'zustand/middleware';
+import { immer } from 'zustand/middleware/immer';
+import dayjs, { Dayjs } from 'dayjs';
+import { storeShallowHOC } from 'shared/lib/utils/storeWithShallow';
+import { DateRange } from '@mui/x-date-pickers-pro';
 
 interface IFilterDateRange {
   filterDate: {
@@ -12,7 +12,7 @@ interface IFilterDateRange {
   setFilterDate: (model: DateRange<Dayjs>) => void;
 }
 const today = dayjs();
-const tomorrow = dayjs().add(1, "day");
+const tomorrow = dayjs().add(1, 'day');
 
 const useFilterDateRange = storeShallowHOC(
   create(
@@ -23,14 +23,13 @@ const useFilterDateRange = storeShallowHOC(
             dateRange: [today, tomorrow],
           },
 
-          setFilterDate: (filterDate) =>
-            set((state) => {
-              state.filterDate.dateRange = filterDate;
-            }),
+          setFilterDate: (filterDate) => set((state) => {
+            state.filterDate.dateRange = filterDate;
+          }),
         })),
-        { name: "date-range" }
-      )
-    )
-  )
+        { name: 'date-range' },
+      ),
+    ),
+  ),
 );
 export default useFilterDateRange;
