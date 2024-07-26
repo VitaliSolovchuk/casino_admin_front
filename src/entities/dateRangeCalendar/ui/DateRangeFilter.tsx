@@ -56,7 +56,7 @@ const DateRangeFilter: FC = () => {
   };
 
   useEffect(() => {
-    setDateRangeLocal([dayjs(dateRange[0]), dayjs(dateRange[1])]);
+    setDateRangeLocal([dayjs(dateRange[0]).utc().startOf('day'), dayjs(dateRange[1]).utc().endOf('day')]);
   }, [dateRange]);
 
   useEffect(() => {
