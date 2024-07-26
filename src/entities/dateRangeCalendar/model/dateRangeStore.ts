@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 import dayjs, { Dayjs } from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 import { storeShallowHOC } from 'shared/lib/utils/storeWithShallow';
 import { DateRange } from '@mui/x-date-pickers-pro';
 
@@ -11,6 +12,8 @@ interface IFilterDateRange {
   };
   setFilterDate: (model: DateRange<Dayjs>) => void;
 }
+dayjs.extend(utc);
+
 // Начало текущего дня
 const startOfToday = dayjs().utc().startOf('day');
 // Конец текущего дня
