@@ -11,8 +11,10 @@ interface IFilterDateRange {
   };
   setFilterDate: (model: DateRange<Dayjs>) => void;
 }
-const today = dayjs().startOf('day');
-const tomorrow = today.add(1, 'day');
+// Начало текущего дня
+const startOfToday = dayjs().startOf('day');
+// Конец текущего дня
+const endOfToday = dayjs().endOf('day');
 
 const useFilterDateRange = storeShallowHOC(
   create(
@@ -20,7 +22,7 @@ const useFilterDateRange = storeShallowHOC(
       persist(
         immer<IFilterDateRange>((set) => ({
           filterDate: {
-            dateRange: [today, tomorrow],
+            dateRange: [startOfToday, endOfToday],
           },
 
           setFilterDate: (filterDate) => set((state) => {

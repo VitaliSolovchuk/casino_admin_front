@@ -16,10 +16,14 @@ import compareDates from '../lib/compareDates';
 dayjs.extend(utc);
 const DateRangeFilter: FC = () => {
   const today = dayjs().startOf('day');
-  const tomorrow = today.add(1, 'day');
+  // const tomorrow = today.add(1, 'day');
+  // Начало текущего дня
+  const startOfToday = dayjs().startOf('day');
+  // Конец текущего дня
+  const endOfToday = dayjs().endOf('day');
 
   const { filterDate, setFilterDate } = useFilterDateRange((state) => state);
-  const [dateRangeLocal, setDateRangeLocal] = useState<DateRange<Dayjs>>([today, today]);
+  const [dateRangeLocal, setDateRangeLocal] = useState<DateRange<Dayjs>>([startOfToday, endOfToday]);
   const { dateRange } = filterDate;
   const [shouldShowConfirmButton, setShouldShowConfirmButton] = useState(false);
 
@@ -30,15 +34,15 @@ const DateRangeFilter: FC = () => {
   const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
 
   const handleMonthClick = () => {
-    setDateRangeLocal([month, today]);
+    setDateRangeLocal([month, endOfToday]);
   };
 
   const handleWeekClick = () => {
-    setDateRangeLocal([week, today]);
+    setDateRangeLocal([week, endOfToday]);
   };
 
   const handleOneDayClick = () => {
-    setDateRangeLocal([today, tomorrow]);
+    setDateRangeLocal([startOfToday, endOfToday]);
   };
 
   const handleOkClick = () => {
