@@ -12,9 +12,9 @@ interface IFilterDateRange {
   setFilterDate: (model: DateRange<Dayjs>) => void;
 }
 // Начало текущего дня
-const startOfToday = dayjs().startOf('day');
+const startOfToday = dayjs().utc().startOf('day');
 // Конец текущего дня
-const endOfToday = dayjs().endOf('day');
+const endOfToday = dayjs().utc().endOf('day');
 
 const useFilterDateRange = storeShallowHOC(
   create(

@@ -18,9 +18,9 @@ const DateRangeFilter: FC = () => {
   const today = dayjs().startOf('day');
   // const tomorrow = today.add(1, 'day');
   // Начало текущего дня
-  const startOfToday = dayjs().startOf('day');
+  const startOfToday = dayjs().utc().startOf('day');
   // Конец текущего дня
-  const endOfToday = dayjs().endOf('day');
+  const endOfToday = dayjs().utc().endOf('day');
 
   const { filterDate, setFilterDate } = useFilterDateRange((state) => state);
   const [dateRangeLocal, setDateRangeLocal] = useState<DateRange<Dayjs>>([startOfToday, endOfToday]);
