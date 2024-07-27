@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { PartnerData } from 'features/partners/types/types';
 import { useDataRequest } from 'shared/lib/hooks/useDataRequest';
-import { postPartnersData } from 'features/partners/api';
+import { postPartnersStatisticData } from 'features/partners/api';
 import useTableGrid from 'widgets/tableGrid/model/tableGridStore';
 import useFilterDateRange from 'entities/dateRangeCalendar/model/dateRangeStore';
 import { useMediaQuery } from 'react-responsive';
@@ -15,7 +15,7 @@ const Sidebar: FC = () => {
   const { filterDate } = useFilterDateRange((state) => state);
   const { dateRange } = filterDate;
 
-  const { data } = useDataRequest<PartnerData>('partners', () => postPartnersData({
+  const { data } = useDataRequest<PartnerData>('partners', () => postPartnersStatisticData({
     paginationModel,
     sortModel,
     filterModel,
