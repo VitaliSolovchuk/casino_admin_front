@@ -148,11 +148,6 @@ const Partners: FC = () => {
       headerName: 'Win Usd',
       flex: 1,
     },
-    // {
-    //   field: 'totalProfit',
-    //   headerName: 'Total Profit',
-    //   flex: 1,
-    // },
     {
       field: 'ggr',
       headerName: 'Profit USD',
@@ -174,7 +169,7 @@ const Partners: FC = () => {
   return (
     <div>
       <TableGrid
-        data={data?.partnerCurrencyStatistic}
+        data={data?.currencyStatistics}
         rowId={rowId}
         isLoading={isLoading}
         error={error as Error}

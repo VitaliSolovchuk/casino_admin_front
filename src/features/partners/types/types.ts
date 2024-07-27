@@ -28,8 +28,8 @@ interface PartnerCurrencyStatistic {
 }
 
 export interface PartnerData {
-  totalGGR: number;
-  partnerCurrencyStatistic: PartnerCurrencyStatistic[];
+  totalGgrUsd: number;
+  currencyStatistics: PartnerCurrencyStatistic[];
 }
 
 export interface GamesWithUSDRTP {

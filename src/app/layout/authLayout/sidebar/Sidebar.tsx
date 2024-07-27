@@ -34,7 +34,7 @@ const Sidebar: FC = () => {
   return (
     <>
       {isMobile && showAppBar && <AppBarMob />}
-      {!isMobile && <AppBarDesk totalGGR={data?.totalGGR} />}
+      {!isMobile && <AppBarDesk totalGGR={data?.totalGgrUsd} />}
     </>
   );
 };
