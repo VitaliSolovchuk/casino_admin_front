@@ -9,7 +9,7 @@ import useFilterDateRange from 'entities/dateRangeCalendar/model/dateRangeStore'
 import { useDataRequest } from 'shared/lib/hooks/useDataRequest';
 import { PartnerData } from 'features/partners/types/types';
 import { useQueryClient } from 'react-query';
-import { postPartnersData } from 'features/partners/api';
+import { postStatisticData } from 'features/partners/api';
 import { paths } from 'shared/lib/consts/paths';
 import { useMutationRequest } from 'shared/lib/hooks/useMutationRequest';
 
@@ -40,7 +40,7 @@ const Partners: FC = () => {
     error,
   } = useDataRequest<PartnerData>(
     'partners',
-    () => postPartnersData({
+    () => postStatisticData({
       paginationModel,
       sortModel,
       filterModel,
@@ -53,7 +53,7 @@ const Partners: FC = () => {
 
   const { mutate } = useMutationRequest<PartnerData>(
     'partners',
-    () => postPartnersData(
+    () => postStatisticData(
       {
         paginationModel,
         sortModel,
@@ -92,6 +92,26 @@ const Partners: FC = () => {
   //   "totalAmountWinUSD": "3.12"
   // }
 
+  // V2
+  // https://prod.jetgames.io/admin-panel-statistics/get-grouped-by-currency
+  // {
+  //   "partnerId": 5,
+  //   "partnerName": "coinsgame",
+  //   "currencyId": 3,
+  //   "currencyName": "RUB",
+  //   "totalPlayers": 15,
+  //   "totalSessions": 25,
+  //   "totalActions": 921,
+  //   "totalAmountBet": "36390.",
+  //   "totalAmountWin": "31609.",
+  //   "totalAmountBetUsd": "422.86",
+  //   "totalAmountWinUsd": "367.30",
+  //   "ggr": "4780.8",
+  //   "ggrUsd": "55.550",
+  //   "rtp": "86.86",
+  //   "day": "2024-07-27T00:00:00.000Z"
+  // },
+
   const columns: GridColDef[] = useMemo(() => [
     {
       field: 'partnerName',
@@ -104,7 +124,7 @@ const Partners: FC = () => {
       flex: 1,
     },
     {
-      field: 'totalUniquePlayers',
+      field: 'totalPlayers',
       headerName: 'Players',
       flex: 1,
     },
@@ -119,13 +139,13 @@ const Partners: FC = () => {
       flex: 1,
     },
     {
-      field: 'totalAmountBetUSD',
-      headerName: 'Total Bet',
+      field: 'totalAmountBetUsd',
+      headerName: 'Bet Usd',
       flex: 1,
     },
     {
-      field: 'totalAmountWinUSD',
-      headerName: 'Total Win',
+      field: 'totalAmountWinUsd',
+      headerName: 'Win Usd',
       flex: 1,
     },
     // {
@@ -134,12 +154,12 @@ const Partners: FC = () => {
     //   flex: 1,
     // },
     {
-      field: 'totalGGRUSD',
-      headerName: 'Total Profit USD',
+      field: 'ggr',
+      headerName: 'Profit USD',
       flex: 1,
     },
     {
-      field: 'RTP',
+      field: 'rtp',
       headerName: 'RTP %',
       flex: 1,
     },

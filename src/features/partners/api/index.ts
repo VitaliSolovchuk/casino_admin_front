@@ -21,3 +21,16 @@ export const postPartnersData = async (props: PartnersDataProps) => {
     throw error;
   }
 };
+
+export const postStatisticData = async (props: PartnersDataProps) => {
+  try {
+    const response = await axios.post<PartnerData>(
+      `${baseURL}/admin-panel-statistics/get-grouped-by-currency`,
+      props,
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
