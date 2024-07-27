@@ -6,7 +6,7 @@ import TableGrid from 'widgets/tableGrid/ui/TableGrid';
 import useTableGrid from 'widgets/tableGrid/model/tableGridStore';
 import useFilterDateRange from 'entities/dateRangeCalendar/model/dateRangeStore';
 import { useDataRequest } from 'shared/lib/hooks/useDataRequest';
-import { PartnerData } from 'features/partners/types/types';
+import { GamesWithUSDRTP } from 'features/partners/types/types';
 import { postGamesData } from 'features/partners/api';
 import { useMutationRequest } from 'shared/lib/hooks/useMutationRequest';
 
@@ -33,8 +33,8 @@ const Games: FC = () => {
     data,
     isLoading,
     error,
-  } = useDataRequest<PartnerData>(
-    'games',
+  } = useDataRequest<GamesWithUSDRTP[]>(
+    'partners',
     () => postGamesData({
       paginationModel,
       sortModel,
@@ -46,8 +46,8 @@ const Games: FC = () => {
     }),
   );
 
-  const { mutate } = useMutationRequest<PartnerData>(
-    'games',
+  const { mutate } = useMutationRequest<GamesWithUSDRTP[]>(
+    'partners',
     () => postGamesData(
       {
         paginationModel,
@@ -127,7 +127,7 @@ const Games: FC = () => {
   return (
     <div>
       <TableGrid
-        data={data?.partnerCurrencyStatistic}
+        data={data}
         rowId={rowId}
         isLoading={isLoading}
         error={error as Error}

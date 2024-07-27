@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { baseURL } from 'shared/lib/consts/url';
-import { PartnerData, PartnersDataProps } from '../types/types';
+import { GamesWithUSDRTP, PartnerData, PartnersDataProps } from '../types/types';
 
 export const getPartnersData = async () => {
   const response = await axios.get<PartnerData>(
@@ -24,8 +24,8 @@ export const postPartnersData = async (props: PartnersDataProps) => {
 
 export const postGamesData = async (props: PartnersDataProps) => {
   try {
-    const response = await axios.post<PartnerData>(
-      `${baseURL}/admin-panel/partners`,
+    const response = await axios.post<GamesWithUSDRTP[]>(
+      `${baseURL}/admin-panel/games`,
       props,
     );
     return response.data;
