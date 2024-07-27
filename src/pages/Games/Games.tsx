@@ -34,7 +34,7 @@ const Games: FC = () => {
     isLoading,
     error,
   } = useDataRequest<GamesWithUSDRTP[]>(
-    'partners',
+    'games',
     () => postGamesData({
       paginationModel,
       sortModel,
@@ -47,7 +47,7 @@ const Games: FC = () => {
   );
 
   const { mutate } = useMutationRequest<GamesWithUSDRTP[]>(
-    'partners',
+    'games',
     () => postGamesData(
       {
         paginationModel,
