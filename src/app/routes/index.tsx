@@ -6,6 +6,7 @@ import SessionEvents from 'pages/SessionEvents/SessionEvents';
 import Dashboard from 'pages/Dashboard/Dashboard';
 import { paths } from 'shared/lib/consts/paths';
 import { names } from 'shared/lib/consts/names';
+import { Games } from '@mui/icons-material';
 import Auth from '../../widgets/auth/ui/Auth';
 
 export type AppRoute = RouteProps & {
@@ -45,6 +46,11 @@ export const authProtectedRoutes: AppRoute[] = [
     path: paths.partners,
     name: names.Partners,
     element: <Partners />,
+  },
+  {
+    path: paths.games,
+    name: names.Games,
+    element: <Games />,
   },
   {
     path: paths.players,
