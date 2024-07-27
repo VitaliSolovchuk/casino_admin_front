@@ -15,7 +15,7 @@ import compareDates from '../lib/compareDates';
 
 dayjs.extend(utc);
 const DateRangeFilter: FC = () => {
-  const today = dayjs().startOf('day');
+  const today = dayjs().utc().startOf('day');
   // const tomorrow = today.add(1, 'day');
   // Начало текущего дня
   const startOfToday = dayjs().utc().startOf('day');
