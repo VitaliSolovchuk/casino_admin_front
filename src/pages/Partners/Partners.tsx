@@ -9,7 +9,7 @@ import useFilterDateRange from 'entities/dateRangeCalendar/model/dateRangeStore'
 import { useDataRequest } from 'shared/lib/hooks/useDataRequest';
 import { PartnerData } from 'features/partners/types/types';
 import { useQueryClient } from 'react-query';
-import { postStatisticData } from 'features/partners/api';
+import { postPartnersStatisticData } from 'features/partners/api';
 import { paths } from 'shared/lib/consts/paths';
 import { useMutationRequest } from 'shared/lib/hooks/useMutationRequest';
 
@@ -40,7 +40,7 @@ const Partners: FC = () => {
     error,
   } = useDataRequest<PartnerData>(
     'partners',
-    () => postStatisticData({
+    () => postPartnersStatisticData({
       paginationModel,
       sortModel,
       filterModel,
@@ -53,7 +53,7 @@ const Partners: FC = () => {
 
   const { mutate } = useMutationRequest<PartnerData>(
     'partners',
-    () => postStatisticData(
+    () => postPartnersStatisticData(
       {
         paginationModel,
         sortModel,

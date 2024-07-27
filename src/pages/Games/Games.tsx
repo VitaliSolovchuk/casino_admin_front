@@ -2,15 +2,12 @@ import React, {
   FC, useEffect, useMemo, useRef,
 } from 'react';
 import { GridColDef } from '@mui/x-data-grid';
-import { useNavigate } from 'react-router-dom';
 import TableGrid from 'widgets/tableGrid/ui/TableGrid';
 import useTableGrid from 'widgets/tableGrid/model/tableGridStore';
 import useFilterDateRange from 'entities/dateRangeCalendar/model/dateRangeStore';
 import { useDataRequest } from 'shared/lib/hooks/useDataRequest';
 import { PartnerData } from 'features/partners/types/types';
-import { useQueryClient } from 'react-query';
-import { postPartnersData } from 'features/partners/api';
-// import { paths } from 'shared/lib/consts/paths';
+import { postGamesData } from 'features/partners/api';
 import { useMutationRequest } from 'shared/lib/hooks/useMutationRequest';
 
 interface Row {
@@ -30,8 +27,6 @@ const Games: FC = () => {
   } = useFilterDateRange((state) => state);
 
   const { dateRange } = filterDate;
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const isFirstRender = useRef(true);
 
   const {
@@ -40,7 +35,7 @@ const Games: FC = () => {
     error,
   } = useDataRequest<PartnerData>(
     'games',
-    () => postPartnersData({
+    () => postGamesData({
       paginationModel,
       sortModel,
       filterModel,
@@ -53,7 +48,7 @@ const Games: FC = () => {
 
   const { mutate } = useMutationRequest<PartnerData>(
     'games',
-    () => postPartnersData(
+    () => postGamesData(
       {
         paginationModel,
         sortModel,
@@ -74,33 +69,22 @@ const Games: FC = () => {
     }
   }, [mutate, paginationModel, sortModel, filterModel, filterDate, dateRange]);
 
-  // {
-  //   "totalAmountBet": "1.6200",
-  //   "totalAmountWin": "3.1200",
-  //   "totalUniquePlayers": 2,
-  //   "totalSessions": 2,
-  //   "totalActions": 2,
-  //   "partnerName": "coinsbet",
-  //   "currencyName": "USD",
-  //   "partnerId": 5,
-  //   "currencyId": 1,
-  //   "date": "2024-07-18T00:00:00.000Z",
-  //   "totalGGR": "-1.500",
-  //   "totalGGRUSD": "-1.5",
-  //   "RTP": "192.59",
-  //   "totalAmountBetUSD": "1.62",
-  //   "totalAmountWinUSD": "3.12"
-  // }
+  // totalUniquePlayers: number;
+  // totalSessions: number;
+  // totalActions: number;
+  // currencyName: string;
+  // gameName: string;
+  // currencyId: number;
+
+  // RTP: string;
+  // totalGGRUSD: Decimal;
+  // totalAmountBetUSD: Decimal;
+  // totalAmountWinUSD: Decimal;
 
   const columns: GridColDef[] = useMemo(() => [
     {
-      field: 'partnerName',
-      headerName: 'Partner',
-      flex: 1,
-    },
-    {
-      field: 'currencyName',
-      headerName: 'Currency',
+      field: 'gameName',
+      headerName: 'Game',
       flex: 1,
     },
     {
@@ -128,11 +112,6 @@ const Games: FC = () => {
       headerName: 'Total Win',
       flex: 1,
     },
-    // {
-    //   field: 'totalProfit',
-    //   headerName: 'Total Profit',
-    //   flex: 1,
-    // },
     {
       field: 'totalGGRUSD',
       headerName: 'Total Profit USD',
@@ -144,12 +123,6 @@ const Games: FC = () => {
       flex: 1,
     },
   ], []);
-  // const handleRowClick = (row: Record<string, number>) => {
-  //   if (row.partnerId) {
-  //     queryClient.invalidateQueries({ queryKey: 'players' })
-  //       .then(() => navigate(`${paths.players}/?id=${row.partnerId}&currency=${row.currencyName}`));
-  //   }
-  // };
   const rowId = (row: Row) => `${row.partnerId}-${row.currencyName}`;
   return (
     <div>
@@ -159,7 +132,6 @@ const Games: FC = () => {
         isLoading={isLoading}
         error={error as Error}
         columns={columns}
-        // handleRowClick={handleRowClick}
         title="Games Table"
       />
     </div>
