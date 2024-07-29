@@ -69,18 +69,6 @@ const Games: FC = () => {
     }
   }, [mutate, paginationModel, sortModel, filterModel, filterDate, dateRange]);
 
-  // totalUniquePlayers: number;
-  // totalSessions: number;
-  // totalActions: number;
-  // currencyName: string;
-  // gameName: string;
-  // currencyId: number;
-
-  // RTP: string;
-  // totalGGRUSD: Decimal;
-  // totalAmountBetUSD: Decimal;
-  // totalAmountWinUSD: Decimal;
-
   const columns: GridColDef[] = useMemo(() => [
     {
       field: 'gameName',

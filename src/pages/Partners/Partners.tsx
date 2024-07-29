@@ -149,7 +149,7 @@ const Partners: FC = () => {
       flex: 1,
     },
     {
-      field: 'ggr',
+      field: 'ggrUsd',
       headerName: 'Profit USD',
       flex: 1,
     },
