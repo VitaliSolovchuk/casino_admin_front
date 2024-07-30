@@ -13,6 +13,7 @@ import { useMutationRequest } from 'shared/lib/hooks/useMutationRequest';
 interface Row {
   partnerId: number;
   currencyName: string;
+  gameName: string;
 }
 
 const Games: FC = () => {
@@ -111,7 +112,7 @@ const Games: FC = () => {
       flex: 1,
     },
   ], []);
-  const rowId = (row: Row) => `${row.partnerId}-${row.currencyName}`;
+  const rowId = (row: Row) => `${row.gameName}`;
   return (
     <div>
       <TableGrid
