@@ -81,11 +81,18 @@ const Games: FC = () => {
       const valueB = b[field as keyof GamesWithUSDRTP];
 
       // Преобразование значений в числа, если они являются строками, содержащими числа
-      const numA = typeof valueA === 'string' && !Number.isNaN(Number(valueA)) ? Number(valueA) : valueA;
-      const numB = typeof valueB === 'string' && !Number.isNaN(Number(valueB)) ? Number(valueB) : valueB;
+      const numA = typeof valueA === 'string' ? parseFloat(valueA) : valueA;
+      const numB = typeof valueB === 'string' ? parseFloat(valueB) : valueB;
 
-      if (numA < numB) return sort === 'asc' ? -1 : 1;
-      if (numA > numB) return sort === 'asc' ? 1 : -1;
+      // Сравнение чисел и строк
+      if (typeof numA === 'number' && typeof numB === 'number') {
+        if (numA < numB) return sort === 'asc' ? -1 : 1;
+        if (numA > numB) return sort === 'asc' ? 1 : -1;
+      } else {
+        // Строки сравниваются как обычно
+        if (valueA < valueB) return sort === 'asc' ? -1 : 1;
+        if (valueA > valueB) return sort === 'asc' ? 1 : -1;
+      }
       return 0;
     });
   }, [data, sortModel]);
