@@ -3,13 +3,13 @@ import React, {
   useState,
 } from 'react';
 import { GridColDef, GridSortModel } from '@mui/x-data-grid';
-import TableGrid from 'widgets/tableGrid/ui/TableGrid';
 import useTableGrid from 'widgets/tableGrid/model/tableGridStore';
 import useFilterDateRange from 'entities/dateRangeCalendar/model/dateRangeStore';
 import { useDataRequest } from 'shared/lib/hooks/useDataRequest';
 import { GamesWithUSDRTP } from 'features/partners/types/types';
 import { postGamesData } from 'features/partners/api';
 import { useMutationRequest } from 'shared/lib/hooks/useMutationRequest';
+import TableGridLocalSort from 'widgets/tableGrid/ui/TableGridLocalSort';
 
 interface Row {
   partnerId: number;
@@ -143,7 +143,7 @@ const Games: FC = () => {
   const rowId = (row: Row) => `${row.gameName}`;
   return (
     <div>
-      <TableGrid
+      <TableGridLocalSort
         data={sortedData}
         rowId={rowId}
         isLoading={isLoading}
@@ -152,7 +152,6 @@ const Games: FC = () => {
         title="Games Table"
         sortModel={sortModel}
         onSortModelChange={handleSortChange}
-
       />
     </div>
   );

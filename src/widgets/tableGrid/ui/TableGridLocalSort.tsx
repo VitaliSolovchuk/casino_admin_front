@@ -11,6 +11,7 @@ import {
   GridRowIdGetter,
   GridRowParams,
   GridToolbar,
+  GridSortModel,
 } from '@mui/x-data-grid';
 import { DataGridPro } from '@mui/x-data-grid-pro';
 import { Button, Typography } from '@mui/material';
@@ -28,9 +29,11 @@ interface TableGridProps {
   rowId?: GridRowIdGetter<any>;
   title: string;
   handleRowClick?: ({ id }: { id: number }) => void;
+  sortModel: GridSortModel;
+  onSortModelChange: (model: GridSortModel) => void;
 }
 
-const TableGrid: FC<TableGridProps> = ({
+const TableGridLocalSort: FC<TableGridProps> = ({
   data,
   isLoading,
   error,
@@ -38,6 +41,8 @@ const TableGrid: FC<TableGridProps> = ({
   rowId,
   title,
   handleRowClick,
+  sortModel,
+  onSortModelChange,
 }) => {
   const [localFilter, setLocalFilter] = useState<GridFilterModel>({ items: [], quickFilterValues: [] });
   const {
@@ -45,7 +50,6 @@ const TableGrid: FC<TableGridProps> = ({
     resetFilterModel,
     setFilterModel,
     paginationModel,
-    setSortModel,
     setPaginationModel,
   } = useTableGrid((state) => state);
   const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
@@ -65,10 +69,8 @@ const TableGrid: FC<TableGridProps> = ({
       const removeAllButton = buttons?.item(1);
 
       if (removeAllButton instanceof HTMLButtonElement) {
-        // removeAllButton.childNodes[1].textContent = 'Custom Remove All';
         removeAllButton.addEventListener('click', () => {
           if (filterModel.items.length > 0) {
-            // Добавляем пустой сеттаймаут, так как иначе синхронное действие чистки инпута блокирутся запросом
             setTimeout(() => resetFilterModel());
           }
         });
@@ -92,7 +94,7 @@ const TableGrid: FC<TableGridProps> = ({
   if (error) {
     return (
       <div>
-        {(error as Error).message}
+        {error.message}
       </div>
     );
   }
@@ -100,21 +102,12 @@ const TableGrid: FC<TableGridProps> = ({
   const handleRowClickWrapper = ((params: GridRowParams) => {
     if (handleRowClick) handleRowClick(params.row);
   });
+
   return (
     <div>
       <Typography variant="h6" sx={{ mb: 2 }}>{title.toUpperCase()}</Typography>
       <DateRangeFilter />
       <DataGridPro
-          // slotProps={{
-          //   filterPanel: {
-          //     filterFormProps: {
-          //       operatorInputProps: {
-          //         disabled: true, // If you only want to disable the operator
-          //         sx: { display: 'none' }, // If you want to remove it completely
-          //       },
-          //     },
-          //   },
-          // }}
         sx={{
           ...(isMobile && {
             '& .MuiDataGrid-cell, .MuiDataGrid-columnHeader': {
@@ -137,12 +130,13 @@ const TableGrid: FC<TableGridProps> = ({
         pagination
         autoHeight
         getRowId={rowId}
-        pageSizeOptions={[3, 25, 50, 100]} // убрать после тестов
-        sortingMode="server"
+        pageSizeOptions={[3, 25, 50, 100]}
+        sortingMode="client" // Ensure the sorting mode is set to 'client'
         filterMode="server"
         paginationMode="server"
         onPaginationModelChange={setPaginationModel}
-        onSortModelChange={setSortModel}
+        onSortModelChange={onSortModelChange}
+        sortModel={sortModel}
         onFilterModelChange={setLocalFilter}
         loading={isLoading}
         onRowClick={handleRowClickWrapper}
@@ -155,4 +149,4 @@ const TableGrid: FC<TableGridProps> = ({
   );
 };
 
-export default TableGrid;
+export default TableGridLocalSort;
