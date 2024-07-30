@@ -2,7 +2,7 @@ import React, {
   FC, useEffect, useMemo, useRef,
   useState,
 } from 'react';
-import { GridColDef } from '@mui/x-data-grid';
+import { GridColDef, GridSortModel } from '@mui/x-data-grid';
 import TableGrid from 'widgets/tableGrid/ui/TableGrid';
 import useTableGrid from 'widgets/tableGrid/model/tableGridStore';
 import useFilterDateRange from 'entities/dateRangeCalendar/model/dateRangeStore';
@@ -69,13 +69,12 @@ const Games: FC = () => {
     }
   }, [mutate, paginationModel, filterModel, filterDate, dateRange]);
 
-  // eslint-disable-next-line max-len
-  const [sortModel, setSortModel] = useState<{ field: string, sort: 'asc' | 'desc' }>({ field: 'gameName', sort: 'asc' });
+  const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'gameName', sort: 'asc' }]);
 
   const sortedData = useMemo(() => {
     if (!data) return [];
+    const { field, sort } = sortModel[0];
     return [...data].sort((a, b) => {
-      const { field, sort } = sortModel;
       const valueA = a[field as keyof GamesWithUSDRTP];
       const valueB = b[field as keyof GamesWithUSDRTP];
 
@@ -85,13 +84,9 @@ const Games: FC = () => {
     });
   }, [data, sortModel]);
 
-  const handleSortChange = (field: string) => {
-    console.log('handleSortChange', field);
-
-    setSortModel((prevSortModel) => ({
-      field,
-      sort: prevSortModel.field === field && prevSortModel.sort === 'asc' ? 'desc' : 'asc',
-    }));
+  const handleSortChange = (model: GridSortModel) => {
+    console.log('handleSortChange', model);
+    setSortModel(model);
   };
 
   const columns: GridColDef[] = useMemo(() => [
@@ -100,56 +95,48 @@ const Games: FC = () => {
       headerName: 'Game',
       flex: 1,
       sortable: true,
-      onSortModelChange: () => handleSortChange('gameName'),
     },
     {
       field: 'totalUniquePlayers',
       headerName: 'Players',
       flex: 1,
       sortable: true,
-      onSortModelChange: () => handleSortChange('totalUniquePlayers'),
     },
     {
       field: 'totalSessions',
       headerName: 'Sessions',
       flex: 1,
       sortable: true,
-      onSortModelChange: () => handleSortChange('totalSessions'),
     },
     {
       field: 'totalActions',
       headerName: 'Actions',
       flex: 1,
       sortable: true,
-      onSortModelChange: () => handleSortChange('totalActions'),
     },
     {
       field: 'totalAmountBetUSD',
       headerName: 'Total Bet',
       flex: 1,
       sortable: true,
-      onSortModelChange: () => handleSortChange('totalAmountBetUSD'),
     },
     {
       field: 'totalAmountWinUSD',
       headerName: 'Total Win',
       flex: 1,
       sortable: true,
-      onSortModelChange: () => handleSortChange('totalAmountWinUSD'),
     },
     {
       field: 'totalGGRUSD',
       headerName: 'Total Profit USD',
       flex: 1,
       sortable: true,
-      onSortModelChange: () => handleSortChange('totalGGRUSD'),
     },
     {
       field: 'RTP',
       headerName: 'RTP %',
       flex: 1,
       sortable: true,
-      onSortModelChange: () => handleSortChange('RTP'),
     },
   ], []);
 
@@ -163,6 +150,9 @@ const Games: FC = () => {
         error={error as Error}
         columns={columns}
         title="Games Table"
+        sortModel={sortModel}
+        onSortModelChange={handleSortChange}
+
       />
     </div>
   );
