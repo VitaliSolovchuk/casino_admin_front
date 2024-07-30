@@ -86,6 +86,8 @@ const Games: FC = () => {
   }, [data, sortModel]);
 
   const handleSortChange = (field: string) => {
+    console.log('handleSortChange', field);
+
     setSortModel((prevSortModel) => ({
       field,
       sort: prevSortModel.field === field && prevSortModel.sort === 'asc' ? 'desc' : 'asc',
