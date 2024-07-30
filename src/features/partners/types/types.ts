@@ -13,6 +13,15 @@ export interface PartnersDataProps {
   };
 }
 
+export interface GamesDataProps {
+  filterModel: GridFilterModel;
+  paginationModel: GridPaginationModel;
+  filterDate: {
+    startDate: Dayjs | null;
+    endDate: Dayjs | null;
+  };
+}
+
 interface PartnerCurrencyStatistic {
   partnerId: number;
   partnerName: string;
@@ -33,15 +42,15 @@ export interface PartnerData {
 }
 
 export interface GamesWithUSDRTP {
-  totalUniquePlayers: number;
-  totalSessions: number;
-  totalActions: number;
-  currencyName: string;
-  gameName: string;
-  currencyId: number;
+  'totalUniquePlayers': number;
+  'totalSessions': number;
+  'totalActions': number;
+  'currencyName': string;
+  'gameName': string;
+  'currencyId': number;
 
-  RTP: string;
-  totalGGRUSD: string;
-  totalAmountBetUSD: string;
-  totalAmountWinUSD: string;
+  'RTP': string;
+  'totalGGRUSD': string;
+  'totalAmountBetUSD': string;
+  'totalAmountWinUSD': string;
 }
