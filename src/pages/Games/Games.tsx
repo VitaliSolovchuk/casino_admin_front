@@ -75,7 +75,6 @@ const Games: FC = () => {
     if (!data || !sortModel.length) return [];
 
     const { field, sort } = sortModel[0];
-
     return [...data].sort((a, b) => {
       const valueA = a[field as keyof GamesWithUSDRTP];
       const valueB = b[field as keyof GamesWithUSDRTP];
@@ -85,14 +84,24 @@ const Games: FC = () => {
       const numB = typeof valueB === 'string' ? parseFloat(valueB) : valueB;
 
       // Сравнение чисел и строк
-      if (typeof numA === 'number' && typeof numB === 'number') {
-        if (numA < numB) return sort === 'asc' ? -1 : 1;
-        if (numA > numB) return sort === 'asc' ? 1 : -1;
-      } else {
-        // Строки сравниваются как обычно
+      if (!Number.isNaN(numA) && !Number.isNaN(numB)) {
+        // Оба значения числовые
+        return (numA - numB) * (sort === 'asc' ? 1 : -1);
+      } if (typeof valueA === 'string' && typeof valueB === 'string') {
+        // Оба значения строковые
         if (valueA < valueB) return sort === 'asc' ? -1 : 1;
         if (valueA > valueB) return sort === 'asc' ? 1 : -1;
       }
+
+      // Если одно значение числовое, а другое строковое, сравниваем как строки
+      if (typeof valueA === 'string') {
+        return sort === 'asc' ? -1 : 1;
+      }
+      if (typeof valueB === 'string') {
+        return sort === 'asc' ? 1 : -1;
+      }
+
+      // Если значения равны
       return 0;
     });
   }, [data, sortModel]);
