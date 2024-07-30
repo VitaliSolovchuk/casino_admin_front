@@ -72,14 +72,20 @@ const Games: FC = () => {
   const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'gameName', sort: 'asc' }]);
 
   const sortedData = useMemo(() => {
-    if (!data) return [];
+    if (!data || !sortModel.length) return [];
+
     const { field, sort } = sortModel[0];
+
     return [...data].sort((a, b) => {
       const valueA = a[field as keyof GamesWithUSDRTP];
       const valueB = b[field as keyof GamesWithUSDRTP];
 
-      if (valueA < valueB) return sort === 'asc' ? -1 : 1;
-      if (valueA > valueB) return sort === 'asc' ? 1 : -1;
+      // Преобразование значений в числа, если они являются строками, содержащими числа
+      const numA = typeof valueA === 'string' && !Number.isNaN(Number(valueA)) ? Number(valueA) : valueA;
+      const numB = typeof valueB === 'string' && !Number.isNaN(Number(valueB)) ? Number(valueB) : valueB;
+
+      if (numA < numB) return sort === 'asc' ? -1 : 1;
+      if (numA > numB) return sort === 'asc' ? 1 : -1;
       return 0;
     });
   }, [data, sortModel]);
