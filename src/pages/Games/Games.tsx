@@ -85,8 +85,8 @@ const Games: FC = () => {
       const isNumeric = (val: any) => typeof val === 'number' || (typeof val === 'string' && !Number.isNaN(parseFloat(val)) && Number.isFinite(val));
 
       if (isNumeric(valueA)) {
-        valueA = parseFloat(valueA as string);
-        valueB = parseFloat(valueB as string);
+        valueA = parseFloat(valueA.toString());
+        valueB = parseFloat(valueB.toString());
       } else {
         valueA = valueA?.toString().toLowerCase() ?? '';
         valueB = valueB?.toString().toLowerCase() ?? '';
