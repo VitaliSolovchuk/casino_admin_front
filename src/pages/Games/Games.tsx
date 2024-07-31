@@ -86,10 +86,13 @@ const Games: FC = () => {
       if (isNumeric(valueA) && isNumeric(valueB)) {
         valueA = parseFloat(valueA as string);
         valueB = parseFloat(valueB as string);
-      }
 
+        if (+valueA < +valueB) return sort === 'asc' ? -1 : 1;
+        if (+valueA > +valueB) return sort === 'asc' ? 1 : -1;
+      }
       if (valueA < valueB) return sort === 'asc' ? -1 : 1;
       if (valueA > valueB) return sort === 'asc' ? 1 : -1;
+
       return 0;
     });
   }, [data, sortModel]);
