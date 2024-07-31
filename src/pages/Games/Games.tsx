@@ -46,7 +46,7 @@ const Games: FC = () => {
     }),
   );
 
-  const { mutate } = useMutationRequest<GamesData>(
+  const { mutate, isLoading: isLoadingMutate } = useMutationRequest<GamesData>(
     'games',
     () => postGamesStatisticData(
       {
@@ -161,7 +161,7 @@ const Games: FC = () => {
       <TableGridLocalSort
         data={sortedData}
         rowId={rowId}
-        isLoading={isLoading}
+        isLoading={isLoading || isLoadingMutate}
         error={error as Error}
         columns={columns}
         title="Games Table"

@@ -51,7 +51,7 @@ const Partners: FC = () => {
     }),
   );
 
-  const { mutate } = useMutationRequest<PartnerData>(
+  const { mutate, isLoading: isLoadingMutate } = useMutationRequest<PartnerData>(
     'partners',
     () => postPartnersStatisticData(
       {
@@ -171,7 +171,7 @@ const Partners: FC = () => {
       <TableGrid
         data={data?.currencyStatistics}
         rowId={rowId}
-        isLoading={isLoading}
+        isLoading={isLoading || isLoadingMutate}
         error={error as Error}
         columns={columns}
         handleRowClick={handleRowClick}

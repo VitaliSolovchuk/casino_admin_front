@@ -8,6 +8,7 @@ export const useMutationRequest = <T>(
 
   const {
     mutate,
+    isLoading,
   } = useMutation(
     queryKey,
     queryFn,
@@ -19,5 +20,6 @@ export const useMutationRequest = <T>(
   );
   return {
     mutate,
+    isLoading,
   };
 };
