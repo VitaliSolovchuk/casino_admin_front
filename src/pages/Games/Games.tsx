@@ -81,7 +81,7 @@ const Games: FC = () => {
       let valueB = b[field as keyof GamesWithUSDRTP];
 
       // Check if the value can be converted to a number and is not NaN
-      const isNumeric = (val: any) => !Number.isNaN(parseFloat(val)) && Number.isFinite(val);
+      const isNumeric = (val: any) => !Number.isNaN(parseFloat(val));
 
       if (isNumeric(valueA) && isNumeric(valueB)) {
         valueA = parseFloat(valueA as string);
