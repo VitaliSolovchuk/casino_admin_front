@@ -72,36 +72,24 @@ const Games: FC = () => {
   const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'gameName', sort: 'asc' }]);
 
   const sortedData = useMemo(() => {
-    if (!data || !sortModel.length) return [];
+    if (!data) return [];
 
     const { field, sort } = sortModel[0];
+
     return [...data].sort((a, b) => {
-      const valueA = a[field as keyof GamesWithUSDRTP];
-      const valueB = b[field as keyof GamesWithUSDRTP];
+      let valueA = a[field as keyof GamesWithUSDRTP];
+      let valueB = b[field as keyof GamesWithUSDRTP];
 
-      // Преобразование значений в числа, если они являются строками, содержащими числа
-      const numA = typeof valueA === 'string' ? parseFloat(valueA) : valueA;
-      const numB = typeof valueB === 'string' ? parseFloat(valueB) : valueB;
+      // Check if the value can be converted to a number and is not NaN
+      const isNumeric = (val: any) => !Number.isNaN(parseFloat(val)) && Number.isFinite(val);
 
-      // Сравнение чисел и строк
-      if (!Number.isNaN(numA) && !Number.isNaN(numB)) {
-        // Оба значения числовые
-        return (numA - numB) * (sort === 'asc' ? 1 : -1);
-      } if (typeof valueA === 'string' && typeof valueB === 'string') {
-        // Оба значения строковые
-        if (valueA < valueB) return sort === 'asc' ? -1 : 1;
-        if (valueA > valueB) return sort === 'asc' ? 1 : -1;
+      if (isNumeric(valueA) && isNumeric(valueB)) {
+        valueA = parseFloat(valueA as string);
+        valueB = parseFloat(valueB as string);
       }
 
-      // Если одно значение числовое, а другое строковое, сравниваем как строки
-      if (typeof valueA === 'string') {
-        return sort === 'asc' ? -1 : 1;
-      }
-      if (typeof valueB === 'string') {
-        return sort === 'asc' ? 1 : -1;
-      }
-
-      // Если значения равны
+      if (valueA < valueB) return sort === 'asc' ? -1 : 1;
+      if (valueA > valueB) return sort === 'asc' ? 1 : -1;
       return 0;
     });
   }, [data, sortModel]);
