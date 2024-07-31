@@ -73,7 +73,7 @@ const Games: FC = () => {
   const sortedData = useMemo(() => {
     if (!data) return [];
 
-    if (sortModel[0]) {
+    if (sortModel?.[0]) {
       return data.gameStatistics;
     }
     const { field, sort } = sortModel[0];
