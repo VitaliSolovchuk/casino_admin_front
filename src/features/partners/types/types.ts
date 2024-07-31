@@ -36,9 +36,27 @@ interface PartnerCurrencyStatistic {
   RTP: number;
 }
 
+export interface GamesStatistic {
+  gameId: number;
+  gameName: string;
+  totalPlayers: number;
+  totalSessions: number;
+  totalActions: number;
+  totalAmountBet: string;
+  totalAmountWin: string;
+  totalProfit: string;
+  totalProfitUSD: number;
+  RTP: number;
+}
+
 export interface PartnerData {
   totalGgrUsd: number;
   currencyStatistics: PartnerCurrencyStatistic[];
+}
+
+export interface GamesData {
+  totalGgrUsd: number;
+  gameStatistics: GamesStatistic[];
 }
 
 export interface GamesWithUSDRTP {
@@ -48,7 +66,6 @@ export interface GamesWithUSDRTP {
   'currencyName': string;
   'gameName': string;
   'currencyId': number;
-
   'RTP': string;
   'totalGGRUSD': string;
   'totalAmountBetUSD': string;

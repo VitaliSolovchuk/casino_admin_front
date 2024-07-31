@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { baseURL } from 'shared/lib/consts/url';
 import {
-  GamesDataProps, GamesWithUSDRTP, PartnerData, PartnersDataProps,
+  GamesData, GamesDataProps, GamesWithUSDRTP, PartnerData, PartnersDataProps,
 } from '../types/types';
 
 export const getPartnersData = async () => {
@@ -50,9 +50,9 @@ export const postPartnersStatisticData = async (props: PartnersDataProps) => {
   }
 };
 
-export const postGamesStatisticData = async (props: PartnersDataProps) => {
+export const postGamesStatisticData = async (props: GamesDataProps) => {
   try {
-    const response = await axios.post<PartnerData>(
+    const response = await axios.post<GamesData>(
       `${baseURL}/admin-panel-statistics/get-grouped-by-games`,
       props,
     );

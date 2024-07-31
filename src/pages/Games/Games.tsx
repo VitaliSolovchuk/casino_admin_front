@@ -6,8 +6,8 @@ import { GridColDef, GridSortModel } from '@mui/x-data-grid';
 import useTableGrid from 'widgets/tableGrid/model/tableGridStore';
 import useFilterDateRange from 'entities/dateRangeCalendar/model/dateRangeStore';
 import { useDataRequest } from 'shared/lib/hooks/useDataRequest';
-import { GamesWithUSDRTP } from 'features/partners/types/types';
-import { postGamesData } from 'features/partners/api';
+import { GamesData, GamesStatistic } from 'features/partners/types/types';
+import { postGamesStatisticData } from 'features/partners/api';
 import { useMutationRequest } from 'shared/lib/hooks/useMutationRequest';
 import TableGridLocalSort from 'widgets/tableGrid/ui/TableGridLocalSort';
 
@@ -20,7 +20,6 @@ interface Row {
 const Games: FC = () => {
   const {
     filterModel,
-    // sortModel,
     paginationModel,
   } = useTableGrid((state) => state);
 
@@ -35,9 +34,9 @@ const Games: FC = () => {
     data,
     isLoading,
     error,
-  } = useDataRequest<GamesWithUSDRTP[]>(
+  } = useDataRequest<GamesData>(
     'games',
-    () => postGamesData({
+    () => postGamesStatisticData({
       paginationModel,
       filterModel,
       filterDate: {
@@ -47,9 +46,9 @@ const Games: FC = () => {
     }),
   );
 
-  const { mutate } = useMutationRequest<GamesWithUSDRTP[]>(
+  const { mutate } = useMutationRequest<GamesData>(
     'games',
-    () => postGamesData(
+    () => postGamesStatisticData(
       {
         paginationModel,
         filterModel,
@@ -75,13 +74,13 @@ const Games: FC = () => {
     if (!data) return [];
 
     if (sortModel[0]) {
-      return data;
+      return data.gameStatistics;
     }
     const { field, sort } = sortModel[0];
 
-    return [...data].sort((a, b) => {
-      let valueA = a[field as keyof GamesWithUSDRTP];
-      let valueB = b[field as keyof GamesWithUSDRTP];
+    return [...data.gameStatistics].sort((a, b) => {
+      let valueA = a[field as keyof GamesStatistic];
+      let valueB = b[field as keyof GamesStatistic];
 
       // Check if the value can be converted to a number and is not NaN
       const isNumeric = (val: any) => !Number.isNaN(parseFloat(val));
