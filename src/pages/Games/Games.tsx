@@ -71,36 +71,31 @@ const Games: FC = () => {
   const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'gameName', sort: 'asc' }]);
 
   const sortedData = useMemo(() => {
-    if (!data) return [];
+    if (!data || !sortModel || sortModel.length === 0) return [];
 
-    if (sortModel?.[0]) {
-      return data.gameStatistics;
-    }
     const { field, sort } = sortModel[0];
-
     return [...data.gameStatistics].sort((a, b) => {
       let valueA = a[field as keyof GamesStatistic];
       let valueB = b[field as keyof GamesStatistic];
 
-      // Check if the value can be converted to a number and is not NaN
       const isNumeric = (val: any) => !Number.isNaN(parseFloat(val));
 
       if (isNumeric(valueA) && isNumeric(valueB)) {
         valueA = parseFloat(valueA as string);
         valueB = parseFloat(valueB as string);
 
-        if (+valueA < +valueB) return sort === 'asc' ? -1 : 1;
-        if (+valueA > +valueB) return sort === 'asc' ? 1 : -1;
+        if (valueA < valueB) return sort === 'asc' ? -1 : 1;
+        if (valueA > valueB) return sort === 'asc' ? 1 : -1;
       }
+
       if (valueA < valueB) return sort === 'asc' ? -1 : 1;
       if (valueA > valueB) return sort === 'asc' ? 1 : -1;
 
       return 0;
     });
   }, [data, sortModel]);
-
   const handleSortChange = (model: GridSortModel) => {
-    console.log('handleSortChange', model);
+    // console.log('handleSortChange', model);
     setSortModel(model);
   };
 
