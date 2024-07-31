@@ -79,9 +79,11 @@ const Games: FC = () => {
       let valueA = a[field as keyof GamesStatistic];
       let valueB = b[field as keyof GamesStatistic];
 
-      const isNumeric = (val: any) => !Number.isNaN(parseFloat(val)) && Number.isFinite(val);
+      // число в строке
+      // eslint-disable-next-line max-len
+      const isNumeric = (val: any) => typeof val === 'number' || (typeof val === 'string' && !Number.isNaN(parseFloat(val)) && Number.isFinite(val));
 
-      if (isNumeric(valueA) && isNumeric(valueB)) {
+      if (isNumeric(valueA)) {
         valueA = parseFloat(valueA as string);
         valueB = parseFloat(valueB as string);
       } else {
