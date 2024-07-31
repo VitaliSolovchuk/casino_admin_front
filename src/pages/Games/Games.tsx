@@ -74,18 +74,19 @@ const Games: FC = () => {
     if (!data || !sortModel || sortModel.length === 0) return [];
 
     const { field, sort } = sortModel[0];
+
     return [...data.gameStatistics].sort((a, b) => {
       let valueA = a[field as keyof GamesStatistic];
       let valueB = b[field as keyof GamesStatistic];
 
-      const isNumeric = (val: any) => !Number.isNaN(parseFloat(val));
+      const isNumeric = (val: any) => !Number.isNaN(parseFloat(val)) && Number.isFinite(val);
 
       if (isNumeric(valueA) && isNumeric(valueB)) {
         valueA = parseFloat(valueA as string);
         valueB = parseFloat(valueB as string);
-
-        if (valueA < valueB) return sort === 'asc' ? -1 : 1;
-        if (valueA > valueB) return sort === 'asc' ? 1 : -1;
+      } else {
+        valueA = valueA?.toString().toLowerCase() ?? '';
+        valueB = valueB?.toString().toLowerCase() ?? '';
       }
 
       if (valueA < valueB) return sort === 'asc' ? -1 : 1;
