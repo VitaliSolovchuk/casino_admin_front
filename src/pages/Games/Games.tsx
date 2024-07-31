@@ -112,7 +112,7 @@ const Games: FC = () => {
       sortable: true,
     },
     {
-      field: 'totalUniquePlayers',
+      field: 'totalPlayers',
       headerName: 'Players',
       flex: 1,
       sortable: true,
@@ -130,25 +130,25 @@ const Games: FC = () => {
       sortable: true,
     },
     {
-      field: 'totalAmountBetUSD',
+      field: 'totalAmountBetUsd',
       headerName: 'Total Bet',
       flex: 1,
       sortable: true,
     },
     {
-      field: 'totalAmountWinUSD',
+      field: 'totalAmountWinUsd',
       headerName: 'Total Win',
       flex: 1,
       sortable: true,
     },
     {
-      field: 'totalGGRUSD',
+      field: 'ggrUsd',
       headerName: 'Total Profit USD',
       flex: 1,
       sortable: true,
     },
     {
-      field: 'RTP',
+      field: 'rtp',
       headerName: 'RTP %',
       flex: 1,
       sortable: true,
