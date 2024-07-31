@@ -74,8 +74,9 @@ const Games: FC = () => {
     if (!data || !sortModel || sortModel.length === 0) return [];
 
     const { field, sort } = sortModel[0];
+    console.log('Before sorting:', data.gameStatistics);
 
-    return [...data.gameStatistics].sort((a, b) => {
+    const sorted = [...data.gameStatistics].sort((a, b) => {
       let valueA = a[field as keyof GamesStatistic];
       let valueB = b[field as keyof GamesStatistic];
 
@@ -96,9 +97,11 @@ const Games: FC = () => {
 
       return 0;
     });
+    console.log('After sorting:', sorted);
+    return sorted;
   }, [data, sortModel]);
   const handleSortChange = (model: GridSortModel) => {
-    // console.log('handleSortChange', model);
+    console.log('handleSortChange', model);
     setSortModel(model);
   };
 
