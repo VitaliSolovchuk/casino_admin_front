@@ -7,6 +7,7 @@ import Dashboard from 'pages/Dashboard/Dashboard';
 import { paths } from 'shared/lib/consts/paths';
 import { names } from 'shared/lib/consts/names';
 import Games from 'pages/Games/Games';
+import CurrencyGames from 'pages/CurrencyGames/CurrencyGames';
 import Auth from '../../widgets/auth/ui/Auth';
 
 export type AppRoute = RouteProps & {
@@ -46,6 +47,11 @@ export const authProtectedRoutes: AppRoute[] = [
     path: paths.partners,
     name: names.Partners,
     element: <Partners />,
+  },
+  {
+    path: paths.partners,
+    name: names.Partners,
+    element: <CurrencyGames />,
   },
   {
     path: paths.games,
