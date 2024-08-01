@@ -3,6 +3,7 @@ export const names = {
   Dashboard: 'Dashboard',
   Partners: 'Partners',
   Games: 'Games',
+  СurrencyGames: 'Currency/Games',
 
   Players: 'Players',
   SessionEvents: 'Session Events',

@@ -49,8 +49,8 @@ export const authProtectedRoutes: AppRoute[] = [
     element: <Partners />,
   },
   {
-    path: paths.partners,
-    name: names.Partners,
+    path: paths.currencygames,
+    name: names.СurrencyGames,
     element: <CurrencyGames />,
   },
   {
