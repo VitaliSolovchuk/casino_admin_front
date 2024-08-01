@@ -1,8 +1,6 @@
 import React, {
-  FC, useEffect, useMemo, useRef,
+  FC, useEffect, useRef,
 } from 'react';
-import { GridColDef } from '@mui/x-data-grid';
-import TableGrid from 'widgets/tableGrid/ui/TableGrid';
 import useTableGrid from 'widgets/tableGrid/model/tableGridStore';
 import useFilterDateRange from 'entities/dateRangeCalendar/model/dateRangeStore';
 import { useDataRequest } from 'shared/lib/hooks/useDataRequest';

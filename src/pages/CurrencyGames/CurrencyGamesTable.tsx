@@ -3,7 +3,9 @@ import { GridColDef } from '@mui/x-data-grid';
 import { CurrencyGamesData } from 'features/currency-games/types/types';
 import TableGrid from 'widgets/tableGrid/ui/TableGrid';
 
-const transformDataForTable = (data: CurrencyGamesData) => {
+const transformDataForTable = (data?: CurrencyGamesData) => {
+  if (!data) return [];
+
   const gamesMap: Record<number, Record<string, any>> = {};
 
   data.gameStatistics.forEach((currencyStat) => {
@@ -24,32 +26,41 @@ const transformDataForTable = (data: CurrencyGamesData) => {
   return gamesArray;
 };
 
-// eslint-disable-next-line max-len
-const CurrencyGamesTable: FC<{ data: CurrencyGamesData, isLoading: boolean, error: Error }> = ({ data, isLoading, error }) => {
+  interface CurrencyGamesTableProps {
+    data?: CurrencyGamesData;
+    isLoading: boolean;
+    error: Error;
+  }
+
+const CurrencyGamesTable: FC<CurrencyGamesTableProps> = ({ data, isLoading, error }) => {
   const tableData = useMemo(() => transformDataForTable(data), [data]);
 
-  const columns: GridColDef[] = useMemo(() => [
-    {
-      field: 'gameName',
-      headerName: 'Game',
-      flex: 1,
-    },
-    ...data.gameStatistics.map((stat) => ({
-      field: stat.currencyName,
-      headerName: stat.currencyName,
-      flex: 1,
-    })),
-    {
-      field: 'usdGgr',
-      headerName: 'USD Total',
-      flex: 1,
-    },
-  ], [data]);
+  const columns: GridColDef[] = useMemo(() => {
+    if (!data) return [{ field: 'gameName', headerName: 'Game', flex: 1 }];
+
+    return [
+      {
+        field: 'gameName',
+        headerName: 'Game',
+        flex: 1,
+      },
+      ...data.gameStatistics.map((stat: { currencyName: any; }) => ({
+        field: stat.currencyName,
+        headerName: stat.currencyName,
+        flex: 1,
+      })),
+      {
+        field: 'usdGgr',
+        headerName: 'USD Total',
+        flex: 1,
+      },
+    ];
+  }, [data]);
 
   return (
     <TableGrid
       data={tableData}
-      rowId={(row: { gameName: any; }) => row.gameName}
+      rowId={(row) => row.gameName}
       isLoading={isLoading}
       error={error}
       columns={columns}
