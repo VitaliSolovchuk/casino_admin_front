@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { baseURL } from 'shared/lib/consts/url';
-import { CurrencyGamesDataProps, PartnerData } from '../types/types';
+import { CurrencyGamesDataProps, CurrencyGamesData } from '../types/types';
 
-export const postGamesStatisticData = async (props: CurrencyGamesDataProps) => {
+export const postCurrencyGamesStatisticData = async (props: CurrencyGamesDataProps) => {
   try {
-    const response = await axios.post<PartnerData>(
+    const response = await axios.post<CurrencyGamesData>(
       `${baseURL}/admin-panel-statistics/get-grouped-by-currency-games`,
       props,
     );

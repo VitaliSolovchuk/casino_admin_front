@@ -25,7 +25,7 @@ export interface GamesStatistic {
   usdGgr: string;
 }
 
-export interface PartnerData {
+export interface CurrencyGamesData {
   totalGgrUsd: number;
   gameStatistics: GamesStatistic[];
 }
