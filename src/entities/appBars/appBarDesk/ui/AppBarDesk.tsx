@@ -19,6 +19,8 @@ const AppBarDesk: FC<Props> = ({ totalGGR }) => (
         <li><NavLink to={paths.dashboard}>{names.Dashboard}</NavLink></li>
         <li><NavLink to={paths.partners}>{names.Partners}</NavLink></li>
         <li><NavLink to={paths.games}>{names.Games}</NavLink></li>
+        <li><NavLink to={paths.currencygames}>{names.СurrencyGames}</NavLink></li>
+
         {/* Добавьте другие маршруты по мере необходимости */}
       </ul>
       {totalGGR && (
