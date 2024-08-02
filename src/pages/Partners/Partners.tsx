@@ -103,12 +103,10 @@ const Partners: FC = () => {
 
       return 0;
     });
-    console.log('After sorting:', sorted);
     return sorted;
   }, [data, sortModel]);
 
   const handleSortChange = (model: GridSortModel) => {
-    console.log('handleSortChange', model);
     setSortModel(model);
   };
 
@@ -159,6 +157,7 @@ const Partners: FC = () => {
       flex: 1,
     },
   ], []);
+
   const handleRowClick = (row: Record<string, number>) => {
     if (row.partnerId) {
       queryClient.invalidateQueries({ queryKey: 'players' })

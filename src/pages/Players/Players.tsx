@@ -1,11 +1,12 @@
 import React, {
   FC, useEffect, useMemo, useRef,
+  useState,
 } from 'react';
 import {
   useLocation, useNavigate,
 } from 'react-router-dom';
-import { GridColDef } from '@mui/x-data-grid';
-import TableGrid from 'widgets/tableGrid/ui/TableGrid';
+import { GridColDef, GridSortModel } from '@mui/x-data-grid';
+// import TableGrid from 'widgets/tableGrid/ui/TableGrid';
 import useTableGrid from 'widgets/tableGrid/model/tableGridStore';
 import useFilterDateRange from 'entities/dateRangeCalendar/model/dateRangeStore';
 import { useDataRequest } from 'shared/lib/hooks/useDataRequest';
@@ -14,6 +15,7 @@ import { postPlayersData } from 'features/players/api';
 import { useQueryClient } from 'react-query';
 import { paths } from 'shared/lib/consts/paths';
 import { useMutationRequest } from 'shared/lib/hooks/useMutationRequest';
+import TableGridLocalSort from 'widgets/tableGrid/ui/TableGridLocalSort';
 
 interface Row {
   partnerId: string;
@@ -30,7 +32,7 @@ const Players: FC = () => {
   const navigate = useNavigate();
   const {
     filterModel,
-    sortModel,
+    // sortModel,
     paginationModel,
   } = useTableGrid((state) => state);
   const { filterDate } = useFilterDateRange((state) => state);
@@ -48,7 +50,7 @@ const Players: FC = () => {
       partnerId,
       currency,
       paginationModel,
-      sortModel,
+      // sortModel,
       filterModel,
       filterDate: {
         startDate: dateRange[0],
@@ -63,7 +65,7 @@ const Players: FC = () => {
       partnerId,
       currency,
       paginationModel,
-      sortModel,
+      // sortModel,
       filterModel,
       filterDate: {
         startDate: dateRange[0],
@@ -78,26 +80,42 @@ const Players: FC = () => {
     } else {
       isFirstRender.current = false;
     }
-  }, [mutate, paginationModel, sortModel, filterModel, filterDate, dateRange]);
+  }, [mutate, paginationModel, filterModel, filterDate, dateRange]);
 
-  // {
-  //   "totalAmountBet": "0.5600",
-  //   "totalAmountWin": "0.2840",
-  //   "totalActions": 5,
-  //   "partnerName": "coinsgame",
-  //   "currencyName": "USD",
-  //   "partnerId": 5,
-  //   "currencyId": 1,
-  //   "playerId": 1397569,
-  //   "sessionId": null,
-  //   "firstBetTime": "2024-07-21T15:10:18.046Z",
-  //   "lastBetTime": "2024-07-21T15:11:10.026Z",
-  //   "totalGGR": "0.2760",
-  //   "totalGGRUSD": "0.28",
-  //   "RTP": "50.71",
-  //   "totalAmountBetUSD": "0.56",
-  //   "totalAmountWinUSD": "0.28"
-  // }
+  const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'ggrUsd', sort: 'desc' }]);
+
+  const sortedData = useMemo(() => {
+    if (!data || !sortModel || sortModel.length === 0) return [];
+
+    const { field, sort } = sortModel[0];
+
+    const sorted = [...data].sort((a, b) => {
+      let valueA = a[field as keyof Player];
+      let valueB = b[field as keyof Player];
+
+      // число в строке
+      // eslint-disable-next-line max-len
+      const isNumeric = (val: any) => typeof val === 'number' || (typeof val === 'string' && !Number.isNaN(parseFloat(val)) && Number.isFinite(val));
+
+      if (isNumeric(valueA)) {
+        valueA = parseFloat(valueA.toString());
+        valueB = parseFloat(valueB.toString());
+      } else {
+        valueA = valueA?.toString().toLowerCase() ?? '';
+        valueB = valueB?.toString().toLowerCase() ?? '';
+      }
+
+      if (valueA < valueB) return sort === 'asc' ? -1 : 1;
+      if (valueA > valueB) return sort === 'asc' ? 1 : -1;
+
+      return 0;
+    });
+    return sorted;
+  }, [data, sortModel]);
+
+  const handleSortChange = (model: GridSortModel) => {
+    setSortModel(model);
+  };
 
   const columns: GridColDef[] = useMemo(() => [
     { field: 'playerId', headerName: 'Player ID', flex: 1 },
@@ -107,9 +125,9 @@ const Players: FC = () => {
     { field: 'totalActions', headerName: 'Actions', flex: 1 },
     { field: 'totalAmountBetUSD', headerName: 'Total Bet', flex: 1 },
     { field: 'totalAmountWinUSD', headerName: 'Total Win', flex: 1 },
-    // { field: 'totalProfit', headerName: 'Total Profit', flex: 1 },
     { field: 'totalGGRUSD', headerName: 'Total Profit USD', flex: 1 },
   ], []);
+
   const rowId = (row: Row) => `${row.partnerId}-${row.playerId}-${row.sessionId}`;
   const handleRowClick = (row: Record<string, number>) => {
     if (row.sessionId) {
@@ -119,14 +137,16 @@ const Players: FC = () => {
   };
   return (
     <div>
-      <TableGrid
-        data={data}
+      <TableGridLocalSort
+        data={sortedData}
         rowId={rowId}
         isLoading={isLoading}
         error={error as Error}
         columns={columns}
         handleRowClick={handleRowClick}
         title="Players Table"
+        sortModel={sortModel}
+        onSortModelChange={handleSortChange}
       />
     </div>
   );
