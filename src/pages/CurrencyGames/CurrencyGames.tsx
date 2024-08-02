@@ -9,15 +9,9 @@ import { postCurrencyGamesStatisticData } from 'features/currency-games/api';
 import { CurrencyGamesData } from 'features/currency-games/types/types';
 import CurrencyGamesTable from './CurrencyGamesTable';
 
-// interface Row {
-//   partnerId: number;
-//   currencyName: string;
-// }
-
 const CurrencyGames: FC = () => {
   const {
     filterModel,
-    sortModel,
     paginationModel,
   } = useTableGrid((state) => state);
 
@@ -64,14 +58,12 @@ const CurrencyGames: FC = () => {
     } else {
       isFirstRender.current = false;
     }
-  }, [mutate, paginationModel, sortModel, filterModel, filterDate, dateRange]);
+  }, [mutate, paginationModel, filterModel, filterDate, dateRange]);
 
-  // const rowId = (row: Row) => `${row.partnerId}-${row.currencyName}`;
   return (
     <div>
       <CurrencyGamesTable
         data={data}
-        // rowId={rowId}
         isLoading={isLoading || isLoadingMutate}
         error={error as Error}
       />

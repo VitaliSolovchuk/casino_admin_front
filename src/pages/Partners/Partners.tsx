@@ -1,17 +1,18 @@
 import React, {
   FC, useEffect, useMemo, useRef,
+  useState,
 } from 'react';
-import { GridColDef } from '@mui/x-data-grid';
+import { GridColDef, GridSortModel } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
-import TableGrid from 'widgets/tableGrid/ui/TableGrid';
 import useTableGrid from 'widgets/tableGrid/model/tableGridStore';
 import useFilterDateRange from 'entities/dateRangeCalendar/model/dateRangeStore';
 import { useDataRequest } from 'shared/lib/hooks/useDataRequest';
-import { PartnerData } from 'features/partners/types/types';
+import { PartnerData, PartnerCurrencyStatistic } from 'features/partners/types/types';
 import { useQueryClient } from 'react-query';
 import { postPartnersStatisticData } from 'features/partners/api';
 import { paths } from 'shared/lib/consts/paths';
 import { useMutationRequest } from 'shared/lib/hooks/useMutationRequest';
+import TableGridLocalSort from 'widgets/tableGrid/ui/TableGridLocalSort';
 
 interface Row {
   partnerId: number;
@@ -21,7 +22,7 @@ interface Row {
 const Partners: FC = () => {
   const {
     filterModel,
-    sortModel,
+    // sortModel,
     paginationModel,
   } = useTableGrid((state) => state);
 
@@ -42,7 +43,7 @@ const Partners: FC = () => {
     'partners',
     () => postPartnersStatisticData({
       paginationModel,
-      sortModel,
+      // sortModel,
       filterModel,
       filterDate: {
         startDate: dateRange[0],
@@ -56,7 +57,7 @@ const Partners: FC = () => {
     () => postPartnersStatisticData(
       {
         paginationModel,
-        sortModel,
+        // sortModel,
         filterModel,
         filterDate: {
           startDate: dateRange[0],
@@ -72,7 +73,44 @@ const Partners: FC = () => {
     } else {
       isFirstRender.current = false;
     }
-  }, [mutate, paginationModel, sortModel, filterModel, filterDate, dateRange]);
+  }, [mutate, paginationModel, filterModel, filterDate, dateRange]);
+
+  const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'ggrUsd', sort: 'desc' }]);
+
+  const sortedData = useMemo(() => {
+    if (!data || !sortModel || sortModel.length === 0) return [];
+
+    const { field, sort } = sortModel[0];
+
+    const sorted = [...data.currencyStatistics].sort((a, b) => {
+      let valueA = a[field as keyof PartnerCurrencyStatistic];
+      let valueB = b[field as keyof PartnerCurrencyStatistic];
+
+      // число в строке
+      // eslint-disable-next-line max-len
+      const isNumeric = (val: any) => typeof val === 'number' || (typeof val === 'string' && !Number.isNaN(parseFloat(val)) && Number.isFinite(val));
+
+      if (isNumeric(valueA)) {
+        valueA = parseFloat(valueA.toString());
+        valueB = parseFloat(valueB.toString());
+      } else {
+        valueA = valueA?.toString().toLowerCase() ?? '';
+        valueB = valueB?.toString().toLowerCase() ?? '';
+      }
+
+      if (valueA < valueB) return sort === 'asc' ? -1 : 1;
+      if (valueA > valueB) return sort === 'asc' ? 1 : -1;
+
+      return 0;
+    });
+    console.log('After sorting:', sorted);
+    return sorted;
+  }, [data, sortModel]);
+
+  const handleSortChange = (model: GridSortModel) => {
+    console.log('handleSortChange', model);
+    setSortModel(model);
+  };
 
   const columns: GridColDef[] = useMemo(() => [
     {
@@ -130,14 +168,16 @@ const Partners: FC = () => {
   const rowId = (row: Row) => `${row.partnerId}-${row.currencyName}`;
   return (
     <div>
-      <TableGrid
-        data={data?.currencyStatistics}
+      <TableGridLocalSort
+        data={sortedData}
         rowId={rowId}
         isLoading={isLoading || isLoadingMutate}
         error={error as Error}
         columns={columns}
         handleRowClick={handleRowClick}
         title="Partners Table"
+        sortModel={sortModel}
+        onSortModelChange={handleSortChange}
       />
     </div>
   );
