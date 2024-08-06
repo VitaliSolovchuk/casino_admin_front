@@ -18,8 +18,13 @@ const transformDataForTable = (data?: CurrencyGamesData) => {
         gamesMap[game.gameId].total = 0;
       }
       gamesMap[game.gameId][currencyStat.currencyName] = game.usdGameGgr;
-      gamesMap[game.gameId].total += +(+game.usdGameGgr).toFixed(2);
+      gamesMap[game.gameId].total += +game.usdGameGgr;
     });
+  });
+
+  // Округляем итоговые значения total до двух знаков после запятой
+  Object.values(gamesMap).forEach((game) => {
+    game.total = game.total.toFixed(2);
   });
 
   const usdGgrTotal = data.gameStatistics.reduce((acc, curr) => acc + parseFloat(curr.usdGgr), 0);
