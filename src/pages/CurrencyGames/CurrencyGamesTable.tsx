@@ -31,8 +31,14 @@ const transformDataForTable = (data?: CurrencyGamesData) => {
   });
 
   const usdGgrTotal = data.gameStatistics.reduce((acc, curr) => acc + parseFloat(curr.usdGgr), 0);
+
+  const totalRow: Record<string, string> = { gameName: 'Total', total: usdGgrTotal.toFixed(2) };
+  Object.entries(curMap).forEach(([currencyName, totalValue]) => {
+    totalRow[currencyName] = totalValue.toFixed(2);
+  });
+
   const gamesArray = Object.values(gamesMap);
-  gamesArray.push({ gameName: 'Total', total: usdGgrTotal.toString(), ...curMap });
+  gamesArray.push(totalRow);
 
   return gamesArray;
 };
