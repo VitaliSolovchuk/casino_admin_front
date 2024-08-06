@@ -14,14 +14,17 @@ const transformDataForTable = (data?: CurrencyGamesData) => {
         gamesMap[game.gameId] = {
           gameName: game.gameName,
         };
+
+        gamesMap[game.gameId].total = 0;
       }
       gamesMap[game.gameId][currencyStat.currencyName] = game.usdGameGgr;
+      gamesMap[game.gameId].total += +game.usdGameGgr;
     });
   });
 
   const usdGgrTotal = data.gameStatistics.reduce((acc, curr) => acc + parseFloat(curr.usdGgr), 0);
   const gamesArray = Object.values(gamesMap);
-  gamesArray.push({ gameName: 'Total', usdGgr: usdGgrTotal.toString() });
+  gamesArray.push({ gameName: 'Total', total: usdGgrTotal.toString() });
 
   return gamesArray;
 };
@@ -44,8 +47,20 @@ const CurrencyGamesTable: FC<CurrencyGamesTableProps> = ({ data, isLoading, erro
         field: 'gameName',
         headerName: 'Game',
         flex: 1,
-        minWidth: 150,
+        minWidth: 100,
         type: 'string',
+      },
+      {
+        field: 'total',
+        headerName: 'USD Total',
+        flex: 1,
+        minWidth: 150,
+        type: 'number',
+        renderCell: (params: GridRenderCellParams<any, any>) => (
+          <span style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}>
+            {params.value}
+          </span>
+        ),
       },
       ...data.gameStatistics.map((stat) => ({
         field: stat.currencyName,
@@ -59,18 +74,6 @@ const CurrencyGamesTable: FC<CurrencyGamesTableProps> = ({ data, isLoading, erro
           </span>
         ),
       })),
-      {
-        field: 'usdGgr',
-        headerName: 'USD Total',
-        flex: 1,
-        minWidth: 150,
-        type: 'number',
-        renderCell: (params: GridRenderCellParams<any, any>) => (
-          <span style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}>
-            {params.value}
-          </span>
-        ),
-      },
     ];
   }, [data]);
 
