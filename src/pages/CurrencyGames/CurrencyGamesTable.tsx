@@ -1,5 +1,5 @@
 import React, { useMemo, FC } from 'react';
-import { GridColDef } from '@mui/x-data-grid';
+import { GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { CurrencyGamesData } from 'features/currency-games/types/types';
 import TableGrid from 'widgets/tableGrid/ui/TableGrid';
 
@@ -15,7 +15,7 @@ const transformDataForTable = (data?: CurrencyGamesData) => {
           gameName: game.gameName,
         };
       }
-      gamesMap[game.gameId][currencyStat.currencyName] = game.currencyGameGgr;
+      gamesMap[game.gameId][currencyStat.currencyName] = game.usdGameGgr;
     });
   });
 
@@ -26,11 +26,11 @@ const transformDataForTable = (data?: CurrencyGamesData) => {
   return gamesArray;
 };
 
-  interface CurrencyGamesTableProps {
-    data?: CurrencyGamesData;
-    isLoading: boolean;
-    error: Error;
-  }
+interface CurrencyGamesTableProps {
+  data?: CurrencyGamesData;
+  isLoading: boolean;
+  error: Error;
+}
 
 const CurrencyGamesTable: FC<CurrencyGamesTableProps> = ({ data, isLoading, error }) => {
   const tableData = useMemo(() => transformDataForTable(data), [data]);
@@ -43,16 +43,32 @@ const CurrencyGamesTable: FC<CurrencyGamesTableProps> = ({ data, isLoading, erro
         field: 'gameName',
         headerName: 'Game',
         flex: 1,
+        minWidth: 150,
+        type: 'string',
       },
-      ...data.gameStatistics.map((stat: { currencyName: any; }) => ({
+      ...data.gameStatistics.map((stat) => ({
         field: stat.currencyName,
         headerName: stat.currencyName,
         flex: 1,
+        minWidth: 100,
+        type: 'number',
+        renderCell: (params: GridRenderCellParams<any, any>) => (
+          <span style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}>
+            {params.value}
+          </span>
+        ),
       })),
       {
         field: 'usdGgr',
         headerName: 'USD Total',
         flex: 1,
+        minWidth: 150,
+        type: 'number',
+        renderCell: (params: GridRenderCellParams<any, any>) => (
+          <span style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}>
+            {params.value}
+          </span>
+        ),
       },
     ];
   }, [data]);
