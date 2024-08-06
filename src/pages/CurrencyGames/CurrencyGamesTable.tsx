@@ -32,7 +32,7 @@ const transformDataForTable = (data?: CurrencyGamesData) => {
 
   const usdGgrTotal = data.gameStatistics.reduce((acc, curr) => acc + parseFloat(curr.usdGgr), 0);
   const gamesArray = Object.values(gamesMap);
-  gamesArray.push({ gameName: 'Total', total: usdGgrTotal.toString(), ...curMap});
+  gamesArray.push({ gameName: 'Total', total: usdGgrTotal.toString(), ...curMap });
 
   return gamesArray;
 };
