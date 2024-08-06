@@ -38,7 +38,7 @@ const transformDataForTable = (data?: CurrencyGamesData) => {
   });
 
   const gamesArray = Object.values(gamesMap);
-  gamesArray.push(totalRow);
+  gamesArray.unshift(totalRow);
 
   return gamesArray;
 };
