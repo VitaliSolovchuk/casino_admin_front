@@ -34,6 +34,7 @@ interface CurrencyGamesTableProps {
 
 const CurrencyGamesTable: FC<CurrencyGamesTableProps> = ({ data, isLoading, error }) => {
   const tableData = useMemo(() => transformDataForTable(data), [data]);
+  console.log(tableData);
 
   const columns: GridColDef[] = useMemo(() => {
     if (!data) return [{ field: 'gameName', headerName: 'Game', flex: 1 }];
