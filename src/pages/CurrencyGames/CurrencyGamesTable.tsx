@@ -18,7 +18,7 @@ const transformDataForTable = (data?: CurrencyGamesData) => {
         gamesMap[game.gameId].total = 0;
       }
       gamesMap[game.gameId][currencyStat.currencyName] = game.usdGameGgr;
-      gamesMap[game.gameId].total += (+game.usdGameGgr).toFixed(2);
+      gamesMap[game.gameId].total += +(+game.usdGameGgr).toFixed(2);
     });
   });
 
