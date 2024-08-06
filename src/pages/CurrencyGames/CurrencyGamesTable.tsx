@@ -7,8 +7,10 @@ const transformDataForTable = (data?: CurrencyGamesData) => {
   if (!data) return [];
 
   const gamesMap: Record<number, Record<string, any>> = {};
+  const curMap: Record<string, number> = {};
 
   data.gameStatistics.forEach((currencyStat) => {
+    curMap[currencyStat.currencyName] = 0;
     currencyStat.games.forEach((game) => {
       if (!gamesMap[game.gameId]) {
         gamesMap[game.gameId] = {
@@ -19,6 +21,7 @@ const transformDataForTable = (data?: CurrencyGamesData) => {
       }
       gamesMap[game.gameId][currencyStat.currencyName] = game.usdGameGgr;
       gamesMap[game.gameId].total += +game.usdGameGgr;
+      curMap[currencyStat.currencyName] += +game.usdGameGgr;
     });
   });
 
@@ -29,7 +32,7 @@ const transformDataForTable = (data?: CurrencyGamesData) => {
 
   const usdGgrTotal = data.gameStatistics.reduce((acc, curr) => acc + parseFloat(curr.usdGgr), 0);
   const gamesArray = Object.values(gamesMap);
-  gamesArray.push({ gameName: 'Total', total: usdGgrTotal.toString() });
+  gamesArray.push({ gameName: 'Total', total: usdGgrTotal.toString() }, Object.values(curMap));
 
   return gamesArray;
 };
