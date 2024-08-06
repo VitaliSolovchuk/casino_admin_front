@@ -61,14 +61,14 @@ const CurrencyGamesTable: FC<CurrencyGamesTableProps> = ({ data, isLoading, erro
         field: 'gameName',
         headerName: 'Game',
         flex: 1,
-        minWidth: 100,
+        minWidth: 80,
         type: 'string',
       },
       {
         field: 'total',
         headerName: 'USD Total',
         flex: 1,
-        minWidth: 150,
+        minWidth: 80,
         type: 'number',
         renderCell: (params: GridRenderCellParams<any, any>) => (
           <span style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}>
@@ -80,7 +80,7 @@ const CurrencyGamesTable: FC<CurrencyGamesTableProps> = ({ data, isLoading, erro
         field: stat.currencyName,
         headerName: stat.currencyName,
         flex: 1,
-        minWidth: 100,
+        minWidth: 70,
         type: 'number',
         renderCell: (params: GridRenderCellParams<any, any>) => (
           <span style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}>
