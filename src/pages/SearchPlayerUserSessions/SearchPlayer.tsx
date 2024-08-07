@@ -34,7 +34,8 @@ const SearchPlayer: FC = () => {
           startDate: null,
           endDate: null,
         },
-        ...dto,
+        playerId: dto.playerId || '',
+        userId: dto.userId || 0,
       });
       setSessions(data);
     } catch (error) {
@@ -48,7 +49,7 @@ const SearchPlayer: FC = () => {
     if (playerId) {
       fetchSessions({ playerId });
     } else if (userId) {
-      fetchSessions({ userId });
+      fetchSessions({ userId: +userId });
     }
   }, [playerId, userId, filterModel, paginationModel]);
 

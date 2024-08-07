@@ -15,7 +15,7 @@ export interface Session {
   endDate: Date;
 }
 
-export interface postPlayerUserSessionsProps {
+export interface postPlayerUserSessionsProps extends SessionsForUserDto{
   filterModel: GridFilterModel,
   paginationModel: GridPaginationModel,
   filterDate: {
@@ -26,5 +26,5 @@ export interface postPlayerUserSessionsProps {
 
 export interface SessionsForUserDto {
   playerId?: string;
-  userId?: string;
+  userId?: number;
 }
