@@ -81,6 +81,7 @@ const HighlightCell: FC<{ params: GridRenderCellParams }> = ({ params }) => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}
+      className="cell-for-hover"
     >
       {params.value}
     </div>
