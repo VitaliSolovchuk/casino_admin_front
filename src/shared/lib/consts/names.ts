@@ -4,7 +4,7 @@ export const names = {
   Partners: 'Partners',
   Games: 'Games',
   СurrencyGames: 'Currency/Games',
-
+  SearchPlayer: 'SearchPlayer',
   Players: 'Players',
   SessionEvents: 'Session Events',
   Login: 'Login',

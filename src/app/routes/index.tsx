@@ -1,13 +1,14 @@
 import React, { ReactElement } from 'react';
 import { Navigate, RouteProps } from 'react-router-dom';
 import Partners from 'pages/Partners/Partners';
-import Players from 'pages/Players/Players';
 import SessionEvents from 'pages/SessionEvents/SessionEvents';
 import Dashboard from 'pages/Dashboard/Dashboard';
 import { paths } from 'shared/lib/consts/paths';
 import { names } from 'shared/lib/consts/names';
 import Games from 'pages/Games/Games';
 import CurrencyGames from 'pages/CurrencyGames/CurrencyGames';
+import Players from 'pages/Sessions/Players';
+import SearchPlayer from 'pages/SearchPlayerUserSessions/SearchPlayer';
 import Auth from '../../widgets/auth/ui/Auth';
 
 export type AppRoute = RouteProps & {
@@ -62,6 +63,11 @@ export const authProtectedRoutes: AppRoute[] = [
     path: paths.players,
     name: names.Players,
     element: <Players />,
+  },
+  {
+    path: paths.searchplayer,
+    name: names.SearchPlayer,
+    element: <SearchPlayer />,
   },
   {
     path: paths.sessionEvents,
