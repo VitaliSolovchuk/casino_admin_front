@@ -34,8 +34,8 @@ const SearchPlayer: FC = () => {
           startDate: null,
           endDate: null,
         },
-        playerId: dto.playerId || '',
-        userId: dto.userId || 0,
+        playerId: dto.playerId,
+        userId: dto.userId,
       });
       setSessions(data);
     } catch (error) {
