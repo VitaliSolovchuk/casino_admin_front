@@ -155,7 +155,7 @@ const SearchPlayer: FC = () => {
         error={error as Error}
         columns={columns}
         handleRowClick={handleRowClick}
-        title="SearchPlayer Table2"
+        title="SearchPlayer Table"
         sortModel={sortModel}
         onSortModelChange={handleSortChange}
         showDateRangeFilter={false}
