@@ -50,7 +50,7 @@ interface CurrencyGamesTableProps {
 }
 
 const HighlightCell: FC<{ params: GridRenderCellParams }> = ({ params }) => {
-  const apiRef = useGridApiContext();
+  // const apiRef = useGridApiContext();
   const rowId = params.id;
   const colField = params.field;
 

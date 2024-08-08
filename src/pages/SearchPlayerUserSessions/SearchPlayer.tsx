@@ -101,11 +101,22 @@ const SearchPlayer: FC = () => {
     { field: 'endDate', headerName: 'End Date', flex: 1 },
   ], []);
 
-  const rowId = (row: Session) => `${row.sessionId}`;
+  const rowId = (row: Session) => `${row.playerId}-${row.sessionId}`;
 
-  const handleRowClick = ({ id }: { id: number }) => {
-    const session = sessions.find((session) => session.sessionId === id.toString());
-    if (session?.sessionId) {
+  const handleRowClick = ({ id }: { id: string }) => {
+    // Split the combined key back into playerId and sessionId
+    const [clickedPlayerId, clickedSessionId] = id.split('-');
+
+    const session = sessions.find(
+      (session) => session.playerId === clickedPlayerId && session.sessionId === clickedSessionId,
+    );
+
+    if (!session) {
+      console.error(`Session with ID ${id} not found.`);
+      return;
+    }
+
+    if (session.sessionId) {
       queryClient.invalidateQueries({ queryKey: 'session' })
         .then(() => navigate(`${paths.sessionEvents}/?id=${session.sessionId}`));
     }

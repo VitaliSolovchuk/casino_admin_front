@@ -28,7 +28,7 @@ import styles from './TableGrid.module.scss';
     columns: GridColDef[];
     rowId?: GridRowIdGetter<any>;
     title: string;
-    handleRowClick?: ({ id }: { id: number }) => void;
+    handleRowClick?: ({ id }: { id: any }) => void;
     sortModel: GridSortModel;
     onSortModelChange: (model: GridSortModel) => void;
     showDateRangeFilter?: boolean; // Новый пропс для управления видимостью календаря
