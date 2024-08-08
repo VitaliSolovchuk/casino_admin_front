@@ -101,24 +101,21 @@ const SearchPlayer: FC = () => {
     { field: 'endDate', headerName: 'End Date', flex: 1 },
   ], []);
 
-  const rowId = (row: Session) => `${row.playerId}-${row.sessionId}`;
+  const rowId = (row: Session): string => `${row.playerId}-${row.sessionId}`;
 
-  const handleRowClick = ({ id }: { id: string }) => {
-    // Split the combined key back into playerId and sessionId
-    const [clickedPlayerId, clickedSessionId] = id.split('-');
-
-    const session = sessions.find(
-      (session) => session.playerId === clickedPlayerId && session.sessionId === clickedSessionId,
-    );
-
-    if (!session) {
-      console.error(`Session with ID ${id} not found.`);
-      return;
-    }
-
-    if (session.sessionId) {
+  const handleRowClick = (row: Record<string, number>) => {
+    if (row.sessionId) {
       queryClient.invalidateQueries({ queryKey: 'session' })
-        .then(() => navigate(`${paths.sessionEvents}/?id=${session.sessionId}`));
+        .then(() => navigate(`${paths.sessionEvents}/?id=${row.sessionId}`, {
+          state: {
+            filterModel,
+            paginationModel,
+            filterDate: {
+              startDate: null,
+              endDate: null,
+            },
+          },
+        }));
     }
   };
 
@@ -158,7 +155,7 @@ const SearchPlayer: FC = () => {
         error={error as Error}
         columns={columns}
         handleRowClick={handleRowClick}
-        title="SearchPlayer Table"
+        title="SearchPlayer Table2"
         sortModel={sortModel}
         onSortModelChange={handleSortChange}
         showDateRangeFilter={false}
