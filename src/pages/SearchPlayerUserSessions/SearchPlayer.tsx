@@ -11,6 +11,8 @@ import useTableGrid from 'widgets/tableGrid/model/tableGridStore';
 import TableGridLocalSort from './TableGridLocalSort';
 
 const SearchPlayer: FC = () => {
+  const [playerIdInput, setPlayerIdInput] = useState<string | null>(null);
+  const [userIdInput, setUserIdInput] = useState<string | null>(null);
   const [playerId, setPlayerId] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
   const [sessions, setSessions] = useState<Session[]>([]);
@@ -45,12 +47,15 @@ const SearchPlayer: FC = () => {
   };
 
   const handleSubmit = useCallback(() => {
-    if (playerId) {
-      fetchSessions({ playerId });
-    } else if (userId) {
-      fetchSessions({ userId: +userId });
+    setPlayerId(playerIdInput);
+    setUserId(userIdInput);
+
+    if (playerIdInput) {
+      fetchSessions({ playerId: playerIdInput });
+    } else if (userIdInput) {
+      fetchSessions({ userId: +userIdInput });
     }
-  }, [playerId, userId, filterModel, paginationModel]);
+  }, [playerIdInput, userIdInput, filterModel, paginationModel]);
 
   const sortedData = useMemo(() => {
     if (!sessions || !sortModel || sortModel.length === 0) return [];
@@ -114,10 +119,10 @@ const SearchPlayer: FC = () => {
           <input
             id="playerIdInput"
             type="text"
-            value={playerId || ''}
+            value={playerIdInput || ''}
             onChange={(e) => {
-              setPlayerId(e.target.value);
-              setUserId(null); // Очистка userId при вводе playerId
+              setPlayerIdInput(e.target.value);
+              setUserIdInput(null); // Очистка userId при вводе playerId
             }}
           />
         </label>
@@ -126,10 +131,10 @@ const SearchPlayer: FC = () => {
           <input
             id="userIdInput"
             type="text"
-            value={userId || ''}
+            value={userIdInput || ''}
             onChange={(e) => {
-              setUserId(e.target.value);
-              setPlayerId(null); // Очистка playerId при вводе userId
+              setUserIdInput(e.target.value);
+              setPlayerIdInput(null); // Очистка playerId при вводе userId
             }}
           />
         </label>
@@ -142,7 +147,7 @@ const SearchPlayer: FC = () => {
         error={error as Error}
         columns={columns}
         handleRowClick={handleRowClick}
-        title="Sessions Table"
+        title="SearchPlayer Table"
         sortModel={sortModel}
         onSortModelChange={handleSortChange}
         showDateRangeFilter={false}
