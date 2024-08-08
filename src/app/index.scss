@@ -82,3 +82,21 @@
     }
   }
 }
+
+/* Styles for table hover on currencygames page */
+.cell-for-hover {
+  display: flex;
+  align-items: center;
+  width: calc(100% + 20px);
+  height: 100%;
+  margin-left: -10px;
+  margin-right: -10px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.highlight-row {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+.highlight-col {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}

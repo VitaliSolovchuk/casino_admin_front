@@ -8,7 +8,7 @@ import { useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { paths } from 'shared/lib/consts/paths';
 import useTableGrid from 'widgets/tableGrid/model/tableGridStore';
-import TableGridLocalSort from 'widgets/tableGrid/ui/TableGridLocalSort';
+import TableGridLocalSort from './TableGridLocalSort';
 
 const SearchPlayer: FC = () => {
   const [playerId, setPlayerId] = useState<string | null>(null);
@@ -145,6 +145,7 @@ const SearchPlayer: FC = () => {
         title="Sessions Table"
         sortModel={sortModel}
         onSortModelChange={handleSortChange}
+        showDateRangeFilter={false}
       />
     </div>
   );

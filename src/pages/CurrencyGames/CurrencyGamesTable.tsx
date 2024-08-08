@@ -1,5 +1,5 @@
 import React, { useMemo, FC } from 'react';
-import { GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
+import { GridColDef, GridRenderCellParams, useGridApiContext } from '@mui/x-data-grid';
 import { CurrencyGamesData } from 'features/currency-games/types/types';
 import TableGrid from 'widgets/tableGrid/ui/TableGrid';
 
@@ -49,9 +49,47 @@ interface CurrencyGamesTableProps {
   error: Error;
 }
 
+const HighlightCell: FC<{ params: GridRenderCellParams }> = ({ params }) => {
+  const apiRef = useGridApiContext();
+  const rowId = params.id;
+  const colField = params.field;
+
+  const handleMouseEnter = () => {
+    const table = document.querySelector('.MuiDataGrid-root');
+    if (table) {
+      const rows = table.querySelectorAll('.MuiDataGrid-row');
+      const cols = table.querySelectorAll(`.MuiDataGrid-cell[data-field='${colField}']`);
+      const rowIndex = Array.from(rows).findIndex((row) => row.getAttribute('data-id') === String(rowId));
+      rows[rowIndex]?.classList.add('highlight-row');
+      cols.forEach((col) => col.classList.add('highlight-col'));
+    }
+  };
+
+  const handleMouseLeave = () => {
+    const table = document.querySelector('.MuiDataGrid-root');
+    if (table) {
+      const rows = table.querySelectorAll('.MuiDataGrid-row');
+      const cols = table.querySelectorAll(`.MuiDataGrid-cell[data-field='${colField}']`);
+      const rowIndex = Array.from(rows).findIndex((row) => row.getAttribute('data-id') === String(rowId));
+      rows[rowIndex]?.classList.remove('highlight-row');
+      cols.forEach((col) => col.classList.remove('highlight-col'));
+    }
+  };
+
+  return (
+    <div
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}
+      className="cell-for-hover"
+    >
+      {params.value}
+    </div>
+  );
+};
+
 const CurrencyGamesTable: FC<CurrencyGamesTableProps> = ({ data, isLoading, error }) => {
   const tableData = useMemo(() => transformDataForTable(data), [data]);
-  console.log(tableData);
 
   const columns: GridColDef[] = useMemo(() => {
     if (!data) return [{ field: 'gameName', headerName: 'Game', flex: 1 }];
@@ -63,6 +101,9 @@ const CurrencyGamesTable: FC<CurrencyGamesTableProps> = ({ data, isLoading, erro
         flex: 1,
         minWidth: 75,
         type: 'string',
+        renderCell: (params: GridRenderCellParams<any, any>) => (
+          <HighlightCell params={params} />
+        ),
       },
       {
         field: 'total',
@@ -71,9 +112,7 @@ const CurrencyGamesTable: FC<CurrencyGamesTableProps> = ({ data, isLoading, erro
         minWidth: 85,
         type: 'number',
         renderCell: (params: GridRenderCellParams<any, any>) => (
-          <span style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}>
-            {params.value}
-          </span>
+          <HighlightCell params={params} />
         ),
       },
       ...data.gameStatistics.map((stat) => ({
@@ -83,9 +122,7 @@ const CurrencyGamesTable: FC<CurrencyGamesTableProps> = ({ data, isLoading, erro
         minWidth: 65,
         type: 'number',
         renderCell: (params: GridRenderCellParams<any, any>) => (
-          <span style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}>
-            {params.value}
-          </span>
+          <HighlightCell params={params} />
         ),
       })),
     ];
