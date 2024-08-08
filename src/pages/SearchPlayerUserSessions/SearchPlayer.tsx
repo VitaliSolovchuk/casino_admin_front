@@ -101,7 +101,7 @@ const SearchPlayer: FC = () => {
     { field: 'endDate', headerName: 'End Date', flex: 1 },
   ], []);
 
-  const rowId = (row: Session) => `${row.playerId}-${row.sessionId}`;
+  const rowId = (row: Session) => `${row.sessionId}`;
 
   const handleRowClick = ({ id }: { id: number }) => {
     const session = sessions.find((session) => session.sessionId === id.toString());
