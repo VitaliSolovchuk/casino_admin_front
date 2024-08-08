@@ -2,7 +2,7 @@ import { GridColDef, GridSortModel } from '@mui/x-data-grid';
 import { postSessionsForPlayer } from 'features/search-player-user-sessions/api';
 import { Session, SessionsForUserDto } from 'features/search-player-user-sessions/types/types';
 import {
-  FC, useCallback, useEffect, useMemo, useRef, useState,
+  FC, useCallback, useMemo, useState,
 } from 'react';
 import { useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
@@ -20,7 +20,6 @@ const SearchPlayer: FC = () => {
   const { filterModel, paginationModel } = useTableGrid((state) => state);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const isFirstRender = useRef(true);
   const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'totalProfitUSD', sort: 'desc' }]);
 
   const fetchSessions = async (dto: SessionsForUserDto) => {
@@ -53,14 +52,6 @@ const SearchPlayer: FC = () => {
     }
   }, [playerId, userId, filterModel, paginationModel]);
 
-  useEffect(() => {
-    if (!isFirstRender.current) {
-      handleSubmit();
-    } else {
-      isFirstRender.current = false;
-    }
-  }, [paginationModel, filterModel, handleSubmit]);
-
   const sortedData = useMemo(() => {
     if (!sessions || !sortModel || sortModel.length === 0) return [];
 
@@ -70,7 +61,6 @@ const SearchPlayer: FC = () => {
       let valueA = a[field as keyof Session];
       let valueB = b[field as keyof Session];
 
-      // eslint-disable-next-line max-len
       const isNumeric = (val: any) => typeof val === 'number' || (typeof val === 'string' && !Number.isNaN(parseFloat(val)) && Number.isFinite(val));
 
       if (isNumeric(valueA)) {
