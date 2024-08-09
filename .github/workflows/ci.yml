@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - deploy
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    concurrency: ci-${{ github.ref }}-build
+
+    steps:
+      - name: SSH to server and pull changes
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ vars.DEPLOY_HOST }}
+          port: ${{ vars.DEPLOY_PORT }}
+          username: ${{ vars.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          script: |
+            cd ${{ vars.DEPLOY_PATH }}
+            git pull
+            npm install
