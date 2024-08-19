@@ -25,9 +25,11 @@ interface Row {
 const SessionsForGameCurrency: FC = () => {
   const { search, state } = useLocation();
   const params = new URLSearchParams(search);
-  const partnerId = params.get('partner-id');
-  const currencyName = params.get('currency-name');
-  const gameName = params.get('game-name');
+
+  // Получаем параметры из URL
+  const partnerId = params.get('partner-id') || '5';
+  const currencyName = params.get('currency-name') || 'USDT';
+  const gameName = params.get('game-name') || 'dice';
 
   const navigate = useNavigate();
   const {
@@ -92,7 +94,7 @@ const SessionsForGameCurrency: FC = () => {
       let valueA = a[field as keyof SessionForPlayer];
       let valueB = b[field as keyof SessionForPlayer];
 
-      // число в строке
+      // Проверка на числовое значение
       // eslint-disable-next-line max-len
       const isNumeric = (val: any) => typeof val === 'number' || (typeof val === 'string' && !Number.isNaN(parseFloat(val)) && Number.isFinite(val));
 
