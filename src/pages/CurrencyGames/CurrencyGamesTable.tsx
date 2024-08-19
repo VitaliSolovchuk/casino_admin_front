@@ -1,5 +1,7 @@
 import React, { useMemo, FC } from 'react';
-import { GridColDef, GridRenderCellParams, useGridApiContext } from '@mui/x-data-grid';
+import { GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
+import { useNavigate } from 'react-router-dom'; // Добавлено для навигации
+import { paths } from 'shared/lib/consts/paths'; // Добавьте, если ещё нет
 import { CurrencyGamesData } from 'features/currency-games/types/types';
 import TableGrid from 'widgets/tableGrid/ui/TableGrid';
 
@@ -25,7 +27,6 @@ const transformDataForTable = (data?: CurrencyGamesData) => {
     });
   });
 
-  // Округляем итоговые значения total до двух знаков после запятой
   Object.values(gamesMap).forEach((game) => {
     game.total = game.total.toFixed(2);
   });
@@ -50,7 +51,7 @@ interface CurrencyGamesTableProps {
 }
 
 const HighlightCell: FC<{ params: GridRenderCellParams }> = ({ params }) => {
-  // const apiRef = useGridApiContext();
+  const navigate = useNavigate(); // Используем для навигации
   const rowId = params.id;
   const colField = params.field;
 
@@ -76,11 +77,24 @@ const HighlightCell: FC<{ params: GridRenderCellParams }> = ({ params }) => {
     }
   };
 
+  const handleCellClick = () => {
+    const partnerId = 5; // Константный partnerId
+    const currencyName = colField; // Название валюты – это поле
+    // eslint-disable-next-line prefer-destructuring
+    const gameName = params.row.gameName;
+
+    // Переход на новую страницу с передачей параметров
+    navigate(
+      `${paths.sessionsForGameCurrency}?partner-id=${partnerId}&currency-name=${currencyName}&game-name=${gameName}`,
+    );
+  };
+
   return (
     <div
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}
+      onClick={handleCellClick} // Добавляем событие клика
+      style={{ whiteSpace: 'normal', wordWrap: 'break-word', cursor: 'pointer' }}
       className="cell-for-hover"
     >
       {params.value}
