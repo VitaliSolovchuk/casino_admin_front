@@ -10,6 +10,7 @@ import CurrencyGames from 'pages/CurrencyGames/CurrencyGames';
 import Players from 'pages/Sessions/Players';
 import SearchPlayer from 'pages/SearchPlayerUserSessions/SearchPlayer';
 import Auth from '../../widgets/auth/ui/Auth';
+import SessionsForGameCurrency from '../../pages/SessionsForGameCurrency/SessionsForGameCurrency';
 
 export type AppRoute = RouteProps & {
   path: string;
@@ -73,5 +74,10 @@ export const authProtectedRoutes: AppRoute[] = [
     path: paths.sessionEvents,
     name: names.SessionEvents,
     element: <SessionEvents />,
+  },
+  {
+    path: paths.sessionsForGameCurrency,
+    name: names.SessionsForGameCurrency,
+    element: <SessionsForGameCurrency />,
   },
 ];

@@ -4,7 +4,7 @@ export const paths = {
   partners: '/partners',
   games: '/games',
   currencygames: '/currencygames',
-  sessionsForGameCurrency: 'sessionsforgamecurrency',
+  sessionsForGameCurrency: '/currencygames/sessions-for-gamecurrency',
   searchplayer: '/searchplayer',
   players: '/partners/players',
   sessionEvents: '/partners/players/sessions',
