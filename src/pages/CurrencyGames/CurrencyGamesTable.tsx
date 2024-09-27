@@ -1,7 +1,7 @@
 import React, { useMemo, FC } from 'react';
 import { GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom'; // Добавлено для навигации
-import { paths } from 'shared/lib/consts/paths'; // Добавьте, если ещё нет
+import { paths } from 'shared/lib/consts/paths';
 import { CurrencyGamesData } from 'features/currency-games/types/types';
 import TableGrid from 'widgets/tableGrid/ui/TableGrid';
 
