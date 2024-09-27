@@ -17,7 +17,7 @@ const AppBarDesk: FC<Props> = ({ totalGGR }) => (
     <div className="sidebar">
       <ul>
         <li><NavLink to={paths.dashboard}>{names.Dashboard}</NavLink></li>
-        <li><NavLink to={paths.partners}>{names.Partners}</NavLink></li>
+        <li><NavLink to={paths.partnerCurrency}>{names.Partners}</NavLink></li>
         <li><NavLink to={paths.games}>{names.Games}</NavLink></li>
         <li><NavLink to={paths.currencygames}>{names.СurrencyGames}</NavLink></li>
         <li><NavLink to={paths.searchplayer}>{names.SearchPlayer}</NavLink></li>

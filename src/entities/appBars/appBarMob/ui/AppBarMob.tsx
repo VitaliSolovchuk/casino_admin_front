@@ -92,7 +92,7 @@ function ResponsiveAppBar() {
               </MenuItem>
               <MenuItem onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">
-                  <NavLink to={paths.partners} style={{ color: '#79829c' }}>{names.Partners}</NavLink>
+                  <NavLink to={paths.partnerCurrency} style={{ color: '#79829c' }}>{names.Partners}</NavLink>
                 </Typography>
               </MenuItem>
             </Menu>

@@ -9,4 +9,5 @@ export const names = {
   SessionEvents: 'Session Events',
   Login: 'Login',
   SessionsForGameCurrency: 'Sessions For Game Currency',
+  PartnerCurrency: 'Partner Currenсy',
 };

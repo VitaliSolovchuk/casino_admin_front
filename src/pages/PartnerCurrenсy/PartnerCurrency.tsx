@@ -1,15 +1,16 @@
 import React, {
-  FC, useEffect, useMemo, useRef, useState,
+  FC, useEffect, useMemo, useRef,
+  useState,
 } from 'react';
 import { GridColDef, GridSortModel } from '@mui/x-data-grid';
+import { useNavigate } from 'react-router-dom';
 import useTableGrid from 'widgets/tableGrid/model/tableGridStore';
 import useFilterDateRange from 'entities/dateRangeCalendar/model/dateRangeStore';
 import { useDataRequest } from 'shared/lib/hooks/useDataRequest';
-import { PartnerData, PartnerCurrencyStatistic } from 'features/partners/types/types';
+import { PartnerCurrensyData, PartnerCurrency } from 'features/partners/types/types';
 import { useQueryClient } from 'react-query';
-import { postPartnersStatisticData } from 'features/partners/api';
+import { postPartnersCurrenseStatisticData } from 'features/partners/api';
 import { paths } from 'shared/lib/consts/paths';
-import { useLocation, useNavigate } from 'react-router-dom';
 import { useMutationRequest } from 'shared/lib/hooks/useMutationRequest';
 import TableGridLocalSort from 'widgets/tableGrid/ui/TableGridLocalSort';
 
@@ -18,11 +19,7 @@ interface Row {
   currencyName: string;
 }
 
-const Partners: FC = () => {
-  const { search, state } = useLocation();
-  const params = new URLSearchParams(search);
-  const partnerId = params.get('id');
-
+const PartnerCurrenсy: FC = () => {
   const {
     filterModel,
     // sortModel,
@@ -42,10 +39,9 @@ const Partners: FC = () => {
     data,
     isLoading,
     error,
-  } = useDataRequest<PartnerData>(
-    'partners',
-    () => postPartnersStatisticData({
-      partnerId,
+  } = useDataRequest<PartnerCurrensyData>(
+    'partner-currency',
+    () => postPartnersCurrenseStatisticData({
       paginationModel,
       // sortModel,
       filterModel,
@@ -56,11 +52,10 @@ const Partners: FC = () => {
     }),
   );
 
-  const { mutate, isLoading: isLoadingMutate } = useMutationRequest<PartnerData>(
-    'partners',
-    () => postPartnersStatisticData(
+  const { mutate, isLoading: isLoadingMutate } = useMutationRequest<PartnerCurrensyData>(
+    'partner-currency',
+    () => postPartnersCurrenseStatisticData(
       {
-        partnerId,
         paginationModel,
         // sortModel,
         filterModel,
@@ -71,6 +66,16 @@ const Partners: FC = () => {
       },
     ),
   );
+
+  useEffect(() => {
+    if (!isLoading && data) {
+      console.log(data);
+    }
+
+    if (error) {
+      console.error('Error fetching data:', error);
+    }
+  }, [data, isLoading, error]);
 
   useEffect(() => {
     if (!isFirstRender.current) {
@@ -87,9 +92,9 @@ const Partners: FC = () => {
 
     const { field, sort } = sortModel[0];
 
-    const sorted = [...data.currencyStatistics].sort((a, b) => {
-      let valueA = a[field as keyof PartnerCurrencyStatistic];
-      let valueB = b[field as keyof PartnerCurrencyStatistic];
+    const sorted = [...data.statistics].sort((a, b) => {
+      let valueA = a[field as keyof PartnerCurrency];
+      let valueB = b[field as keyof PartnerCurrency];
 
       // число в строке
       // eslint-disable-next-line max-len
@@ -122,51 +127,46 @@ const Partners: FC = () => {
       flex: 1,
     },
     {
-      field: 'currencyName',
-      headerName: 'Currency',
-      flex: 1,
-    },
-    {
       field: 'totalPlayers',
-      headerName: 'Players',
+      headerName: 'Total Players',
       flex: 1,
     },
     {
       field: 'totalSessions',
-      headerName: 'Sessions',
+      headerName: 'Total Sessions',
       flex: 1,
     },
     {
       field: 'totalActions',
-      headerName: 'Actions',
+      headerName: 'Total Actions',
       flex: 1,
     },
     {
       field: 'totalAmountBetUsd',
-      headerName: 'Bet Usd',
+      headerName: 'Total Amount Bet (USD)',
       flex: 1,
     },
     {
       field: 'totalAmountWinUsd',
-      headerName: 'Win Usd',
+      headerName: 'Total Amount Win (USD)',
       flex: 1,
     },
     {
       field: 'ggrUsd',
-      headerName: 'Profit USD',
+      headerName: 'GGR (USD)',
       flex: 1,
     },
     {
       field: 'rtp',
-      headerName: 'RTP %',
+      headerName: 'RTP (%)',
       flex: 1,
     },
   ], []);
 
   const handleRowClick = (row: Record<string, number>) => {
     if (row.partnerId) {
-      queryClient.invalidateQueries({ queryKey: 'players' })
-        .then(() => navigate(`${paths.players}/?id=${row.partnerId}&currency=${row.currencyName}`));
+      queryClient.invalidateQueries({ queryKey: 'partners' })
+        .then(() => navigate(`${paths.partners}/?id=${row.partnerId}`));
     }
   };
   const rowId = (row: Row) => `${row.partnerId}-${row.currencyName}`;
@@ -179,11 +179,11 @@ const Partners: FC = () => {
         error={error as Error}
         columns={columns}
         handleRowClick={handleRowClick}
-        title="Partners Table"
+        title="Partners Currency"
         sortModel={sortModel}
         onSortModelChange={handleSortChange}
       />
     </div>
   );
 };
-export default Partners;
+export default PartnerCurrenсy;
