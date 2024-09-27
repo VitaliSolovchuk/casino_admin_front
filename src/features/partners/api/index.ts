@@ -39,9 +39,6 @@ export const postGamesData = async (props: GamesDataProps) => {
 
 export const postPartnersStatisticData = async (props: PartnersDataProps) => {
   const { partnerId, ...requestData } = props;
-
-  console.log('props', props);
-
   const queryParams = `partnerId=${partnerId}`;
   try {
     const response = await axios.post<PartnerData>(
@@ -61,7 +58,6 @@ export const postPartnersCurrenseStatisticData = async (props: PartnersDataProps
       `${baseURL}/admin-panel-statistics/get-grouped-by-partner`,
       props,
     );
-
     return response.data;
   } catch (error) {
     console.error(error);
