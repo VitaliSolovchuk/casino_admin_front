@@ -1,6 +1,6 @@
 import { GridColDef, GridSortModel } from '@mui/x-data-grid';
 import { postSessionsForPlayer } from 'features/search-player-user-sessions/api';
-import { Session, SessionsForUserDto } from 'features/search-player-user-sessions/types/types';
+import { ItemSession, SessionResponse, SessionsForUserDto } from 'features/search-player-user-sessions/types/types';
 import {
   FC, useCallback, useMemo, useState,
 } from 'react';
@@ -13,7 +13,7 @@ import TableGridLocalSort from './TableGridLocalSort';
 const SearchPlayer: FC = () => {
   const [playerIdInput, setPlayerIdInput] = useState<string | null>(null);
   const [playerId, setPlayerId] = useState<string | null>(null);
-  const [sessions, setSessions] = useState<Session[]>([]);
+  const [sessions, setSessions] = useState<ItemSession[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
@@ -35,7 +35,7 @@ const SearchPlayer: FC = () => {
         },
         playerId: dto.playerId,
       });
-      setSessions(data);
+      setSessions(data.items);
     } catch (error) {
       setError(error as Error);
     } finally {
@@ -57,8 +57,8 @@ const SearchPlayer: FC = () => {
     const { field, sort } = sortModel[0];
 
     const sorted = [...sessions].sort((a, b) => {
-      let valueA = a[field as keyof Session];
-      let valueB = b[field as keyof Session];
+      let valueA = a[field as keyof ItemSession];
+      let valueB = b[field as keyof ItemSession];
 
       const isNumeric = (val: any) => typeof val === 'number' || (typeof val === 'string' && !Number.isNaN(parseFloat(val)) && Number.isFinite(val));
 
@@ -95,7 +95,7 @@ const SearchPlayer: FC = () => {
     { field: 'endDate', headerName: 'End Date', flex: 1 },
   ], []);
 
-  const rowId = (row: Session): string => `${row.playerId}-${row.sessionId}`;
+  const rowId = (row: ItemSession): string => `${row.playerId}-${row.sessionId}`;
 
   const handleRowClick = (row: Record<string, number>) => {
     if (row.sessionId) {
