@@ -9,6 +9,7 @@ import Games from 'pages/Games/Games';
 import CurrencyGames from 'pages/CurrencyGames/CurrencyGames';
 import Players from 'pages/Sessions/Players';
 import SearchPlayer from 'pages/SearchPlayerUserSessions/SearchPlayer';
+import PartnerCurrency from 'pages/PartnerCurrenсy/PartnerCurrency';
 import Auth from '../../widgets/auth/ui/Auth';
 import SessionsForGameCurrency from '../../pages/SessionsForGameCurrency/SessionsForGameCurrency';
 
@@ -49,6 +50,11 @@ export const authProtectedRoutes: AppRoute[] = [
     path: paths.partners,
     name: names.Partners,
     element: <Partners />,
+  },
+  {
+    path: paths.partnerCurrency,
+    name: names.PartnerCurrency,
+    element: <PartnerCurrency />,
   },
   {
     path: paths.currencygames,

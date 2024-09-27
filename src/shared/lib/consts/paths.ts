@@ -1,12 +1,13 @@
 export const paths = {
   home: '/',
   dashboard: '/dashboard',
-  partners: '/partners',
+  partners: '/partner-currenсy/partners',
   games: '/games',
   currencygames: '/currencygames',
   sessionsForGameCurrency: '/currencygames/sessions-for-gamecurrency',
   searchplayer: '/searchplayer',
-  players: '/partners/players',
-  sessionEvents: '/partners/players/sessions',
+  players: '/partner-currenсy/partners/players',
+  sessionEvents: '/partner-currenсy/partners/players/sessions',
   login: '/login',
+  partnerCurrency: '/partner-currenсy',
 };
