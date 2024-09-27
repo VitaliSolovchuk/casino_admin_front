@@ -12,9 +12,7 @@ import TableGridLocalSort from './TableGridLocalSort';
 
 const SearchPlayer: FC = () => {
   const [playerIdInput, setPlayerIdInput] = useState<string | null>(null);
-  const [userIdInput, setUserIdInput] = useState<string | null>(null);
   const [playerId, setPlayerId] = useState<string | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
   const [sessions, setSessions] = useState<Session[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
@@ -36,7 +34,6 @@ const SearchPlayer: FC = () => {
           endDate: null,
         },
         playerId: dto.playerId,
-        userId: dto.userId,
       });
       setSessions(data);
     } catch (error) {
@@ -48,14 +45,11 @@ const SearchPlayer: FC = () => {
 
   const handleSubmit = useCallback(() => {
     setPlayerId(playerIdInput);
-    setUserId(userIdInput);
 
     if (playerIdInput) {
       fetchSessions({ playerId: playerIdInput });
-    } else if (userIdInput) {
-      fetchSessions({ userId: +userIdInput });
     }
-  }, [playerIdInput, userIdInput, filterModel, paginationModel]);
+  }, [playerIdInput, filterModel, paginationModel]);
 
   const sortedData = useMemo(() => {
     if (!sessions || !sortModel || sortModel.length === 0) return [];
@@ -130,19 +124,6 @@ const SearchPlayer: FC = () => {
             value={playerIdInput || ''}
             onChange={(e) => {
               setPlayerIdInput(e.target.value);
-              setUserIdInput(null); // Очистка userId при вводе playerId
-            }}
-          />
-        </label>
-        <label htmlFor="userIdInput">
-          User ID:
-          <input
-            id="userIdInput"
-            type="text"
-            value={userIdInput || ''}
-            onChange={(e) => {
-              setUserIdInput(e.target.value);
-              setPlayerIdInput(null); // Очистка playerId при вводе userId
             }}
           />
         </label>
