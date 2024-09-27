@@ -1,6 +1,6 @@
 import { GridColDef, GridSortModel } from '@mui/x-data-grid';
 import { postSessionsForPlayer } from 'features/search-player-user-sessions/api';
-import { ItemSession, SessionResponse, SessionsForUserDto } from 'features/search-player-user-sessions/types/types';
+import { ItemSession, SessionsForUserDto } from 'features/search-player-user-sessions/types/types';
 import {
   FC, useCallback, useMemo, useState,
 } from 'react';
@@ -12,7 +12,7 @@ import TableGridLocalSort from './TableGridLocalSort';
 
 const SearchPlayer: FC = () => {
   const [playerIdInput, setPlayerIdInput] = useState<string | null>(null);
-  const [playerId, setPlayerId] = useState<string | null>(null);
+  const [, setPlayerId] = useState<string | null>(null);
   const [sessions, setSessions] = useState<ItemSession[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
@@ -60,6 +60,7 @@ const SearchPlayer: FC = () => {
       let valueA = a[field as keyof ItemSession];
       let valueB = b[field as keyof ItemSession];
 
+      // eslint-disable-next-line max-len
       const isNumeric = (val: any) => typeof val === 'number' || (typeof val === 'string' && !Number.isNaN(parseFloat(val)) && Number.isFinite(val));
 
       if (isNumeric(valueA)) {
