@@ -1,62 +1,54 @@
 import { GridColDef, GridSortModel } from '@mui/x-data-grid';
 import { postSessionsForPlayer } from 'features/search-player-user-sessions/api';
-import { ItemSession, SessionsForUserDto } from 'features/search-player-user-sessions/types/types';
+import { ItemSession, SessionResponse } from 'features/search-player-user-sessions/types/types';
 import {
-  FC, useCallback, useMemo, useState,
+  FC, useCallback, useEffect, useMemo, useState, useRef,
 } from 'react';
 import { useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { paths } from 'shared/lib/consts/paths';
 import useTableGrid from 'widgets/tableGrid/model/tableGridStore';
+import { useDataRequest } from 'shared/lib/hooks/useDataRequest';
+import { useMutationRequest } from 'shared/lib/hooks/useMutationRequest';
 import TableGridLocalSort from './TableGridLocalSort';
 
 const SearchPlayer: FC = () => {
-  const [playerIdInput, setPlayerIdInput] = useState<string | null>(null);
-  const [, setPlayerId] = useState<string | null>(null);
-  const [sessions, setSessions] = useState<ItemSession[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
-
-  const { filterModel, paginationModel } = useTableGrid((state) => state);
+  const [playerIdInput, setPlayerIdInput] = useState<string>('');
+  const [playerId, setPlayerId] = useState<string | null>(null);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const isFirstRender = useRef(true);
   const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'totalProfitUSD', sort: 'desc' }]);
 
-  const fetchSessions = async (dto: SessionsForUserDto) => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const data = await postSessionsForPlayer({
-        filterModel,
-        paginationModel,
-        filterDate: {
-          startDate: null,
-          endDate: null,
-        },
-        playerId: dto.playerId,
-      });
-      setSessions(data.items);
-    } catch (error) {
-      setError(error as Error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const {
+    filterModel,
+    paginationModel,
+    setPaginationModel,
+  } = useTableGrid((state) => state);
 
-  const handleSubmit = useCallback(() => {
-    setPlayerId(playerIdInput);
-
-    if (playerIdInput) {
-      fetchSessions({ playerId: playerIdInput });
-    }
-  }, [playerIdInput, filterModel, paginationModel]);
+  const {
+    data,
+    isLoading,
+    error,
+  } = useDataRequest<SessionResponse>(
+    'fetch-sessions-',
+    () => postSessionsForPlayer({
+      paginationModel,
+      filterModel,
+      filterDate: {
+        startDate: null,
+        endDate: null,
+      },
+      playerId: playerIdInput,
+    }),
+  );
 
   const sortedData = useMemo(() => {
-    if (!sessions || !sortModel || sortModel.length === 0) return [];
+    if (!data || !sortModel || sortModel.length === 0) return [];
 
     const { field, sort } = sortModel[0];
 
-    const sorted = [...sessions].sort((a, b) => {
+    const sorted = [...data.items].sort((a, b) => {
       let valueA = a[field as keyof ItemSession];
       let valueB = b[field as keyof ItemSession];
 
@@ -77,11 +69,48 @@ const SearchPlayer: FC = () => {
       return 0;
     });
     return sorted;
-  }, [sessions, sortModel]);
+  }, [data, sortModel]);
 
   const handleSortChange = (model: GridSortModel) => {
     setSortModel(model);
   };
+
+  const { mutate, isLoading: isLoadingMutate } = useMutationRequest<SessionResponse>(
+    'fetch-sessions-',
+    () => postSessionsForPlayer({
+      paginationModel,
+      filterModel,
+      filterDate: {
+        startDate: null,
+        endDate: null,
+      },
+      playerId: playerIdInput,
+    }),
+  );
+
+  useEffect(() => {
+    if (!isLoading && data) {
+      console.log('Data fetched:', data);
+    }
+    if (error) {
+      console.error('Error fetching data:', error);
+    }
+  }, [data, isLoading, error]);
+
+  const handleSubmit = useCallback(() => {
+    setPlayerId(playerIdInput);
+    if (playerIdInput) {
+      mutate();
+    }
+  }, [playerIdInput, mutate]);
+
+  useEffect(() => {
+    if (!isFirstRender.current) {
+      mutate();
+    } else {
+      isFirstRender.current = false;
+    }
+  }, [mutate, paginationModel, filterModel]);
 
   const columns: GridColDef[] = useMemo(() => [
     { field: 'playerId', headerName: 'Player ID', flex: 1 },
@@ -122,10 +151,8 @@ const SearchPlayer: FC = () => {
           <input
             id="playerIdInput"
             type="text"
-            value={playerIdInput || ''}
-            onChange={(e) => {
-              setPlayerIdInput(e.target.value);
-            }}
+            value={playerIdInput}
+            onChange={(e) => setPlayerIdInput(e.target.value)}
           />
         </label>
         <button onClick={handleSubmit}>Submit</button>
@@ -133,7 +160,7 @@ const SearchPlayer: FC = () => {
       <TableGridLocalSort
         data={sortedData}
         rowId={rowId}
-        isLoading={isLoading}
+        isLoading={isLoading || isLoadingMutate}
         error={error as Error}
         columns={columns}
         handleRowClick={handleRowClick}

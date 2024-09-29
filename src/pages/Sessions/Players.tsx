@@ -85,7 +85,8 @@ const Players: FC = () => {
   const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'ggrUsd', sort: 'desc' }]);
 
   const sortedData = useMemo(() => {
-    if (!data || !sortModel || sortModel.length === 0) return [];
+    if (!data || data.length === 0) return [];
+    if (!sortModel || sortModel.length === 0) return data;
 
     const { field, sort } = sortModel[0];
 
@@ -93,8 +94,6 @@ const Players: FC = () => {
       let valueA = a[field as keyof Player];
       let valueB = b[field as keyof Player];
 
-      // число в строке
-      // eslint-disable-next-line max-len
       const isNumeric = (val: any) => typeof val === 'number' || (typeof val === 'string' && !Number.isNaN(parseFloat(val)) && Number.isFinite(val));
 
       if (isNumeric(valueA)) {
@@ -116,6 +115,10 @@ const Players: FC = () => {
   const handleSortChange = (model: GridSortModel) => {
     setSortModel(model);
   };
+
+  useEffect(() => {
+    console.log('SORT', sortModel);
+  });
 
   const columns: GridColDef[] = useMemo(() => [
     { field: 'playerId', headerName: 'Player ID', flex: 1 },

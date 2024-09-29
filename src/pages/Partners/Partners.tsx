@@ -19,7 +19,7 @@ interface Row {
 }
 
 const Partners: FC = () => {
-  const { search, state } = useLocation();
+  const { search } = useLocation();
   const params = new URLSearchParams(search);
   const partnerId = params.get('id');
 
@@ -81,6 +81,10 @@ const Partners: FC = () => {
   }, [mutate, paginationModel, filterModel, filterDate, dateRange]);
 
   const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'ggrUsd', sort: 'desc' }]);
+
+  useEffect(() => {
+    console.log('sortModel', sortModel);
+  });
 
   const sortedData = useMemo(() => {
     if (!data || !sortModel || sortModel.length === 0) return [];
