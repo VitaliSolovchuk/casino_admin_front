@@ -182,6 +182,7 @@ const PartnerCurrenсy: FC = () => {
         title="Partners Currency"
         sortModel={sortModel}
         onSortModelChange={handleSortChange}
+
       />
     </div>
   );
