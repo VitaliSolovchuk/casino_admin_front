@@ -159,6 +159,7 @@ const SearchPlayer: FC = () => {
       </div>
       <TableGridLocalSort
         data={sortedData}
+        rowCountState={data?.totalItemsCount}
         rowId={rowId}
         isLoading={isLoading || isLoadingMutate}
         error={error as Error}
