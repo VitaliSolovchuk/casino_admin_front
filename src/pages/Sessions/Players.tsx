@@ -116,10 +116,6 @@ const Players: FC = () => {
     setSortModel(model);
   };
 
-  useEffect(() => {
-    console.log('SORT', sortModel);
-  });
-
   const columns: GridColDef[] = useMemo(() => [
     { field: 'playerId', headerName: 'Player ID', flex: 1 },
     { field: 'sessionId', headerName: 'Session ID', flex: 1 },
