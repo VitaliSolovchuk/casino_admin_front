@@ -31,6 +31,7 @@ import styles from './TableGrid.module.scss';
     handleRowClick?: ({ id }: { id: number }) => void;
     sortModel: GridSortModel;
     onSortModelChange: (model: GridSortModel) => void;
+    rowCountState?:number;
     showDateRangeFilter?: boolean; // Новый пропс для управления видимостью календаря
   }
 
@@ -44,6 +45,7 @@ const TableGridLocalSort: FC<TableGridProps> = ({
   handleRowClick,
   sortModel,
   onSortModelChange,
+  rowCountState,
   showDateRangeFilter = true, // Устанавливаем значение по умолчанию в true
 }) => {
   const [localFilter, setLocalFilter] = useState<GridFilterModel>({ items: [], quickFilterValues: [] });
@@ -55,8 +57,6 @@ const TableGridLocalSort: FC<TableGridProps> = ({
     setPaginationModel,
   } = useTableGrid((state) => state);
   const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
-
-  const rowCountState = data?.length ?? 0;
 
   const handleApplyFilter = () => {
     setFilterModel(localFilter);
