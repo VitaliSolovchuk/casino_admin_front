@@ -11,6 +11,7 @@ import { AppRoute, authProtectedRoutes, publicRoutes } from './routes';
 import Layout from './layout/authLayout';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import NonAuthLayout from './layout/nonAuthLayout';
+import TotalGGRProvider from '../TotalGGRProvider';
 
 const renderPublicRoutes = (routes: AppRoute[]) => routes.map((route) => (
   <Route
@@ -51,12 +52,14 @@ const App: FC = () => {
     <Router>
       <div className="root-container">
         <ThemeProvider theme={theme}>
-          <Routes>
-            {/* Отображение маршрутов для неавторизованных пользователей */}
-            {renderPublicRoutes(publicRoutes)}
-            {/* Отображение маршрутов для авторизованных пользователей */}
-            {renderProtectedRoutes(authProtectedRoutes)}
-          </Routes>
+          <TotalGGRProvider>
+            <Routes>
+              {/* Отображение маршрутов для неавторизованных пользователей */}
+              {renderPublicRoutes(publicRoutes)}
+              {/* Отображение маршрутов для авторизованных пользователей */}
+              {renderProtectedRoutes(authProtectedRoutes)}
+            </Routes>
+          </TotalGGRProvider>
         </ThemeProvider>
       </div>
     </Router>

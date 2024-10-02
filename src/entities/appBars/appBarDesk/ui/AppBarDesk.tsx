@@ -23,20 +23,22 @@ const AppBarDesk: FC<Props> = ({ totalGGR }) => (
         <li><NavLink to={paths.searchplayer}>{names.SearchPlayer}</NavLink></li>
         {/* Добавьте другие маршруты по мере необходимости */}
       </ul>
-      {totalGGR && (
-      <Typography
-        variant="subtitle1"
-        sx={{
-          mb: 2,
-          color: 'white',
-          paddingY: '0.625rem',
-          paddingX: '1.25rem',
-          transition: 'all 0.4s ease',
-        }}
-      >
-        {`Total GGR: $${totalGGR}`}
-      </Typography>
-      )}
+
+      {totalGGR ? (
+        <Typography
+          variant="subtitle1"
+          sx={{
+            mb: 2,
+            color: 'white',
+            paddingY: '0.625rem',
+            paddingX: '1.25rem',
+            transition: 'all 0.4s ease',
+          }}
+        >
+          {`Total GGR: $${totalGGR}`}
+        </Typography>
+      ) : null}
+
     </div>
   </>
 );

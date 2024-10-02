@@ -1,5 +1,5 @@
 import React, {
-  FC, useEffect, useMemo, useRef, useState,
+  FC, useEffect, useMemo, useRef, useState, useContext,
 } from 'react';
 import { GridColDef, GridSortModel } from '@mui/x-data-grid';
 import useTableGrid from 'widgets/tableGrid/model/tableGridStore';
@@ -12,6 +12,7 @@ import { paths } from 'shared/lib/consts/paths';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useMutationRequest } from 'shared/lib/hooks/useMutationRequest';
 import TableGridLocalSort from 'widgets/tableGrid/ui/TableGridLocalSort';
+import TotalGGRContext from '../../TotalGGRContext';
 
 interface Row {
   partnerId: number;
@@ -22,6 +23,7 @@ const Partners: FC = () => {
   const { search } = useLocation();
   const params = new URLSearchParams(search);
   const partnerId = params.get('id');
+  const { setTotalGgrUsd } = useContext(TotalGGRContext);
 
   const {
     filterModel,
@@ -115,6 +117,16 @@ const Partners: FC = () => {
   const handleSortChange = (model: GridSortModel) => {
     setSortModel(model);
   };
+
+  useEffect(() => {
+    if (!isLoading && data) {
+      setTotalGgrUsd(data.totalGgrUsd);
+    }
+
+    if (error) {
+      console.error('Error fetching data:', error);
+    }
+  }, [data, isLoading, error, setTotalGgrUsd]);
 
   const columns: GridColDef[] = useMemo(() => [
     {

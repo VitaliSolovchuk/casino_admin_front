@@ -1,6 +1,6 @@
 import React, {
   FC, useEffect, useMemo, useRef,
-  useState,
+  useState, useContext,
 } from 'react';
 import { GridColDef, GridSortModel } from '@mui/x-data-grid';
 import useTableGrid from 'widgets/tableGrid/model/tableGridStore';
@@ -10,6 +10,7 @@ import { GamesData, GamesStatistic } from 'features/partners/types/types';
 import { postGamesStatisticData } from 'features/partners/api';
 import { useMutationRequest } from 'shared/lib/hooks/useMutationRequest';
 import TableGridLocalSort from 'widgets/tableGrid/ui/TableGridLocalSort';
+import TotalGGRContext from '../../TotalGGRContext';
 
 interface Row {
   partnerId: number;
@@ -29,6 +30,7 @@ const Games: FC = () => {
 
   const { dateRange } = filterDate;
   const isFirstRender = useRef(true);
+  const { setTotalGgrUsd } = useContext(TotalGGRContext);
 
   const {
     data,
@@ -101,6 +103,16 @@ const Games: FC = () => {
   const handleSortChange = (model: GridSortModel) => {
     setSortModel(model);
   };
+
+  useEffect(() => {
+    if (!isLoading && data) {
+      setTotalGgrUsd(data.totalGgrUsd);
+    }
+
+    if (error) {
+      console.error('Error fetching data:', error);
+    }
+  }, [data, isLoading, error, setTotalGgrUsd]);
 
   const columns: GridColDef[] = useMemo(() => [
     {

@@ -1,6 +1,6 @@
 import React, {
   FC, useEffect, useMemo, useRef,
-  useState,
+  useState, useContext,
 } from 'react';
 import { GridColDef, GridSortModel } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
@@ -13,6 +13,7 @@ import { postPartnersCurrenseStatisticData } from 'features/partners/api';
 import { paths } from 'shared/lib/consts/paths';
 import { useMutationRequest } from 'shared/lib/hooks/useMutationRequest';
 import TableGridLocalSort from 'widgets/tableGrid/ui/TableGridLocalSort';
+import TotalGGRContext from '../../TotalGGRContext';
 
   interface Row {
     partnerId: number;
@@ -34,6 +35,7 @@ const PartnerCurrenсy: FC = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const isFirstRender = useRef(true);
+  const { setTotalGgrUsd } = useContext(TotalGGRContext);
 
   const {
     data,
@@ -69,13 +71,13 @@ const PartnerCurrenсy: FC = () => {
 
   useEffect(() => {
     if (!isLoading && data) {
-      console.log(data);
+      setTotalGgrUsd(data.totalGgrUsd);
     }
 
     if (error) {
       console.error('Error fetching data:', error);
     }
-  }, [data, isLoading, error]);
+  }, [data, isLoading, error, setTotalGgrUsd]);
 
   useEffect(() => {
     if (!isFirstRender.current) {
