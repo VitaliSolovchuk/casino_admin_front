@@ -86,7 +86,8 @@ const SessionsForGameCurrency: FC = () => {
   const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'ggrUsd', sort: 'desc' }]);
 
   const sortedData = useMemo(() => {
-    if (!data || !sortModel || sortModel.length === 0) return [];
+    if (!data || data.length === 0) return [];
+    if (!sortModel || sortModel.length === 0) return data;
 
     const { field, sort } = sortModel[0];
 

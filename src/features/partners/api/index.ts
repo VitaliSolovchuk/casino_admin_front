@@ -32,8 +32,6 @@ export const postGamesData = async (props: GamesDataProps) => {
 export const postPartnersStatisticData = async (props: PartnersDataProps) => {
   const { partnerId, ...requestData } = props;
 
-  console.log('props', props);
-
   const queryParams = `partnerId=${partnerId}`;
   try {
     const response = await axios.post<PartnerData>(

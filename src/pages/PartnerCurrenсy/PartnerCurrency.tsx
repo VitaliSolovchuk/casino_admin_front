@@ -88,7 +88,8 @@ const PartnerCurrenсy: FC = () => {
   const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'ggrUsd', sort: 'desc' }]);
 
   const sortedData = useMemo(() => {
-    if (!data || !sortModel || sortModel.length === 0) return [];
+    if (!data || data.statistics.length === 0) return [];
+    if (!sortModel || sortModel.length === 0) return data.statistics;
 
     const { field, sort } = sortModel[0];
 

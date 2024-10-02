@@ -44,7 +44,8 @@ const SearchPlayer: FC = () => {
   );
 
   const sortedData = useMemo(() => {
-    if (!data || !sortModel || sortModel.length === 0) return [];
+    if (!data || data.items.length === 0) return [];
+    if (!sortModel || sortModel.length === 0) return data.items;
 
     const { field, sort } = sortModel[0];
 

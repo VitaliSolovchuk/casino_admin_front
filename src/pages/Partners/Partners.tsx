@@ -82,12 +82,9 @@ const Partners: FC = () => {
 
   const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'ggrUsd', sort: 'desc' }]);
 
-  useEffect(() => {
-    console.log('sortModel', sortModel);
-  });
-
   const sortedData = useMemo(() => {
-    if (!data || !sortModel || sortModel.length === 0) return [];
+    if (!data || data.currencyStatistics.length === 0) return [];
+    if (!sortModel || sortModel.length === 0) return data.currencyStatistics;
 
     const { field, sort } = sortModel[0];
 
