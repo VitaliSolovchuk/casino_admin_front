@@ -1,5 +1,5 @@
 import React, {
-  FC, useEffect, useRef,
+  FC, useEffect, useRef, useContext,
 } from 'react';
 import useTableGrid from 'widgets/tableGrid/model/tableGridStore';
 import useFilterDateRange from 'entities/dateRangeCalendar/model/dateRangeStore';
@@ -8,6 +8,7 @@ import { useMutationRequest } from 'shared/lib/hooks/useMutationRequest';
 import { postCurrencyGamesStatisticData } from 'features/currency-games/api';
 import { CurrencyGamesData } from 'features/currency-games/types/types';
 import CurrencyGamesTable from './CurrencyGamesTable';
+import TotalGGRContext from '../../TotalGGRContext';
 
 const CurrencyGames: FC = () => {
   const {
@@ -21,6 +22,7 @@ const CurrencyGames: FC = () => {
 
   const { dateRange } = filterDate;
   const isFirstRender = useRef(true);
+  const { setTotalGgrUsd } = useContext(TotalGGRContext);
 
   const {
     data,
@@ -51,6 +53,16 @@ const CurrencyGames: FC = () => {
       },
     ),
   );
+
+  useEffect(() => {
+    if (!isLoading && data) {
+      setTotalGgrUsd(data.totalGgrUsd);
+    }
+
+    if (error) {
+      console.error('Error fetching data:', error);
+    }
+  }, [data, isLoading, error, setTotalGgrUsd]);
 
   useEffect(() => {
     if (!isFirstRender.current) {
