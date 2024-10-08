@@ -8,9 +8,12 @@ const getBreadcrumbName = (path: string) => {
   return route ? route.name : null;
 };
 
+const parseQueryParams = (search: string) => new URLSearchParams(search);
+
 const Breadcrumbs: FC = () => {
-  const { pathname, state } = useLocation();
+  const { pathname, search } = useLocation();
   const pathnames = pathname.split('/').filter((x) => x);
+  const queryParams = parseQueryParams(search);
 
   return (
     <MuiBreadcrumbs aria-label="breadcrumb">
@@ -19,21 +22,21 @@ const Breadcrumbs: FC = () => {
         const isLast = index === pathnames.length - 1;
         const breadcrumbName = getBreadcrumbName(url);
 
-        if (breadcrumbName) {
-          const queryParam = state && state[breadcrumbName] ? state[breadcrumbName] : '';
-          const linkUrl = queryParam ? `${url}/${queryParam}` : url;
-          return !isLast ? (
-            <Link underline="hover" color="inherit" key={url} component={RouterLink} to={linkUrl}>
+        // Include query parameters in the last breadcrumb
+        const params = isLast ? Array.from(queryParams.entries()).map(([key, value]) => `${key}:${value}`).join(', ') : '';
+
+        // eslint-disable-next-line no-nested-ternary
+        return breadcrumbName ? (
+          !isLast ? (
+            <Link underline="hover" color="inherit" key={url} component={RouterLink} to={url}>
               {breadcrumbName}
             </Link>
           ) : (
             <Typography key={url} color="text.primary">
-              {breadcrumbName}
+              {params ? `${breadcrumbName} (${params})` : breadcrumbName}
             </Typography>
-          );
-        }
-
-        return (
+          )
+        ) : (
           <Typography key={url} color="text.primary">
             {path}
           </Typography>

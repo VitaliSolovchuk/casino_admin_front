@@ -32,10 +32,15 @@ const PartnerCurrenсy: FC = () => {
   } = useFilterDateRange((state) => state);
 
   const { dateRange } = filterDate;
+
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const isFirstRender = useRef(true);
   const { setTotalGgrUsd } = useContext(TotalGGRContext);
+
+  useEffect(() => {
+    console.log('DATA', dateRange);
+  }, [dateRange]);
 
   const {
     data,
@@ -80,12 +85,8 @@ const PartnerCurrenсy: FC = () => {
   }, [data, isLoading, error, setTotalGgrUsd]);
 
   useEffect(() => {
-    if (!isFirstRender.current) {
-      mutate();
-    } else {
-      isFirstRender.current = false;
-    }
-  }, [mutate, paginationModel, filterModel, filterDate, dateRange]);
+    mutate();
+  }, [dateRange]);
 
   const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'ggrUsd', sort: 'desc' }]);
 

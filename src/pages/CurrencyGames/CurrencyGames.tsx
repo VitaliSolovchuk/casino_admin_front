@@ -65,12 +65,8 @@ const CurrencyGames: FC = () => {
   }, [data, isLoading, error, setTotalGgrUsd]);
 
   useEffect(() => {
-    if (!isFirstRender.current) {
-      mutate();
-    } else {
-      isFirstRender.current = false;
-    }
-  }, [mutate, paginationModel, filterModel, filterDate, dateRange]);
+    mutate();
+  }, [dateRange]);
 
   return (
     <div>
