@@ -38,10 +38,6 @@ const PartnerCurrenсy: FC = () => {
   const isFirstRender = useRef(true);
   const { setTotalGgrUsd } = useContext(TotalGGRContext);
 
-  useEffect(() => {
-    console.log('DATA', dateRange);
-  }, [dateRange]);
-
   const {
     data,
     isLoading,
