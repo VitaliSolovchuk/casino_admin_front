@@ -66,7 +66,7 @@ const CurrencyGames: FC = () => {
 
   useEffect(() => {
     mutate();
-  }, [dateRange]);
+  }, [mutate, paginationModel, filterModel, filterDate, dateRange]);
 
   return (
     <div>

@@ -62,7 +62,7 @@ const SessionEvents: FC = () => {
 
   useEffect(() => {
     mutate();
-  }, [dateRange]);
+  }, [mutate, paginationModel, filterModel, filterDate, dateRange]);
 
   const columns: GridColDef[] = useMemo(() => [
     { field: 'betId', headerName: 'Bet ID', flex: 1 },
