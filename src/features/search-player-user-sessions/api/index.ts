@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { baseURL } from 'shared/lib/consts/url';
-import { postPlayerUserSessionsProps, SessionResponse } from '../types/types';
+import { postPlayerUserSessionsProps, SessionResponse, SessionResponse2 } from '../types/types';
 
 export const postSessionsForPlayer = async (props: postPlayerUserSessionsProps) => {
   try {
@@ -14,7 +14,7 @@ export const postSessionsForPlayer = async (props: postPlayerUserSessionsProps) 
 
 export const postSessionsForPlayer2 = async (props: postPlayerUserSessionsProps) => {
   try {
-    const response = await axios.post<SessionResponse>(`${baseURL}/admin-panel-statistics/get-player-sessions`, props);
+    const response = await axios.post<SessionResponse2>(`${baseURL}/admin-panel-statistics/get-player-sessions`, props);
     return response.data;
   } catch (error) {
     console.error(error);

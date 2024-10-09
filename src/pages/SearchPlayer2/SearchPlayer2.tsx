@@ -1,6 +1,6 @@
 import { GridColDef, GridSortModel } from '@mui/x-data-grid';
 import { postSessionsForPlayer2 } from 'features/search-player-user-sessions/api';
-import { ItemSession, SessionResponse } from 'features/search-player-user-sessions/types/types';
+import { ItemSession2, SessionResponse2 } from 'features/search-player-user-sessions/types/types';
 import {
   FC, useCallback, useEffect, useMemo, useState, useRef, useContext,
 } from 'react';
@@ -39,7 +39,7 @@ const SearchPlayer2: FC = () => {
     data,
     isLoading,
     error,
-  } = useDataRequest<SessionResponse>(
+  } = useDataRequest<SessionResponse2>(
     'player-sessions-',
     () => postSessionsForPlayer2({
       paginationModel,
@@ -59,8 +59,8 @@ const SearchPlayer2: FC = () => {
     const { field, sort } = sortModel[0];
 
     const sorted = [...data.items].sort((a, b) => {
-      let valueA = a[field as keyof ItemSession];
-      let valueB = b[field as keyof ItemSession];
+      let valueA = a[field as keyof ItemSession2];
+      let valueB = b[field as keyof ItemSession2];
 
       // eslint-disable-next-line max-len
       const isNumeric = (val: any) => typeof val === 'number' || (typeof val === 'string' && !Number.isNaN(parseFloat(val)) && Number.isFinite(val));
@@ -85,7 +85,7 @@ const SearchPlayer2: FC = () => {
     setSortModel(model);
   };
 
-  const { mutate, isLoading: isLoadingMutate } = useMutationRequest<SessionResponse>(
+  const { mutate, isLoading: isLoadingMutate } = useMutationRequest<SessionResponse2>(
     'player-sessions-',
     () => postSessionsForPlayer2({
       paginationModel,
@@ -120,21 +120,20 @@ const SearchPlayer2: FC = () => {
   }, [mutate, paginationModel, filterModel, filterDate, dateRange]);
 
   const columns: GridColDef[] = useMemo(() => [
-    { field: 'playerId', headerName: 'Player ID', flex: 1 },
+    // { field: 'playerId', headerName: 'Player ID', flex: 1 },
     { field: 'sessionId', headerName: 'Session ID', flex: 1 },
     { field: 'currencyName', headerName: 'Currency', flex: 1 },
     { field: 'gameName', headerName: 'Game Name', flex: 1 },
-    { field: 'totalActions', headerName: 'Actions', flex: 1 },
-    { field: 'totalAmountBetUSD', headerName: 'Total Bet', flex: 1 },
-    { field: 'totalAmountWinUSD', headerName: 'Total Win', flex: 1 },
-    { field: 'totalProfitUSD', headerName: 'Total Profit USD', flex: 1 },
+    { field: 'actions', headerName: 'Actions', flex: 1 },
+    { field: 'totalAmountBetUsd', headerName: 'Total Bet', flex: 1 },
+    { field: 'totalAmountWinUsd', headerName: 'Total Win', flex: 1 },
+    { field: 'totalProfitUsd', headerName: 'Total Profit USD', flex: 1 },
     { field: 'startDate', headerName: 'Start Date', flex: 1 },
     { field: 'endDate', headerName: 'End Date', flex: 1 },
     { field: 'ipAddress', headerName: 'IP Address', flex: 1 },
-    { field: 'actions', headerName: 'Actions', flex: 1 },
   ], []);
 
-  const rowId = (row: ItemSession): string => `${row.playerId}-${row.sessionId}`;
+  const rowId = (row: ItemSession2): string => `${row.playerId}-${row.sessionId}`;
 
   const handleRowClick = (row: Record<string, number>) => {
     if (row.sessionId) {
