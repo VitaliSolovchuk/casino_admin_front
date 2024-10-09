@@ -63,11 +63,7 @@ const Games: FC = () => {
   );
 
   useEffect(() => {
-    if (!isFirstRender.current) {
-      mutate();
-    } else {
-      isFirstRender.current = false;
-    }
+    mutate();
   }, [mutate, paginationModel, filterModel, filterDate, dateRange]);
 
   const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'gameName', sort: 'asc' }]);

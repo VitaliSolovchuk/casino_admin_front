@@ -61,12 +61,8 @@ const SessionEvents: FC = () => {
   );
 
   useEffect(() => {
-    if (!isFirstRender.current) {
-      mutate();
-    } else {
-      isFirstRender.current = false;
-    }
-  }, [mutate, paginationModel, sortModel, filterModel, filterDate, dateRange]);
+    mutate();
+  }, [mutate, paginationModel, filterModel, filterDate, dateRange]);
 
   const columns: GridColDef[] = useMemo(() => [
     { field: 'betId', headerName: 'Bet ID', flex: 1 },
