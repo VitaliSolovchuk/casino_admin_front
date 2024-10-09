@@ -168,7 +168,7 @@ const SearchPlayer2: FC = () => {
       <TableGridLocalSort
         data={sortedData}
         showDateRangeFilter
-        rowCountState={data?.filterGgrUsd}
+        rowCountState={data?.totalItemsCount}
         rowId={rowId}
         isLoading={isLoading || isLoadingMutate}
         error={error as Error}
