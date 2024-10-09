@@ -1,8 +1,8 @@
 import { createContext, Dispatch, SetStateAction } from 'react';
 
 interface TotalGGRContextType {
-  totalGgrUsd: number;
-  setTotalGgrUsd: Dispatch<SetStateAction<number>>;
+  totalGgrUsd: number | undefined;
+  setTotalGgrUsd: Dispatch<SetStateAction<number|undefined>>;
 }
 
 const TotalGGRContext = createContext<TotalGGRContextType>({
