@@ -6,7 +6,7 @@ interface TotalGGRProviderProps {
 }
 
 const TotalGGRProvider: React.FC<TotalGGRProviderProps> = ({ children }) => {
-  const [totalGgrUsd, setTotalGgrUsd] = useState<number>(0);
+  const [totalGgrUsd, setTotalGgrUsd] = useState<number|undefined>(0);
 
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values

@@ -20,6 +20,7 @@ export interface SessionResponse {
   pageSize: number;
   pagesCount: number;
   totalItemsCount: number;
+  filterGgrUsd?:number
 }
 
 export interface postPlayerUserSessionsProps extends SessionsForUserDto {

@@ -12,6 +12,7 @@ import SearchPlayer from 'pages/SearchPlayerUserSessions/SearchPlayer';
 import PartnerCurrency from 'pages/PartnerCurrenсy/PartnerCurrency';
 import Auth from '../../widgets/auth/ui/Auth';
 import SessionsForGameCurrency from '../../pages/SessionsForGameCurrency/SessionsForGameCurrency';
+import SearchPlayer2 from '../../pages/SearchPlayer2/SearchPlayer2';
 
 export type AppRoute = RouteProps & {
   path: string;
@@ -75,6 +76,11 @@ export const authProtectedRoutes: AppRoute[] = [
     path: paths.searchplayer,
     name: names.SearchPlayer,
     element: <SearchPlayer />,
+  },
+  {
+    path: paths.searchplayer_2,
+    name: names.SearchPlayer_2,
+    element: <SearchPlayer2 />,
   },
   {
     path: paths.sessionEvents,

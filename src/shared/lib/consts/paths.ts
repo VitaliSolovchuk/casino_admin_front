@@ -10,4 +10,5 @@ export const paths = {
   sessionEvents: '/partner-currency/partners/players/sessions',
   login: '/login',
   partnerCurrency: '/partner-currency',
+  searchplayer_2: '/searchplayer-2',
 };
