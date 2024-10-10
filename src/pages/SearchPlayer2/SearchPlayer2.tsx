@@ -173,7 +173,7 @@ const SearchPlayer2: FC = () => {
         error={error as Error}
         columns={columns}
         handleRowClick={handleRowClick}
-        title="SearchPlayer Table"
+        title="SearchPlayer Table2"
         sortModel={sortModel}
         onSortModelChange={handleSortChange}
       />
