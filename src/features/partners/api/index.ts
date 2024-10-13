@@ -1,17 +1,16 @@
-import axios from 'axios';
-import { baseURL } from 'shared/lib/consts/url';
 import {
   GamesData, GamesDataProps, GamesWithUSDRTP, PartnerCurrensyData, PartnerData, PartnersDataProps,
 } from '../types/types';
+import $api from '../../../http';
 
 export const getPartnersData = async () => {
-  const response = await axios.get<PartnerData>(`${baseURL}/admin-panel/partners`);
+  const response = await $api.get<PartnerData>('/admin-panel/partners');
   return response.data;
 };
 
 export const postPartnersData = async (props: PartnersDataProps) => {
   try {
-    const response = await axios.post<PartnerData>(`${baseURL}/admin-panel/partners`, props);
+    const response = await $api.post<PartnerData>('/admin-panel/partners', props);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -21,7 +20,7 @@ export const postPartnersData = async (props: PartnersDataProps) => {
 
 export const postGamesData = async (props: GamesDataProps) => {
   try {
-    const response = await axios.post<GamesWithUSDRTP[]>(`${baseURL}/admin-panel/games`, props);
+    const response = await $api.post<GamesWithUSDRTP[]>('/admin-panel/games', props);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -34,8 +33,8 @@ export const postPartnersStatisticData = async (props: PartnersDataProps) => {
 
   const queryParams = `partnerId=${partnerId}`;
   try {
-    const response = await axios.post<PartnerData>(
-      `${baseURL}/admin-panel-statistics/get-grouped-by-currency?${queryParams}`,
+    const response = await $api.post<PartnerData>(
+      `/admin-panel-statistics/get-grouped-by-currency?${queryParams}`,
       requestData,
     );
     return response.data;
@@ -47,8 +46,8 @@ export const postPartnersStatisticData = async (props: PartnersDataProps) => {
 
 export const postPartnersCurrenseStatisticData = async (props: PartnersDataProps) => {
   try {
-    const response = await axios
-      .post<PartnerCurrensyData>(`${baseURL}/admin-panel-statistics/get-grouped-by-partner`, props);
+    const response = await $api
+      .post<PartnerCurrensyData>('/admin-panel-statistics/get-grouped-by-partner', props);
 
     return response.data;
   } catch (error) {
@@ -59,7 +58,7 @@ export const postPartnersCurrenseStatisticData = async (props: PartnersDataProps
 
 export const postGamesStatisticData = async (props: GamesDataProps) => {
   try {
-    const response = await axios.post<GamesData>(`${baseURL}/admin-panel-statistics/get-grouped-by-games`, props);
+    const response = await $api.post<GamesData>('/admin-panel-statistics/get-grouped-by-games', props);
     return response.data;
   } catch (error) {
     console.error(error);

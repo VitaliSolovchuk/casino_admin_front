@@ -28,7 +28,7 @@ const Header: FC = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('loggedIn');
+    localStorage.removeItem('token');
     navigate(paths.login);
   };
   return (
