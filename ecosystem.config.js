@@ -8,7 +8,7 @@ dotenv.config();
 module.exports = {
   apps: [
     {
-      name: 'casino_admin_panel_front',
+      name: 'admin',
       script: 'node_modules/.bin/react-scripts',
       args: 'start',
       exec_mode: 'fork', // или 'cluster' в зависимости от ваших потребностей
