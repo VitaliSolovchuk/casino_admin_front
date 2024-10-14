@@ -4,5 +4,5 @@ export interface LoginPartnerDataProps {
 }
 
 export interface LoginPartnerData {
- accessToken:string;
+ access_token:string;
 }

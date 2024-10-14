@@ -22,7 +22,7 @@ const Auth: React.FC = () => {
         login: username,
         password,
       });
-      localStorage.setItem('token', response.accessToken);
+      localStorage.setItem('token', response.access_token);
       handleCloseModal();
       navigate(paths.dashboard);
     } catch (error) {
