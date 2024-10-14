@@ -8,7 +8,7 @@ interface AuthmiddlewareProps {
 }
 
 export const AuthMiddleware: React.FC<AuthmiddlewareProps> = ({ children }) => {
-  if (!localStorage.getItem('loggedIn')) {
+  if (!localStorage.getItem('token')) {
     return (
       <Navigate to={paths.login} replace />
     );
@@ -16,7 +16,7 @@ export const AuthMiddleware: React.FC<AuthmiddlewareProps> = ({ children }) => {
   return <>{children}</>;
 };
 export const NonAuthMiddleware: React.FC<AuthmiddlewareProps> = ({ children }) => {
-  if (localStorage.getItem('loggedIn')) {
+  if (localStorage.getItem('token')) {
     return (
       <Navigate to={paths.dashboard} replace />
     );

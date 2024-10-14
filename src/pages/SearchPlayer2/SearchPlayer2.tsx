@@ -2,7 +2,7 @@ import { GridColDef, GridSortModel } from '@mui/x-data-grid';
 import { postSessionsForPlayer2 } from 'features/search-player-user-sessions/api';
 import { ItemSession2, SessionResponse2 } from 'features/search-player-user-sessions/types/types';
 import {
-  FC, useCallback, useEffect, useMemo, useState, useContext,
+  FC, useCallback, useEffect, useMemo, useState, useRef, useContext,
 } from 'react';
 import { useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
@@ -16,9 +16,10 @@ import useFilterDateRange from '../../entities/dateRangeCalendar/model/dateRange
 
 const SearchPlayer2: FC = () => {
   const [playerIdInput, setPlayerIdInput] = useState<string>('');
-  const [, setPlayerId] = useState<string | null>(null);
+  const [playerId, setPlayerId] = useState<string | null>(null);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const isFirstRender = useRef(true);
   const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'totalProfitUSD', sort: 'desc' }]);
   const { setTotalGgrUsd } = useContext(TotalGGRContext);
 
@@ -142,8 +143,8 @@ const SearchPlayer2: FC = () => {
             filterModel,
             paginationModel,
             filterDate: {
-              startDate: dateRange[0],
-              endDate: dateRange[1],
+              startDate: null,
+              endDate: null,
             },
           },
         }));

@@ -1,10 +1,9 @@
-import axios from 'axios';
-import { baseURL } from 'shared/lib/consts/url';
+import $api from '../../../http';
 import { postPlayerUserSessionsProps, SessionResponse, SessionResponse2 } from '../types/types';
 
 export const postSessionsForPlayer = async (props: postPlayerUserSessionsProps) => {
   try {
-    const response = await axios.post<SessionResponse>(`${baseURL}/admin-panel/get-sessions-for-player`, props);
+    const response = await $api.post<SessionResponse>('/admin-panel/get-sessions-for-player', props);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -14,7 +13,7 @@ export const postSessionsForPlayer = async (props: postPlayerUserSessionsProps) 
 
 export const postSessionsForPlayer2 = async (props: postPlayerUserSessionsProps) => {
   try {
-    const response = await axios.post<SessionResponse2>(`${baseURL}/admin-panel-statistics/get-player-sessions`, props);
+    const response = await $api.post<SessionResponse2>('/admin-panel-statistics/get-player-sessions', props);
     return response.data;
   } catch (error) {
     console.error(error);

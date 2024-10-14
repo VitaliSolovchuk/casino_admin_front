@@ -1,15 +1,11 @@
-import axios from 'axios';
-import { baseURL } from 'shared/lib/consts/url';
+import $api from '../../../http';
 import { getPlayersProps, Player, postPlayersProps } from '../types/types';
 
 export const getPlayersData = async (props: getPlayersProps) => {
   try {
-    const response = await axios.get<Player[]>(
-      `${baseURL}/admin-panel/players-for-partner?partnerId=${props.partnerId}`,
-      {
-        params: props.params,
-      },
-    );
+    const response = await $api.get<Player[]>(`/admin-panel/players-for-partner?partnerId=${props.partnerId}`, {
+      params: props.params,
+    });
     return response.data;
   } catch (error) {
     console.error(error);
@@ -42,10 +38,7 @@ export const postPlayersData = async (props: postPlayersProps) => {
   }
 
   try {
-    const response = await axios.post<Player[]>(
-      `${baseURL}/admin-panel/players-for-partner?${queryParams}`,
-      requestData,
-    );
+    const response = await $api.post<Player[]>(`/admin-panel/players-for-partner?${queryParams}`, requestData);
     return response.data;
   } catch (error) {
     console.error(error);
