@@ -143,8 +143,8 @@ const SearchPlayer2: FC = () => {
             filterModel,
             paginationModel,
             filterDate: {
-              startDate: null,
-              endDate: null,
+              startDate: dateRange[0],
+              endDate: dateRange[1],
             },
           },
         }));
