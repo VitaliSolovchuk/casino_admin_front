@@ -1,4 +1,6 @@
-import { GamesData, GamesDataProps, GamesWithUSDRTP, PartnerCurrensyData, PartnerData, PartnersDataProps } from '../types/types';
+import {
+  GamesData, GamesDataProps, GamesWithUSDRTP, PartnerCurrensyData, PartnerData, PartnersDataProps,
+} from '../types/types';
 import $api from '../../../http';
 
 export const getPartnersData = async () => {
