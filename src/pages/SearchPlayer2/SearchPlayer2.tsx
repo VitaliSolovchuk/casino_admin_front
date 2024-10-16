@@ -16,7 +16,7 @@ import useFilterDateRange from '../../entities/dateRangeCalendar/model/dateRange
 
 const SearchPlayer2: FC = () => {
   const [playerIdInput, setPlayerIdInput] = useState<string>('');
-  const [playerId, setPlayerId] = useState<string | null>(null);
+  const [, setPlayerId] = useState<string | null>(null);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'totalProfitUSD', sort: 'desc' }]);
@@ -25,7 +25,7 @@ const SearchPlayer2: FC = () => {
   const {
     filterModel,
     paginationModel,
-    setPaginationModel,
+    // setPaginationModel,
   } = useTableGrid((state) => state);
 
   const {

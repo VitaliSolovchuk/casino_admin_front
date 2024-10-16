@@ -85,7 +85,7 @@ const HighlightCell: FC<{ params: GridRenderCellParams }> = ({ params }) => {
 
     // Переход на новую страницу с передачей параметров
     navigate(
-      `${paths.sessionsForGameCurrency}?partner-id=${partnerId}&currency-name=${currencyName}&game-name=${gameName}`,
+      `${paths.sessions}?partner-id=${partnerId}&currency=${currencyName}&game=${gameName}`,
     );
   };
 

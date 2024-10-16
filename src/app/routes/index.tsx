@@ -11,7 +11,6 @@ import SearchPlayer from 'pages/SearchPlayerUserSessions/SearchPlayer';
 import PartnerCurrency from 'pages/PartnerCurrenсy/PartnerCurrency';
 import Sessions2 from 'pages/Sessions2/Sessions2';
 import Auth from '../../widgets/auth/ui/Auth';
-import SessionsForGameCurrency from '../../pages/SessionsForGameCurrency/SessionsForGameCurrency';
 import SearchPlayer2 from '../../pages/SearchPlayer2/SearchPlayer2';
 
 export type AppRoute = RouteProps & {
@@ -68,8 +67,8 @@ export const authProtectedRoutes: AppRoute[] = [
     element: <Games />,
   },
   {
-    path: paths.sessions2,
-    name: names.Sessions2,
+    path: paths.sessions,
+    name: names.Sessions,
     element: <Sessions2 />,
   },
   {
@@ -86,10 +85,5 @@ export const authProtectedRoutes: AppRoute[] = [
     path: paths.sessionEvents,
     name: names.SessionEvents,
     element: <SessionEvents />,
-  },
-  {
-    path: paths.sessionsForGameCurrency,
-    name: names.SessionsForGameCurrency,
-    element: <SessionsForGameCurrency />,
   },
 ];

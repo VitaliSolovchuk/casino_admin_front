@@ -6,7 +6,7 @@ export const paths = {
   currencygames: '/currencygames',
   sessionsForGameCurrency: '/currencygames/sessions-for-gamecurrency',
   searchplayer: '/searchplayer',
-  sessions2: '/partner/partners-currency/sessions2',
+  sessions: '/partner/partners-currency/sessions',
   sessionEvents: '/partner/partners-currency/players/sessions',
   login: '/login',
   partnerCurrency: '/partner-currency',

@@ -14,7 +14,7 @@ import TableGridLocalSort from './TableGridLocalSort';
 
 const SearchPlayer: FC = () => {
   const [playerIdInput, setPlayerIdInput] = useState<string>('');
-  const [playerId, setPlayerId] = useState<string | null>(null);
+  const [, setPlayerId] = useState<string | null>(null);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const isFirstRender = useRef(true);

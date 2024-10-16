@@ -22,8 +22,9 @@ interface Row {
 const Sessions2: FC = () => {
   const { search, state } = useLocation();
   const params = new URLSearchParams(search);
-  const partnerId = params.get('id') as string;
+  const partnerId = params.get('partner-id') || '5' as string;
   const currency = params.get('currency') as string;
+  const gameName = params.get('game') as string | undefined;
 
   const navigate = useNavigate();
   const {
@@ -34,13 +35,22 @@ const Sessions2: FC = () => {
   const { dateRange } = filterDate;
   const queryClient = useQueryClient();
 
-  // Локальное состояние для фильтров
-  const [localFilterModel, setLocalFilterModel] = useState<GridFilterModel>({ items: [], quickFilterValues: [] });
+  const initialFilterModel: GridFilterModel = {
+    items: [
+      ...(gameName
+        ? [{ field: 'gameName', operator: 'contains', value: gameName }]
+        : []),
+      ...(currency
+        ? [{ field: 'currencyName', operator: 'contains', value: currency }]
+        : []),
+    ],
+    quickFilterValues: [],
+  };
 
-  // Управление сортировкой
+  const [localFilterModel, setLocalFilterModel] = useState<GridFilterModel>(initialFilterModel);
+
   const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'ggrUsd', sort: 'desc' }]);
 
-  // Получаем данные из useDataRequest
   const { data, isLoading, error } = useDataRequest<ResultSessionsInfo>(
     'sessions',
     () => postSessionsCurrencyData({
@@ -55,14 +65,13 @@ const Sessions2: FC = () => {
     }),
   );
 
-  // Мутация для повторного запроса с фильтрами
   const { mutate, isLoading: isLoadingMutate } = useMutationRequest<ResultSessionsInfo>(
     'sessions',
     () => postSessionsCurrencyData({
       partnerId,
       currencyes: currency,
       paginationModel,
-      filterModel: localFilterModel, // Передаем обновленные фильтры
+      filterModel: localFilterModel,
       filterDate: {
         startDate: dateRange[0],
         endDate: dateRange[1],
@@ -70,22 +79,18 @@ const Sessions2: FC = () => {
     }),
   );
 
-  // Вызов мутации при изменении фильтров, сортировки или пагинации
   useEffect(() => {
-    mutate(); // Повторный вызов мутации при изменении фильтров, сортировки, или других параметров
+    mutate();
   }, [mutate, paginationModel, filterModel, filterDate, dateRange]);
 
-  // Обновление фильтров
   const handleFilterModelChange = (newFilterModel: GridFilterModel) => {
-    setLocalFilterModel(newFilterModel); // Обновляем фильтры при изменении
+    setLocalFilterModel(newFilterModel);
   };
 
-  // Обновление сортировки
   const handleSortChange = (model: GridSortModel) => {
-    setSortModel(model); // Обновляем сортировку
+    setSortModel(model);
   };
 
-  // Обработка клика по строке
   const handleRowClick = (row: Record<string, number>) => {
     if (row.sessionId) {
       queryClient.invalidateQueries({ queryKey: 'session' })
