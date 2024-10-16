@@ -1,5 +1,5 @@
 import React, {
-  FC, useEffect, useMemo, useRef, useState, useContext,
+  FC, useEffect, useMemo, useState, useContext,
 } from 'react';
 import { GridColDef, GridSortModel } from '@mui/x-data-grid';
 import useTableGrid from 'widgets/tableGrid/model/tableGridStore';
@@ -38,7 +38,7 @@ const Partners: FC = () => {
   const { dateRange } = filterDate;
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const isFirstRender = useRef(true);
+  // const isFirstRender = useRef(true);
 
   const {
     data,
@@ -152,17 +152,17 @@ const Partners: FC = () => {
     },
     {
       field: 'totalAmountBetUsd',
-      headerName: 'Bet Usd',
+      headerName: 'Bet (Usd)',
       flex: 1,
     },
     {
       field: 'totalAmountWinUsd',
-      headerName: 'Win Usd',
+      headerName: 'Win (Usd)',
       flex: 1,
     },
     {
       field: 'ggrUsd',
-      headerName: 'Profit USD',
+      headerName: 'Profit (Usd)',
       flex: 1,
     },
     {
@@ -175,7 +175,7 @@ const Partners: FC = () => {
   const handleRowClick = (row: Record<string, number>) => {
     if (row.partnerId) {
       queryClient.invalidateQueries({ queryKey: 'players' })
-        .then(() => navigate(`${paths.players}/?id=${row.partnerId}&currency=${row.currencyName}`));
+        .then(() => navigate(`${paths.sessions2}/?id=${row.partnerId}&currency=${row.currencyName}`));
     }
   };
   const rowId = (row: Row) => `${row.partnerId}-${row.currencyName}`;
@@ -188,7 +188,7 @@ const Partners: FC = () => {
         error={error as Error}
         columns={columns}
         handleRowClick={handleRowClick}
-        title="Partners Table"
+        title="Partners Currency"
         sortModel={sortModel}
         onSortModelChange={handleSortChange}
       />

@@ -1,12 +1,11 @@
 import React, {
-  FC, useEffect, useMemo, useRef,
+  FC, useEffect, useMemo,
   useState,
 } from 'react';
 import {
   useLocation, useNavigate,
 } from 'react-router-dom';
 import { GridColDef, GridSortModel } from '@mui/x-data-grid';
-// import TableGrid from 'widgets/tableGrid/ui/TableGrid';
 import useTableGrid from 'widgets/tableGrid/model/tableGridStore';
 import useFilterDateRange from 'entities/dateRangeCalendar/model/dateRangeStore';
 import { useDataRequest } from 'shared/lib/hooks/useDataRequest';
@@ -38,7 +37,7 @@ const Players: FC = () => {
   const { filterDate } = useFilterDateRange((state) => state);
   const { dateRange } = filterDate;
   const queryClient = useQueryClient();
-  const isFirstRender = useRef(true);
+  // const isFirstRender = useRef(true);
 
   const {
     data,
@@ -90,6 +89,7 @@ const Players: FC = () => {
       let valueA = a[field as keyof Player];
       let valueB = b[field as keyof Player];
 
+      // eslint-disable-next-line max-len
       const isNumeric = (val: any) => typeof val === 'number' || (typeof val === 'string' && !Number.isNaN(parseFloat(val)) && Number.isFinite(val));
 
       if (isNumeric(valueA)) {

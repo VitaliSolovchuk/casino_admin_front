@@ -1,26 +1,30 @@
 import React, {
-  FC, useEffect, useMemo,
-  useState, useContext,
+  FC, useEffect, useMemo, useState, useContext,
 } from 'react';
 import { GridColDef, GridSortModel } from '@mui/x-data-grid';
-import { useNavigate } from 'react-router-dom';
 import useTableGrid from 'widgets/tableGrid/model/tableGridStore';
 import useFilterDateRange from 'entities/dateRangeCalendar/model/dateRangeStore';
 import { useDataRequest } from 'shared/lib/hooks/useDataRequest';
-import { PartnerCurrensyData, PartnerCurrency } from 'features/partners/types/types';
+import { PartnerData, PartnerCurrencyStatistic } from 'features/partners/types/types';
 import { useQueryClient } from 'react-query';
-import { postPartnersCurrenseStatisticData } from 'features/partners/api';
+import { postPartnersStatisticData } from 'features/partners/api';
 import { paths } from 'shared/lib/consts/paths';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useMutationRequest } from 'shared/lib/hooks/useMutationRequest';
 import TableGridLocalSort from 'widgets/tableGrid/ui/TableGridLocalSort';
 import TotalGGRContext from '../../TotalGGRContext';
 
-  interface Row {
-    partnerId: number;
-    currencyName: string;
-  }
+interface Row {
+  partnerId: number;
+  currencyName: string;
+}
 
-const PartnerCurrenсy: FC = () => {
+const Partners: FC = () => {
+  const { search } = useLocation();
+  const params = new URLSearchParams(search);
+  const partnerId = params.get('id');
+  const { setTotalGgrUsd } = useContext(TotalGGRContext);
+
   const {
     filterModel,
     // sortModel,
@@ -32,19 +36,17 @@ const PartnerCurrenсy: FC = () => {
   } = useFilterDateRange((state) => state);
 
   const { dateRange } = filterDate;
-
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  // const isFirstRender = useRef(true);
-  const { setTotalGgrUsd } = useContext(TotalGGRContext);
 
   const {
     data,
     isLoading,
     error,
-  } = useDataRequest<PartnerCurrensyData>(
-    'partner-currency',
-    () => postPartnersCurrenseStatisticData({
+  } = useDataRequest<PartnerData>(
+    'partner',
+    () => postPartnersStatisticData({
+      partnerId,
       paginationModel,
       // sortModel,
       filterModel,
@@ -55,10 +57,11 @@ const PartnerCurrenсy: FC = () => {
     }),
   );
 
-  const { mutate, isLoading: isLoadingMutate } = useMutationRequest<PartnerCurrensyData>(
-    'partner-currency',
-    () => postPartnersCurrenseStatisticData(
+  const { mutate, isLoading: isLoadingMutate } = useMutationRequest<PartnerData>(
+    'partners',
+    () => postPartnersStatisticData(
       {
+        partnerId,
         paginationModel,
         // sortModel,
         filterModel,
@@ -71,30 +74,20 @@ const PartnerCurrenсy: FC = () => {
   );
 
   useEffect(() => {
-    if (!isLoading && data) {
-      setTotalGgrUsd(data.totalGgrUsd);
-    }
-
-    if (error) {
-      console.error('Error fetching data:', error);
-    }
-  }, [data, isLoading, error, setTotalGgrUsd]);
-
-  useEffect(() => {
     mutate();
   }, [mutate, paginationModel, filterModel, filterDate, dateRange]);
 
   const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'ggrUsd', sort: 'desc' }]);
 
   const sortedData = useMemo(() => {
-    if (!data || data.statistics.length === 0) return [];
-    if (!sortModel || sortModel.length === 0) return data.statistics;
+    if (!data || data.currencyStatistics.length === 0) return [];
+    if (!sortModel || sortModel.length === 0) return data.currencyStatistics;
 
     const { field, sort } = sortModel[0];
 
-    const sorted = [...data.statistics].sort((a, b) => {
-      let valueA = a[field as keyof PartnerCurrency];
-      let valueB = b[field as keyof PartnerCurrency];
+    const sorted = [...data.currencyStatistics].sort((a, b) => {
+      let valueA = a[field as keyof PartnerCurrencyStatistic];
+      let valueB = b[field as keyof PartnerCurrencyStatistic];
 
       // число в строке
       // eslint-disable-next-line max-len
@@ -120,10 +113,25 @@ const PartnerCurrenсy: FC = () => {
     setSortModel(model);
   };
 
+  useEffect(() => {
+    if (!isLoading && data) {
+      setTotalGgrUsd(data.totalGgrUsd);
+    }
+
+    if (error) {
+      console.error('Error fetching data:', error);
+    }
+  }, [data, isLoading, error, setTotalGgrUsd]);
+
   const columns: GridColDef[] = useMemo(() => [
     {
       field: 'partnerName',
       headerName: 'Partner',
+      flex: 1,
+    },
+    {
+      field: 'currencyName',
+      headerName: 'Currency',
       flex: 1,
     },
     {
@@ -143,30 +151,30 @@ const PartnerCurrenсy: FC = () => {
     },
     {
       field: 'totalAmountBetUsd',
-      headerName: 'Total Bet (USD)',
+      headerName: 'Bet (Usd)',
       flex: 1,
     },
     {
       field: 'totalAmountWinUsd',
-      headerName: 'Total Win (USD)',
+      headerName: 'Win (Usd)',
       flex: 1,
     },
     {
       field: 'ggrUsd',
-      headerName: 'GGR (USD)',
+      headerName: 'Profit (Usd)',
       flex: 1,
     },
     {
       field: 'rtp',
-      headerName: 'RTP (%)',
+      headerName: 'RTP %',
       flex: 1,
     },
   ], []);
 
   const handleRowClick = (row: Record<string, number>) => {
     if (row.partnerId) {
-      queryClient.invalidateQueries({ queryKey: 'partners' })
-        .then(() => navigate(`${paths.partners}/?id=${row.partnerId}`));
+      queryClient.invalidateQueries({ queryKey: 'players' })
+        .then(() => navigate(`${paths.players}/?id=${row.partnerId}&currency=${row.currencyName}`));
     }
   };
   const rowId = (row: Row) => `${row.partnerId}-${row.currencyName}`;
@@ -179,12 +187,11 @@ const PartnerCurrenсy: FC = () => {
         error={error as Error}
         columns={columns}
         handleRowClick={handleRowClick}
-        title="Partners Table"
+        title="Partners Currency 2"
         sortModel={sortModel}
         onSortModelChange={handleSortChange}
-
       />
     </div>
   );
 };
-export default PartnerCurrenсy;
+export default Partners;
