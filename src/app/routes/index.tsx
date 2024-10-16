@@ -7,7 +7,6 @@ import { paths } from 'shared/lib/consts/paths';
 import { names } from 'shared/lib/consts/names';
 import Games from 'pages/Games/Games';
 import CurrencyGames from 'pages/CurrencyGames/CurrencyGames';
-import Players from 'pages/Sessions/Players';
 import SearchPlayer from 'pages/SearchPlayerUserSessions/SearchPlayer';
 import PartnerCurrency from 'pages/PartnerCurrenсy/PartnerCurrency';
 import Sessions2 from 'pages/Sessions2/Sessions2';
@@ -67,11 +66,6 @@ export const authProtectedRoutes: AppRoute[] = [
     path: paths.games,
     name: names.Games,
     element: <Games />,
-  },
-  {
-    path: paths.players,
-    name: names.Players,
-    element: <Players />,
   },
   {
     path: paths.sessions2,

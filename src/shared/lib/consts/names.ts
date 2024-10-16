@@ -6,7 +6,6 @@ export const names = {
   СurrencyGames: 'Currency/Games',
   SearchPlayer: 'SearchPlayer',
   SearchPlayer_2: 'SearchPlayer 2',
-  Players: 'Players',
   Sessions2: 'Sessions2',
   SessionEvents: 'Session Events',
   Login: 'Login',
