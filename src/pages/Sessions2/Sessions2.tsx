@@ -1,27 +1,24 @@
 import React, {
-  FC, useEffect, useMemo,
-  useState,
+  FC, useEffect, useMemo, useState,
 } from 'react';
-import {
-  useLocation, useNavigate,
-} from 'react-router-dom';
-import { GridColDef, GridSortModel } from '@mui/x-data-grid';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { GridColDef, GridSortModel, GridFilterModel } from '@mui/x-data-grid';
 import useTableGrid from 'widgets/tableGrid/model/tableGridStore';
 import useFilterDateRange from 'entities/dateRangeCalendar/model/dateRangeStore';
 import { useDataRequest } from 'shared/lib/hooks/useDataRequest';
 import { useQueryClient } from 'react-query';
 import { paths } from 'shared/lib/consts/paths';
 import { useMutationRequest } from 'shared/lib/hooks/useMutationRequest';
-// import TableGridLocalSort from 'widgets/tableGrid/ui/TableGridLocalSort';
 import { postSessionsCurrencyData } from 'features/sessions-currency-parner/api';
 import { ResultSessionsInfo, SessionInfo } from 'features/sessions-currency-parner/types/types';
-import TableGridLocalSort from 'pages/SearchPlayerUserSessions/TableGridLocalSort';
+import TableGridLocalSort from './TableGridLocalSort';
 
 interface Row {
   partnerId: string;
   playerId: string;
   sessionId: string;
 }
+
 const Sessions2: FC = () => {
   const { search, state } = useLocation();
   const params = new URLSearchParams(search);
@@ -30,24 +27,27 @@ const Sessions2: FC = () => {
 
   const navigate = useNavigate();
   const {
-    filterModel,
+    filterModel, // Мы будем использовать это для хранения модели фильтра
     paginationModel,
   } = useTableGrid((state) => state);
   const { filterDate } = useFilterDateRange((state) => state);
   const { dateRange } = filterDate;
   const queryClient = useQueryClient();
 
-  const {
-    data,
-    isLoading,
-    error,
-  } = useDataRequest<ResultSessionsInfo>(
+  // Локальное состояние для фильтров
+  const [localFilterModel, setLocalFilterModel] = useState<GridFilterModel>({ items: [], quickFilterValues: [] });
+
+  // Управление сортировкой
+  const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'ggrUsd', sort: 'desc' }]);
+
+  // Получаем данные из useDataRequest
+  const { data, isLoading, error } = useDataRequest<ResultSessionsInfo>(
     'sessions',
     () => postSessionsCurrencyData({
       partnerId,
       currencyes: currency,
       paginationModel,
-      filterModel,
+      filterModel: localFilterModel, // Передаем обновленные фильтры
       filterDate: {
         startDate: dateRange[0],
         endDate: dateRange[1],
@@ -55,13 +55,14 @@ const Sessions2: FC = () => {
     }),
   );
 
+  // Мутация для повторного запроса с фильтрами
   const { mutate, isLoading: isLoadingMutate } = useMutationRequest<ResultSessionsInfo>(
     'sessions',
     () => postSessionsCurrencyData({
       partnerId,
       currencyes: currency,
       paginationModel,
-      filterModel,
+      filterModel: localFilterModel, // Передаем обновленные фильтры
       filterDate: {
         startDate: dateRange[0],
         endDate: dateRange[1],
@@ -69,12 +70,43 @@ const Sessions2: FC = () => {
     }),
   );
 
+  // Вызов мутации при изменении фильтров, сортировки или пагинации
   useEffect(() => {
-    mutate();
-  }, [mutate, paginationModel, filterModel, filterDate, dateRange]);
+    mutate(); // Повторный вызов мутации при изменении фильтров, сортировки, или других параметров
+  }, [mutate, paginationModel, filterModel, filterDate, dateRange, localFilterModel, sortModel]);
 
-  const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'ggrUsd', sort: 'desc' }]);
+  // Обновление фильтров
+  const handleFilterModelChange = (newFilterModel: GridFilterModel) => {
+    setLocalFilterModel(newFilterModel); // Обновляем фильтры при изменении
+  };
 
+  // Обновление сортировки
+  const handleSortChange = (model: GridSortModel) => {
+    setSortModel(model); // Обновляем сортировку
+  };
+
+  // Обработка клика по строке
+  const handleRowClick = (row: Record<string, number>) => {
+    if (row.sessionId) {
+      queryClient.invalidateQueries({ queryKey: 'session' })
+        .then(() => navigate(`${paths.sessionEvents}/?id=${row.sessionId}`, { state: { ...state, Players: search } }));
+    }
+  };
+
+  const columns: GridColDef[] = useMemo(() => [
+    { field: 'playerId', headerName: 'Player ID', flex: 1 },
+    { field: 'sessionId', headerName: 'Session ID', flex: 1 },
+    { field: 'currencyName', headerName: 'Currency', flex: 1 },
+    { field: 'gameName', headerName: 'Game', flex: 1 },
+    { field: 'totalActions', headerName: 'Actions', flex: 1 },
+    { field: 'totalAmountBetUsd', headerName: 'Total Bet (Usd)', flex: 1 },
+    { field: 'totalAmountWinUsd', headerName: 'Total Win (Usd)', flex: 1 },
+    { field: 'totalGgrUsd', headerName: 'Profit (Usd)', flex: 1 },
+    { field: 'Rtp', headerName: 'Rtp', flex: 1 },
+    { field: 'firstBetTime', headerName: 'Time', flex: 1 },
+  ], []);
+
+  // Сортировка данных
   const sortedData = useMemo(() => {
     if (!data || data.items.length === 0) return [];
     if (!sortModel || sortModel.length === 0) return data.items;
@@ -85,6 +117,7 @@ const Sessions2: FC = () => {
       let valueA = a[field as keyof SessionInfo];
       let valueB = b[field as keyof SessionInfo];
 
+      // eslint-disable-next-line max-len
       const isNumeric = (val: any) => typeof val === 'number' || (typeof val === 'string' && !Number.isNaN(parseFloat(val)) && Number.isFinite(val));
 
       if (isNumeric(valueA)) {
@@ -103,37 +136,12 @@ const Sessions2: FC = () => {
     return sorted;
   }, [data, sortModel]);
 
-  const handleSortChange = (model: GridSortModel) => {
-    setSortModel(model);
-  };
-
-  const columns: GridColDef[] = useMemo(() => [
-    { field: 'playerId', headerName: 'Player ID', flex: 1 },
-    { field: 'sessionId', headerName: 'Session ID', flex: 1 },
-    { field: 'currencyName', headerName: 'Currency', flex: 1 },
-    { field: 'gameName', headerName: 'Game', flex: 1 },
-    { field: 'totalActions', headerName: 'Actions', flex: 1 },
-    { field: 'totalAmountBetUsd', headerName: 'Total Bet (Usd)', flex: 1 },
-    { field: 'totalAmountWinUsd', headerName: 'Total Win (Usd)', flex: 1 },
-    { field: 'totalGgrUsd', headerName: 'Profit (Usd)', flex: 1 },
-    { field: 'Rtp', headerName: 'Rtp', flex: 1 },
-    { field: 'firstBetTime', headerName: 'Time', flex: 1 },
-  ], []);
-
-  const rowId = (row: Row) => `${row.partnerId}-${row.playerId}-${row.sessionId}`;
-  const handleRowClick = (row: Record<string, number>) => {
-    if (row.sessionId) {
-      queryClient.invalidateQueries({ queryKey: 'session' })
-        .then(() => navigate(`${paths.sessionEvents}/?id=${row.sessionId}`, { state: { ...state, Players: search } }));
-    }
-  };
-
   return (
     <div>
       <TableGridLocalSort
-        data={sortedData}
-        rowCountState={data?.totalItemsCount} // Пропс добавлен в интерфейс
-        rowId={rowId}
+        data={sortedData} // Передаем отсортированные данные
+        rowCountState={data?.totalItemsCount}
+        rowId={(row: Row) => `${row.partnerId}-${row.playerId}-${row.sessionId}`}
         isLoading={isLoading || isLoadingMutate}
         error={error as Error}
         columns={columns}
@@ -141,6 +149,7 @@ const Sessions2: FC = () => {
         title="Player-session Table"
         sortModel={sortModel}
         onSortModelChange={handleSortChange}
+        onFilterModelChange={handleFilterModelChange} // Добавляем обработку фильтров
       />
     </div>
   );
