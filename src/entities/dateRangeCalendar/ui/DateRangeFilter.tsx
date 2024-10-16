@@ -143,15 +143,15 @@ const DateRangeFilter: FC = () => {
               },
             }}
           >
-            {shouldShowConfirmButton && (
-              <Button
-                variant="contained"
-                size={isMobile ? 'small' : 'medium'}
-                onClick={handleOkClick}
-              >
-                Confirm
-              </Button>
-            )}
+
+            <Button
+              variant="contained"
+              size={isMobile ? 'small' : 'medium'}
+              onClick={handleOkClick}
+            >
+              Confirm
+            </Button>
+
             <Button
               size={isMobile ? 'small' : 'medium'}
               onClick={handleResetClick}
