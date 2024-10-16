@@ -73,7 +73,7 @@ const Sessions2: FC = () => {
   // Вызов мутации при изменении фильтров, сортировки или пагинации
   useEffect(() => {
     mutate(); // Повторный вызов мутации при изменении фильтров, сортировки, или других параметров
-  }, [mutate, paginationModel, filterModel, filterDate, dateRange, localFilterModel, sortModel]);
+  }, [mutate, paginationModel, filterModel, filterDate, dateRange]);
 
   // Обновление фильтров
   const handleFilterModelChange = (newFilterModel: GridFilterModel) => {
