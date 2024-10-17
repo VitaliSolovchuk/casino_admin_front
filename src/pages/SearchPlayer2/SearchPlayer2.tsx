@@ -2,7 +2,7 @@ import { GridColDef, GridSortModel } from '@mui/x-data-grid';
 import { postSessionsForPlayer2 } from 'features/search-player-user-sessions/api';
 import { ItemSession2, SessionResponse2 } from 'features/search-player-user-sessions/types/types';
 import {
-  FC, useCallback, useEffect, useMemo, useState, useContext,
+  FC, useEffect, useMemo, useState, useContext,
 } from 'react';
 import { useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
@@ -16,7 +16,6 @@ import useFilterDateRange from '../../entities/dateRangeCalendar/model/dateRange
 
 const SearchPlayer2: FC = () => {
   const [playerIdInput, setPlayerIdInput] = useState<string>('');
-  const [, setPlayerId] = useState<string | null>(null);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'totalProfitUSD', sort: 'desc' }]);
@@ -25,7 +24,6 @@ const SearchPlayer2: FC = () => {
   const {
     filterModel,
     paginationModel,
-    // setPaginationModel,
   } = useTableGrid((state) => state);
 
   const {
@@ -48,42 +46,11 @@ const SearchPlayer2: FC = () => {
         endDate: dateRange[1],
       },
       playerId: playerIdInput,
+      sortModel,
     }),
   );
 
-  const sortedData = useMemo(() => {
-    if (!data || data.items.length === 0) return [];
-    if (!sortModel || sortModel.length === 0) return data.items;
-
-    const { field, sort } = sortModel[0];
-
-    const sorted = [...data.items].sort((a, b) => {
-      let valueA = a[field as keyof ItemSession2];
-      let valueB = b[field as keyof ItemSession2];
-
-      // eslint-disable-next-line max-len
-      const isNumeric = (val: any) => typeof val === 'number' || (typeof val === 'string' && !Number.isNaN(parseFloat(val)) && Number.isFinite(val));
-
-      if (isNumeric(valueA)) {
-        valueA = parseFloat(valueA.toString());
-        valueB = parseFloat(valueB.toString());
-      } else {
-        valueA = valueA?.toString().toLowerCase() ?? '';
-        valueB = valueB?.toString().toLowerCase() ?? '';
-      }
-
-      if (valueA < valueB) return sort === 'asc' ? -1 : 1;
-      if (valueA > valueB) return sort === 'asc' ? 1 : -1;
-
-      return 0;
-    });
-    return sorted;
-  }, [data, sortModel]);
-
-  const handleSortChange = (model: GridSortModel) => {
-    setSortModel(model);
-  };
-
+  // Мутация для отправки данных на сервер
   const { mutate, isLoading: isLoadingMutate } = useMutationRequest<SessionResponse2>(
     'player-sessions-',
     () => postSessionsForPlayer2({
@@ -94,9 +61,16 @@ const SearchPlayer2: FC = () => {
         endDate: dateRange[1],
       },
       playerId: playerIdInput,
+      sortModel,
     }),
   );
 
+  const handleSortChange = (model: GridSortModel) => {
+    setSortModel(model);
+    mutate();
+  };
+
+  // Хук для обновления данных по общему доходу
   useEffect(() => {
     if (!isLoading && data) {
       setTotalGgrUsd(data?.filterGgrUsd);
@@ -107,19 +81,11 @@ const SearchPlayer2: FC = () => {
     }
   }, [data, isLoading, error, setTotalGgrUsd]);
 
-  const handleSubmit = useCallback(() => {
-    setPlayerId(playerIdInput);
-    if (playerIdInput) {
-      mutate();
-    }
-  }, [playerIdInput, mutate]);
-
   useEffect(() => {
     mutate();
   }, [mutate, paginationModel, filterModel, filterDate, dateRange]);
 
   const columns: GridColDef[] = useMemo(() => [
-    // { field: 'playerId', headerName: 'Player ID', flex: 1 },
     { field: 'sessionId', headerName: 'Session ID', flex: 1 },
     { field: 'currencyName', headerName: 'Currency', flex: 1 },
     { field: 'gameName', headerName: 'Game Name', flex: 1 },
@@ -132,8 +98,10 @@ const SearchPlayer2: FC = () => {
     { field: 'ipAddress', headerName: 'IP Address', flex: 1 },
   ], []);
 
+  // Уникальный идентификатор строки
   const rowId = (row: ItemSession2): string => `${row.playerId}-${row.sessionId}`;
 
+  // Обработчик клика по строке
   const handleRowClick = (row: Record<string, number>) => {
     if (row.sessionId) {
       queryClient.invalidateQueries({ queryKey: 'session' })
@@ -164,7 +132,7 @@ const SearchPlayer2: FC = () => {
         </label>
       </div>
       <TableGridLocalSort
-        data={sortedData}
+        data={data?.items || []}
         showDateRangeFilter
         rowCountState={data?.totalItemsCount}
         rowId={rowId}

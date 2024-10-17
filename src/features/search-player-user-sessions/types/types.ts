@@ -1,4 +1,4 @@
-import { GridFilterModel } from '@mui/x-data-grid';
+import { GridFilterModel, GridSortModel } from '@mui/x-data-grid';
 import { GridPaginationModel } from '@mui/x-data-grid/models/gridPaginationProps';
 import { Dayjs } from 'dayjs';
 
@@ -27,12 +27,13 @@ export interface SessionResponse2 {
 }
 
 export interface postPlayerUserSessionsProps extends SessionsForUserDto {
-  filterModel: GridFilterModel;
-  paginationModel: GridPaginationModel;
   filterDate: {
     startDate: Dayjs | null;
     endDate: Dayjs | null;
   };
+  filterModel: GridFilterModel;
+  sortModel: GridSortModel;
+  paginationModel: GridPaginationModel;
 }
 
 export interface SessionsForUserDto {
