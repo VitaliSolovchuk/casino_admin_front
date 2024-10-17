@@ -9,7 +9,7 @@ import Games from 'pages/Games/Games';
 import CurrencyGames from 'pages/CurrencyGames/CurrencyGames';
 import PartnerCurrency from 'pages/PartnerCurrenсy/PartnerCurrency';
 import Sessions2 from 'pages/Sessions2/Sessions2';
-import SearchPlayer from 'pages/SearchPlayer2/SearchPlayer2';
+import SearchPlayer from 'pages/SearchPlayer/SearchPlayer';
 import Auth from '../../widgets/auth/ui/Auth';
 
 export type AppRoute = RouteProps & {
