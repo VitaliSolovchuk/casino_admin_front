@@ -7,9 +7,9 @@ import { paths } from 'shared/lib/consts/paths';
 import { names } from 'shared/lib/consts/names';
 import Games from 'pages/Games/Games';
 import CurrencyGames from 'pages/CurrencyGames/CurrencyGames';
-import SearchPlayer from 'pages/SearchPlayerUserSessions/SearchPlayer';
 import PartnerCurrency from 'pages/PartnerCurrenсy/PartnerCurrency';
 import Sessions2 from 'pages/Sessions2/Sessions2';
+import SearchPlayer2 from 'pages/SearchPlayer2/SearchPlayer2';
 import Auth from '../../widgets/auth/ui/Auth';
 
 export type AppRoute = RouteProps & {
@@ -73,7 +73,7 @@ export const authProtectedRoutes: AppRoute[] = [
   {
     path: paths.searchplayer_2,
     name: names.SearchPlayer_2,
-    element: <SearchPlayer />,
+    element: <SearchPlayer2 />,
   },
   {
     path: paths.sessionEvents,

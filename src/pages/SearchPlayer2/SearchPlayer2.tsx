@@ -10,7 +10,7 @@ import { paths } from 'shared/lib/consts/paths';
 import useTableGrid from 'widgets/tableGrid/model/tableGridStore';
 import { useDataRequest } from 'shared/lib/hooks/useDataRequest';
 import { useMutationRequest } from 'shared/lib/hooks/useMutationRequest';
-import TableGridLocalSort from '../SearchPlayerUserSessions/TableGridLocalSort';
+import TableGridLocalSort from './TableGridLocalSort';
 import TotalGGRContext from '../../TotalGGRContext';
 import useFilterDateRange from '../../entities/dateRangeCalendar/model/dateRangeStore';
 
@@ -162,7 +162,6 @@ const SearchPlayer2: FC = () => {
             onChange={(e) => setPlayerIdInput(e.target.value)}
           />
         </label>
-        <button onClick={handleSubmit}>Submit</button>
       </div>
       <TableGridLocalSort
         data={sortedData}

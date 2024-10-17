@@ -2,28 +2,6 @@ import { GridFilterModel } from '@mui/x-data-grid';
 import { GridPaginationModel } from '@mui/x-data-grid/models/gridPaginationProps';
 import { Dayjs } from 'dayjs';
 
-export interface ItemSession {
-  userId: number;
-  playerId: string;
-  sessionId: string;
-  currencyName: string;
-  gameName: string;
-  totalAmountBetUSD: number;
-  totalAmountWinUSD: number;
-  totalProfitUSD: number;
-  startDate: Date;
-  endDate: Date;
-}
-
-export interface SessionResponse {
-  items: ItemSession[];
-  page: number;
-  pageSize: number;
-  pagesCount: number;
-  totalItemsCount: number;
-  filterGgrUsd?:number
-}
-
 export interface ItemSession2 {
   userId: number;
   playerId: string;
@@ -45,7 +23,7 @@ export interface SessionResponse2 {
   pageSize: number;
   pagesCount: number;
   totalItemsCount: number;
-  filterGgrUsd?:number
+  filterGgrUsd?: number;
 }
 
 export interface postPlayerUserSessionsProps extends SessionsForUserDto {
