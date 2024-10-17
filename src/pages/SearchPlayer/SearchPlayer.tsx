@@ -14,7 +14,7 @@ import TableGridLocalSort from './TableGridLocalSort';
 import TotalGGRContext from '../../TotalGGRContext';
 import useFilterDateRange from '../../entities/dateRangeCalendar/model/dateRangeStore';
 
-const SearchPlayer2: FC = () => {
+const SearchPlayer: FC = () => {
   const [playerIdInput, setPlayerIdInput] = useState<string>('');
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -148,4 +148,4 @@ const SearchPlayer2: FC = () => {
   );
 };
 
-export default SearchPlayer2;
+export default SearchPlayer;
