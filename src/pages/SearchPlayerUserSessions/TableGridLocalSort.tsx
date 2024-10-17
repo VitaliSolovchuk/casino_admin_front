@@ -91,7 +91,7 @@ const TableGridLocalSort: FC<TableGridProps> = ({
     );
   };
 
-  if (isLoading) return <Spinner />;
+  /*  if (isLoading) return <Spinner />; */
 
   if (error) {
     return (
@@ -111,44 +111,46 @@ const TableGridLocalSort: FC<TableGridProps> = ({
       {showDateRangeFilter && <DateRangeFilter />}
       {' '}
       {/* Отображаем календарь, только если showDateRangeFilter = true */}
-      <DataGridPro
-        sx={{
-          ...(isMobile && {
-            '& .MuiDataGrid-cell, .MuiDataGrid-columnHeader': {
-              minWidth: '100px !important',
+      {!isLoading ? (
+        <DataGridPro
+          sx={{
+            ...(isMobile && {
+              '& .MuiDataGrid-cell, .MuiDataGrid-columnHeader': {
+                minWidth: '100px !important',
+              },
+              '& .MuiDataGrid-iconButtonContainer': {
+                width: '0 !important',
+              },
+              mx: -2,
+            }),
+            '& .MuiDataGrid-row:hover': {
+              cursor: 'pointer',
             },
-            '& .MuiDataGrid-iconButtonContainer': {
-              width: '0 !important',
-            },
-            mx: -2,
-          }),
-          '& .MuiDataGrid-row:hover': {
-            cursor: 'pointer',
-          },
-        }}
-        filterDebounceMs={2000}
-        paginationModel={paginationModel}
-        rows={data || []}
-        columns={columns}
-        rowCount={rowCountState}
-        pagination
-        autoHeight
-        getRowId={rowId}
-        pageSizeOptions={[3, 25, 50, 100]}
-        sortingMode="client"
-        filterMode="server"
-        paginationMode="server"
-        onPaginationModelChange={setPaginationModel}
-        onSortModelChange={onSortModelChange}
-        sortModel={sortModel}
-        onFilterModelChange={setLocalFilter}
-        loading={isLoading}
-        onRowClick={handleRowClickWrapper}
-        slots={{
-          toolbar: GridToolbar,
-          filterPanel: CustomFilterPanel,
-        }}
-      />
+          }}
+          filterDebounceMs={2000}
+          paginationModel={paginationModel}
+          rows={data || []}
+          columns={columns}
+          rowCount={rowCountState}
+          pagination
+          autoHeight
+          getRowId={rowId}
+          pageSizeOptions={[3, 25, 50, 100]}
+          sortingMode="client"
+          filterMode="server"
+          paginationMode="server"
+          onPaginationModelChange={setPaginationModel}
+          onSortModelChange={onSortModelChange}
+          sortModel={sortModel}
+          onFilterModelChange={setLocalFilter}
+          loading={isLoading}
+          onRowClick={handleRowClickWrapper}
+          slots={{
+            toolbar: GridToolbar,
+            filterPanel: CustomFilterPanel,
+          }}
+        />
+      ) : <Spinner />}
     </div>
   );
 };
