@@ -71,8 +71,8 @@ export const authProtectedRoutes: AppRoute[] = [
     element: <Sessions2 />,
   },
   {
-    path: paths.searchplayer_2,
-    name: names.SearchPlayer_2,
+    path: paths.searchplayer,
+    name: names.SearchPlayer,
     element: <SearchPlayer2 />,
   },
   {
