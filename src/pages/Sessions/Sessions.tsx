@@ -10,7 +10,7 @@ import { useQueryClient } from 'react-query';
 import { paths } from 'shared/lib/consts/paths';
 import { useMutationRequest } from 'shared/lib/hooks/useMutationRequest';
 import { postSessionsCurrencyData } from 'features/sessions-currency-parner/api';
-import { ResultSessionsInfo, SessionInfo } from 'features/sessions-currency-parner/types/types';
+import { ResultSessionsInfo } from 'features/sessions-currency-parner/types/types';
 import TableGridLocalSort from './TableGridLocalSort';
 
 interface Row {
@@ -19,7 +19,7 @@ interface Row {
   sessionId: string;
 }
 
-const Sessions2: FC = () => {
+const Sessions: FC = () => {
   const { search, state } = useLocation();
   const params = new URLSearchParams(search);
   const partnerId = params.get('partner-id') || '5' as string;
@@ -57,7 +57,8 @@ const Sessions2: FC = () => {
       partnerId,
       currencyes: currency,
       paginationModel,
-      filterModel: localFilterModel, // Передаем обновленные фильтры
+      filterModel: localFilterModel,
+      sortModel,
       filterDate: {
         startDate: dateRange[0],
         endDate: dateRange[1],
@@ -72,6 +73,7 @@ const Sessions2: FC = () => {
       currencyes: currency,
       paginationModel,
       filterModel: localFilterModel,
+      sortModel,
       filterDate: {
         startDate: dateRange[0],
         endDate: dateRange[1],
@@ -81,7 +83,7 @@ const Sessions2: FC = () => {
 
   useEffect(() => {
     mutate();
-  }, [mutate, paginationModel, filterModel, filterDate, dateRange]);
+  }, [mutate, paginationModel, filterModel, filterDate, dateRange, sortModel]);
 
   const handleFilterModelChange = (newFilterModel: GridFilterModel) => {
     setLocalFilterModel(newFilterModel);
@@ -111,40 +113,10 @@ const Sessions2: FC = () => {
     { field: 'firstBetTime', headerName: 'Time', flex: 1 },
   ], []);
 
-  // Сортировка данных
-  const sortedData = useMemo(() => {
-    if (!data || data.items.length === 0) return [];
-    if (!sortModel || sortModel.length === 0) return data.items;
-
-    const { field, sort } = sortModel[0];
-
-    const sorted = [...data.items].sort((a, b) => {
-      let valueA = a[field as keyof SessionInfo];
-      let valueB = b[field as keyof SessionInfo];
-
-      // eslint-disable-next-line max-len
-      const isNumeric = (val: any) => typeof val === 'number' || (typeof val === 'string' && !Number.isNaN(parseFloat(val)) && Number.isFinite(val));
-
-      if (isNumeric(valueA)) {
-        valueA = parseFloat(valueA.toString());
-        valueB = parseFloat(valueB.toString());
-      } else {
-        valueA = valueA?.toString().toLowerCase() ?? '';
-        valueB = valueB?.toString().toLowerCase() ?? '';
-      }
-
-      if (valueA < valueB) return sort === 'asc' ? -1 : 1;
-      if (valueA > valueB) return sort === 'asc' ? 1 : -1;
-
-      return 0;
-    });
-    return sorted;
-  }, [data, sortModel]);
-
   return (
     <div>
       <TableGridLocalSort
-        data={sortedData} // Передаем отсортированные данные
+        data={data?.items || []} // Передаем отсортированные данные
         rowCountState={data?.totalItemsCount}
         rowId={(row: Row) => `${row.partnerId}-${row.playerId}-${row.sessionId}`}
         isLoading={isLoading || isLoadingMutate}
@@ -160,4 +132,4 @@ const Sessions2: FC = () => {
   );
 };
 
-export default Sessions2;
+export default Sessions;
