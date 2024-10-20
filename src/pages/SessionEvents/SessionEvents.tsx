@@ -1,16 +1,16 @@
 import React, {
-  FC, useEffect, useMemo, useRef,
+  FC, useEffect, useMemo, useState, useRef,
 } from 'react';
 import { useLocation } from 'react-router-dom';
-import { GridColDef } from '@mui/x-data-grid';
+import { GridColDef, GridFilterModel } from '@mui/x-data-grid';
 import dayjs from 'dayjs';
-import TableGrid from 'widgets/tableGrid/ui/TableGrid';
 import { SessionEvent } from 'features/sessions/types/types';
 import { useDataRequest } from 'shared/lib/hooks/useDataRequest';
 import { postSessionsData } from 'features/sessions/api';
 import useTableGrid from 'widgets/tableGrid/model/tableGridStore';
 import useFilterDateRange from 'entities/dateRangeCalendar/model/dateRangeStore';
 import { useMutationRequest } from 'shared/lib/hooks/useMutationRequest';
+import TableGrid from '../../shared/ui/TableGrid/TableGrid';
 
 interface Row {
   dataTime: string
@@ -20,14 +20,11 @@ const SessionEvents: FC = () => {
   const { search } = useLocation();
   const params = new URLSearchParams(search);
   const sessionId = params.get('id');
-  const {
-    filterModel,
-    sortModel,
-    paginationModel,
-  } = useTableGrid((state) => state);
+  const { sortModel, paginationModel } = useTableGrid((state) => state);
   const { filterDate } = useFilterDateRange((state) => state);
   const { dateRange } = filterDate;
-  const isFirstRender = useRef(true);
+  const [localFilterModel, setLocalFilterModel] = useState<GridFilterModel>({ items: [], quickFilterValues: [] });
+  const hasMounted = useRef(false);
 
   const {
     data,
@@ -39,20 +36,21 @@ const SessionEvents: FC = () => {
       sessionId,
       paginationModel,
       sortModel,
-      filterModel,
+      filterModel: localFilterModel,
       filterDate: {
         startDate: dateRange[0],
         endDate: dateRange[1],
       },
     }),
   );
-  const { mutate } = useMutationRequest<SessionEvent[]>(
+
+  const { mutate, isLoading: isLoadingMutate } = useMutationRequest<SessionEvent[]>(
     'session',
     () => postSessionsData({
       sessionId,
       paginationModel,
       sortModel,
-      filterModel,
+      filterModel: localFilterModel,
       filterDate: {
         startDate: dateRange[0],
         endDate: dateRange[1],
@@ -61,8 +59,12 @@ const SessionEvents: FC = () => {
   );
 
   useEffect(() => {
-    mutate();
-  }, [mutate, paginationModel, filterModel, filterDate, dateRange]);
+    if (hasMounted.current) {
+      mutate();
+    } else {
+      hasMounted.current = true;
+    }
+  }, [mutate, paginationModel, localFilterModel, filterDate, dateRange]);
 
   const columns: GridColDef[] = useMemo(() => [
     { field: 'betId', headerName: 'Bet ID', flex: 1 },
@@ -79,16 +81,22 @@ const SessionEvents: FC = () => {
     { field: 'serverSeed', headerName: 'Server Seed', flex: 1 },
 
   ], []);
+
   const rowId = (row: Row) => row.dataTime;
+
   return (
     <div>
       <TableGrid
         data={data}
+        rowCountState={data?.length || 0}
         rowId={rowId}
-        isLoading={isLoading}
+        isLoading={isLoading || isLoadingMutate}
         error={error as Error}
         columns={columns}
         title="Session Table"
+        sortModel={sortModel}
+        setLocalFilterModel={setLocalFilterModel}
+        sortingMode="server"
       />
     </div>
   );

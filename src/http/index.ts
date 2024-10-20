@@ -15,6 +15,7 @@ $api.interceptors.request.use((config) => {
 $api.interceptors.response.use(
   (config) => config,
   (error) => {
+    console.log('error', error);
     if (error.response.status === 401) {
       console.log('НЕ АВТОРИЗОВАН', error);
       localStorage.clear();

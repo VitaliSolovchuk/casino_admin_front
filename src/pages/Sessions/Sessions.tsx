@@ -1,5 +1,5 @@
 import React, {
-  FC, useEffect, useMemo, useState,
+  FC, useEffect, useMemo, useState, useRef,
 } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { GridColDef, GridSortModel, GridFilterModel } from '@mui/x-data-grid';
@@ -11,7 +11,7 @@ import { paths } from 'shared/lib/consts/paths';
 import { useMutationRequest } from 'shared/lib/hooks/useMutationRequest';
 import { postSessionsCurrencyData } from 'features/sessions-currency-parner/api';
 import { ResultSessionsInfo } from 'features/sessions-currency-parner/types/types';
-import TableGridLocalSort from './TableGridLocalSort';
+import TableGrid from '../../shared/ui/TableGrid/TableGrid';
 
 interface Row {
   partnerId: string;
@@ -27,13 +27,11 @@ const Sessions: FC = () => {
   const gameName = params.get('game') as string | undefined;
 
   const navigate = useNavigate();
-  const {
-    filterModel, // Мы будем использовать это для хранения модели фильтра
-    paginationModel,
-  } = useTableGrid((state) => state);
+  const { paginationModel } = useTableGrid((state) => state);
   const { filterDate } = useFilterDateRange((state) => state);
   const { dateRange } = filterDate;
   const queryClient = useQueryClient();
+  const hasMounted = useRef(false);
 
   const initialFilterModel: GridFilterModel = {
     items: [
@@ -82,12 +80,12 @@ const Sessions: FC = () => {
   );
 
   useEffect(() => {
-    mutate();
-  }, [mutate, paginationModel, filterModel, filterDate, dateRange, sortModel]);
-
-  const handleFilterModelChange = (newFilterModel: GridFilterModel) => {
-    setLocalFilterModel(newFilterModel);
-  };
+    if (hasMounted.current) {
+      mutate();
+    } else {
+      hasMounted.current = true;
+    }
+  }, [mutate, paginationModel, localFilterModel, filterDate, dateRange, sortModel]);
 
   const handleSortChange = (model: GridSortModel) => {
     setSortModel(model);
@@ -115,9 +113,9 @@ const Sessions: FC = () => {
 
   return (
     <div>
-      <TableGridLocalSort
-        data={data?.items || []} // Передаем отсортированные данные
-        rowCountState={data?.totalItemsCount}
+      <TableGrid
+        data={data?.items || []}
+        rowCountState={data?.totalItemsCount || 0}
         rowId={(row: Row) => `${row.partnerId}-${row.playerId}-${row.sessionId}`}
         isLoading={isLoading || isLoadingMutate}
         error={error as Error}
@@ -126,7 +124,7 @@ const Sessions: FC = () => {
         title="Player-session Table"
         sortModel={sortModel}
         onSortModelChange={handleSortChange}
-        onFilterModelChange={handleFilterModelChange} // Добавляем обработку фильтров
+        setLocalFilterModel={setLocalFilterModel}
       />
     </div>
   );

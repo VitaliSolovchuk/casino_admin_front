@@ -1,16 +1,15 @@
 import React, {
-  FC, useEffect, useMemo, useRef,
-  useState, useContext,
+  FC, useEffect, useMemo, useState, useContext, useRef,
 } from 'react';
-import { GridColDef, GridSortModel } from '@mui/x-data-grid';
+import { GridColDef, GridFilterModel, GridSortModel } from '@mui/x-data-grid';
 import useTableGrid from 'widgets/tableGrid/model/tableGridStore';
 import useFilterDateRange from 'entities/dateRangeCalendar/model/dateRangeStore';
 import { useDataRequest } from 'shared/lib/hooks/useDataRequest';
 import { GamesData, GamesStatistic } from 'features/partners/types/types';
 import { postGamesStatisticData } from 'features/partners/api';
 import { useMutationRequest } from 'shared/lib/hooks/useMutationRequest';
-import TableGridLocalSort from 'widgets/tableGrid/ui/TableGridLocalSort';
 import TotalGGRContext from '../../TotalGGRContext';
+import TableGrid from '../../shared/ui/TableGrid/TableGrid';
 
 interface Row {
   partnerId: number;
@@ -19,18 +18,13 @@ interface Row {
 }
 
 const Games: FC = () => {
-  const {
-    filterModel,
-    paginationModel,
-  } = useTableGrid((state) => state);
-
-  const {
-    filterDate,
-  } = useFilterDateRange((state) => state);
-
+  const { paginationModel } = useTableGrid((state) => state);
+  const { filterDate } = useFilterDateRange((state) => state);
   const { dateRange } = filterDate;
-  const isFirstRender = useRef(true);
   const { setTotalGgrUsd } = useContext(TotalGGRContext);
+  const [localFilterModel, setLocalFilterModel] = useState<GridFilterModel>({ items: [], quickFilterValues: [] });
+  const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'gameName', sort: 'asc' }]);
+  const hasMounted = useRef(false);
 
   const {
     data,
@@ -40,7 +34,7 @@ const Games: FC = () => {
     'games',
     () => postGamesStatisticData({
       paginationModel,
-      filterModel,
+      filterModel: localFilterModel,
       filterDate: {
         startDate: dateRange[0],
         endDate: dateRange[1],
@@ -53,7 +47,7 @@ const Games: FC = () => {
     () => postGamesStatisticData(
       {
         paginationModel,
-        filterModel,
+        filterModel: localFilterModel,
         filterDate: {
           startDate: dateRange[0],
           endDate: dateRange[1],
@@ -63,10 +57,12 @@ const Games: FC = () => {
   );
 
   useEffect(() => {
-    mutate();
-  }, [mutate, paginationModel, filterModel, filterDate, dateRange]);
-
-  const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'gameName', sort: 'asc' }]);
+    if (hasMounted.current) {
+      mutate();
+    } else {
+      hasMounted.current = true;
+    }
+  }, [mutate, paginationModel, localFilterModel, filterDate, dateRange]);
 
   const sortedData = useMemo(() => {
     if (!data || !sortModel || sortModel.length === 0) return [];
@@ -96,6 +92,7 @@ const Games: FC = () => {
     });
     return sorted;
   }, [data, sortModel]);
+
   const handleSortChange = (model: GridSortModel) => {
     setSortModel(model);
   };
@@ -164,8 +161,9 @@ const Games: FC = () => {
   const rowId = (row: Row) => `${row.gameName}`;
   return (
     <div>
-      <TableGridLocalSort
+      <TableGrid
         data={sortedData}
+        rowCountState={sortedData?.length || 0}
         rowId={rowId}
         isLoading={isLoading || isLoadingMutate}
         error={error as Error}
@@ -173,6 +171,7 @@ const Games: FC = () => {
         title="Games Table"
         sortModel={sortModel}
         onSortModelChange={handleSortChange}
+        setLocalFilterModel={setLocalFilterModel}
       />
     </div>
   );
