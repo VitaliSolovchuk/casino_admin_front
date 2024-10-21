@@ -2,32 +2,33 @@ import React, {
   useState, FC, useRef, useEffect,
 } from 'react';
 import {
-  GridColDef, GridFilterModel, GridFilterPanel, GridRowIdGetter, GridRowParams, GridToolbar, GridSortModel,
+  // eslint-disable-next-line max-len
+  GridColDef, GridFilterModel, GridFilterPanel, GridRowIdGetter, GridRowParams, GridToolbar, GridSortModel, GridFeatureMode,
 } from '@mui/x-data-grid';
 import { DataGridPro } from '@mui/x-data-grid-pro';
 import { Button, Typography } from '@mui/material';
-import Spinner from 'shared/ui/Spinner/Spinner';
 import DateRangeFilter from 'entities/dateRangeCalendar/ui/DateRangeFilter';
 import { useMediaQuery } from 'react-responsive';
 import useTableGrid from 'widgets/tableGrid/model/tableGridStore';
 import styles from './TableGrid.module.scss';
 
-interface TableGridProps {
-  data?: Record<string, any>[];
-  isLoading: boolean;
-  error: Error;
-  columns: GridColDef[];
-  rowId?: GridRowIdGetter<any>;
-  title: string;
-  handleRowClick?: ({ id }: { id: number }) => void;
-  sortModel: GridSortModel;
-  onSortModelChange: (model: GridSortModel) => void;
-  rowCountState?: number;
-  showDateRangeFilter?: boolean;
-  onFilterModelChange?: (model: GridFilterModel) => void; // Добавлено свойство для фильтров
-}
+  interface TableGridProps {
+    data?: Record<string, any>[];
+    isLoading: boolean;
+    error: Error;
+    columns: GridColDef[];
+    rowId?: GridRowIdGetter<any>;
+    title: string;
+    handleRowClick?: ({ id }: { id: number }) => void;
+    sortModel?: GridSortModel;
+    onSortModelChange?: (model: GridSortModel) => void;
+    rowCountState: number;
+    showDateRangeFilter?: boolean;
+    setLocalFilterModel:(model: GridFilterModel)=>void;
+    sortingMode?:GridFeatureMode
+  }
 
-const TableGridLocalSort: FC<TableGridProps> = ({
+const TableGrid: FC<TableGridProps> = ({
   data,
   isLoading,
   error,
@@ -39,37 +40,38 @@ const TableGridLocalSort: FC<TableGridProps> = ({
   onSortModelChange,
   rowCountState,
   showDateRangeFilter = true,
-  onFilterModelChange, // Теперь компонент принимает это свойство
+  setLocalFilterModel,
+  sortingMode = 'client',
 }) => {
-  const [localFilter, setLocalFilter] = useState<GridFilterModel>({ items: [], quickFilterValues: [] });
   const {
-    filterModel,
-    resetFilterModel,
-    setFilterModel,
     paginationModel,
     setPaginationModel,
   } = useTableGrid((state) => state);
   const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
 
+  const [appliedFilterModel, setAppliedFilterModel] = useState<GridFilterModel>({ items: [], quickFilterValues: [] });
+
   const handleApplyFilter = () => {
-    setFilterModel(localFilter);
-    if (onFilterModelChange) {
-      onFilterModelChange(localFilter); // Передаем обновленные фильтры, если передан обработчик
-    }
+    setLocalFilterModel(appliedFilterModel);
+  };
+
+  const handleFilterModelChange = (newFilterModel: GridFilterModel) => {
+    console.log('newFilterModel', newFilterModel);
+    setAppliedFilterModel(newFilterModel);
   };
 
   // eslint-disable-next-line react/no-unstable-nested-components
   const CustomFilterPanel: FC = () => {
     const filterPanelRef = useRef<HTMLDivElement>(null);
-    const shouldShowConfirmButton = localFilter.items.length > 0 && localFilter.items.every((item) => item.value);
+    const shouldShowConfirmButton = appliedFilterModel.items.length > 0 && appliedFilterModel.items.every((item) => item.value);
     useEffect(() => {
       const buttons = filterPanelRef.current?.querySelectorAll('.MuiDataGrid-panelFooter button');
       const removeAllButton = buttons?.item(1);
 
       if (removeAllButton instanceof HTMLButtonElement) {
         removeAllButton.addEventListener('click', () => {
-          if (filterModel.items.length > 0) {
-            setTimeout(() => resetFilterModel());
+          if (appliedFilterModel.items.length > 0) {
+            setTimeout(() => setLocalFilterModel({ items: [], quickFilterValues: [] }));
           }
         });
       }
@@ -79,15 +81,13 @@ const TableGridLocalSort: FC<TableGridProps> = ({
       <div>
         <GridFilterPanel ref={filterPanelRef} />
         {shouldShowConfirmButton && (
-          <Button onClick={handleApplyFilter} className={styles.button}>
-            Confirm
-          </Button>
+        <Button onClick={handleApplyFilter} className={styles.button}>
+          Confirm
+        </Button>
         )}
       </div>
     );
   };
-
-  if (isLoading) return <Spinner />;
 
   if (error) {
     return (
@@ -129,18 +129,13 @@ const TableGridLocalSort: FC<TableGridProps> = ({
         autoHeight
         getRowId={rowId}
         pageSizeOptions={[3, 25, 50, 100]}
-        sortingMode="client"
+        sortingMode={sortingMode}
         filterMode="server"
         paginationMode="server"
         onPaginationModelChange={setPaginationModel}
         onSortModelChange={onSortModelChange}
         sortModel={sortModel}
-        onFilterModelChange={(newFilterModel) => {
-          setLocalFilter(newFilterModel);
-          if (onFilterModelChange) {
-            onFilterModelChange(newFilterModel); // Передаем изменения фильтра
-          }
-        }}
+        onFilterModelChange={handleFilterModelChange}
         loading={isLoading}
         onRowClick={handleRowClickWrapper}
         slots={{
@@ -152,4 +147,4 @@ const TableGridLocalSort: FC<TableGridProps> = ({
   );
 };
 
-export default TableGridLocalSort;
+export default TableGrid;

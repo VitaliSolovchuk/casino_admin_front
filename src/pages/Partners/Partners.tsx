@@ -1,7 +1,7 @@
 import React, {
-  FC, useEffect, useMemo, useState, useContext,
+  FC, useEffect, useMemo, useState, useContext, useRef,
 } from 'react';
-import { GridColDef, GridSortModel } from '@mui/x-data-grid';
+import { GridColDef, GridFilterModel, GridSortModel } from '@mui/x-data-grid';
 import useTableGrid from 'widgets/tableGrid/model/tableGridStore';
 import useFilterDateRange from 'entities/dateRangeCalendar/model/dateRangeStore';
 import { useDataRequest } from 'shared/lib/hooks/useDataRequest';
@@ -11,8 +11,8 @@ import { postPartnersStatisticData } from 'features/partners/api';
 import { paths } from 'shared/lib/consts/paths';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useMutationRequest } from 'shared/lib/hooks/useMutationRequest';
-import TableGridLocalSort from 'widgets/tableGrid/ui/TableGridLocalSort';
 import TotalGGRContext from '../../TotalGGRContext';
+import TableGrid from '../../shared/ui/TableGrid/TableGrid';
 
 interface Row {
   partnerId: number;
@@ -24,21 +24,15 @@ const Partners: FC = () => {
   const params = new URLSearchParams(search);
   const partnerId = params.get('id');
   const { setTotalGgrUsd } = useContext(TotalGGRContext);
-
-  const {
-    filterModel,
-    // sortModel,
-    paginationModel,
-  } = useTableGrid((state) => state);
-
-  const {
-    filterDate,
-  } = useFilterDateRange((state) => state);
-
+  const hasMounted = useRef(false);
+  const { paginationModel } = useTableGrid((state) => state);
+  const { filterDate } = useFilterDateRange((state) => state);
   const { dateRange } = filterDate;
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  // const isFirstRender = useRef(true);
+
+  const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'ggrUsd', sort: 'desc' }]);
+  const [localFilterModel, setLocalFilterModel] = useState<GridFilterModel>({ items: [], quickFilterValues: [] });
 
   const {
     data,
@@ -49,8 +43,7 @@ const Partners: FC = () => {
     () => postPartnersStatisticData({
       partnerId,
       paginationModel,
-      // sortModel,
-      filterModel,
+      filterModel: localFilterModel,
       filterDate: {
         startDate: dateRange[0],
         endDate: dateRange[1],
@@ -64,8 +57,7 @@ const Partners: FC = () => {
       {
         partnerId,
         paginationModel,
-        // sortModel,
-        filterModel,
+        filterModel: localFilterModel,
         filterDate: {
           startDate: dateRange[0],
           endDate: dateRange[1],
@@ -75,10 +67,12 @@ const Partners: FC = () => {
   );
 
   useEffect(() => {
-    mutate();
-  }, [mutate, paginationModel, filterModel, filterDate, dateRange]);
-
-  const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'ggrUsd', sort: 'desc' }]);
+    if (hasMounted.current) {
+      mutate();
+    } else {
+      hasMounted.current = true;
+    }
+  }, [mutate, paginationModel, localFilterModel, filterDate, dateRange]);
 
   const sortedData = useMemo(() => {
     if (!data || data.currencyStatistics.length === 0) return [];
@@ -178,11 +172,14 @@ const Partners: FC = () => {
         .then(() => navigate(`${paths.sessions}/?id=${row.partnerId}&currency=${row.currencyName}`));
     }
   };
+
   const rowId = (row: Row) => `${row.partnerId}-${row.currencyName}`;
+
   return (
     <div>
-      <TableGridLocalSort
+      <TableGrid
         data={sortedData}
+        rowCountState={sortedData?.length}
         rowId={rowId}
         isLoading={isLoading || isLoadingMutate}
         error={error as Error}
@@ -191,6 +188,7 @@ const Partners: FC = () => {
         title="Partners Currency"
         sortModel={sortModel}
         onSortModelChange={handleSortChange}
+        setLocalFilterModel={setLocalFilterModel}
       />
     </div>
   );

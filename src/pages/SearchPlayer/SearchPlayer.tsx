@@ -1,8 +1,8 @@
-import { GridColDef, GridSortModel } from '@mui/x-data-grid';
+import { GridColDef, GridFilterModel, GridSortModel } from '@mui/x-data-grid';
 import { postSessionsForPlayer2 } from 'features/search-player-user-sessions/api';
 import { ItemSession2, SessionResponse2 } from 'features/search-player-user-sessions/types/types';
 import {
-  FC, useEffect, useMemo, useState, useContext,
+  FC, useEffect, useMemo, useState, useContext, useRef,
 } from 'react';
 import { useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
@@ -10,9 +10,9 @@ import { paths } from 'shared/lib/consts/paths';
 import useTableGrid from 'widgets/tableGrid/model/tableGridStore';
 import { useDataRequest } from 'shared/lib/hooks/useDataRequest';
 import { useMutationRequest } from 'shared/lib/hooks/useMutationRequest';
-import TableGridLocalSort from './TableGridLocalSort';
 import TotalGGRContext from '../../TotalGGRContext';
 import useFilterDateRange from '../../entities/dateRangeCalendar/model/dateRangeStore';
+import TableGrid from '../../shared/ui/TableGrid/TableGrid';
 
 const SearchPlayer: FC = () => {
   const [playerIdInput, setPlayerIdInput] = useState<string>('');
@@ -20,16 +20,10 @@ const SearchPlayer: FC = () => {
   const queryClient = useQueryClient();
   const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'totalProfitUSD', sort: 'desc' }]);
   const { setTotalGgrUsd } = useContext(TotalGGRContext);
-
-  const {
-    filterModel,
-    paginationModel,
-  } = useTableGrid((state) => state);
-
-  const {
-    filterDate,
-  } = useFilterDateRange((state) => state);
-
+  const hasMounted = useRef(false);
+  const [localFilterModel, setLocalFilterModel] = useState<GridFilterModel>({ items: [], quickFilterValues: [] });
+  const { paginationModel } = useTableGrid((state) => state);
+  const { filterDate } = useFilterDateRange((state) => state);
   const { dateRange } = filterDate;
 
   const {
@@ -40,7 +34,7 @@ const SearchPlayer: FC = () => {
     'player-sessions-',
     () => postSessionsForPlayer2({
       paginationModel,
-      filterModel,
+      filterModel: localFilterModel,
       filterDate: {
         startDate: dateRange[0],
         endDate: dateRange[1],
@@ -50,12 +44,11 @@ const SearchPlayer: FC = () => {
     }),
   );
 
-  // Мутация для отправки данных на сервер
   const { mutate, isLoading: isLoadingMutate } = useMutationRequest<SessionResponse2>(
     'player-sessions-',
     () => postSessionsForPlayer2({
       paginationModel,
-      filterModel,
+      filterModel: localFilterModel,
       filterDate: {
         startDate: dateRange[0],
         endDate: dateRange[1],
@@ -70,7 +63,6 @@ const SearchPlayer: FC = () => {
     mutate();
   };
 
-  // Хук для обновления данных по общему доходу
   useEffect(() => {
     if (!isLoading && data) {
       setTotalGgrUsd(data?.filterGgrUsd);
@@ -82,8 +74,12 @@ const SearchPlayer: FC = () => {
   }, [data, isLoading, error, setTotalGgrUsd]);
 
   useEffect(() => {
-    mutate();
-  }, [mutate, paginationModel, filterModel, filterDate, dateRange]);
+    if (hasMounted.current) {
+      mutate();
+    } else {
+      hasMounted.current = true;
+    }
+  }, [mutate, paginationModel, localFilterModel, filterDate, dateRange]);
 
   const columns: GridColDef[] = useMemo(() => [
     { field: 'sessionId', headerName: 'Session ID', flex: 1 },
@@ -98,16 +94,14 @@ const SearchPlayer: FC = () => {
     { field: 'ipAddress', headerName: 'IP Address', flex: 1 },
   ], []);
 
-  // Уникальный идентификатор строки
   const rowId = (row: ItemSession2): string => `${row.playerId}-${row.sessionId}`;
 
-  // Обработчик клика по строке
   const handleRowClick = (row: Record<string, number>) => {
     if (row.sessionId) {
       queryClient.invalidateQueries({ queryKey: 'session' })
         .then(() => navigate(`${paths.sessionEvents}/?id=${row.sessionId}`, {
           state: {
-            filterModel,
+            filterModel: localFilterModel,
             paginationModel,
             filterDate: {
               startDate: dateRange[0],
@@ -131,10 +125,10 @@ const SearchPlayer: FC = () => {
           />
         </label>
       </div>
-      <TableGridLocalSort
+      <TableGrid
         data={data?.items || []}
         showDateRangeFilter
-        rowCountState={data?.totalItemsCount}
+        rowCountState={data?.totalItemsCount || 0}
         rowId={rowId}
         isLoading={isLoading || isLoadingMutate}
         error={error as Error}
@@ -143,6 +137,7 @@ const SearchPlayer: FC = () => {
         title="SearchPlayer Table"
         sortModel={sortModel}
         onSortModelChange={handleSortChange}
+        setLocalFilterModel={setLocalFilterModel}
       />
     </div>
   );
