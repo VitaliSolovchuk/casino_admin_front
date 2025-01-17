@@ -79,6 +79,7 @@ const SessionEvents: FC = () => {
     { field: 'amountBet', headerName: 'Amount Bet', flex: 1 },
     { field: 'amountWin', headerName: 'Amount Win', flex: 1 },
     { field: 'serverSeed', headerName: 'Server Seed', flex: 1 },
+    { field: 'clientSeed', headerName: 'client Seed', flex: 1 },
 
   ], []);
 

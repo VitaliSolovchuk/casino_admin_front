@@ -8,14 +8,16 @@ export interface SessionEvent {
   dataTime: string;
   amountBet: number;
   amountWin: number;
+  serverSeed: string;
+  clientSeed: string;
 }
 export interface getSessionsProps {
-  sessionId: string | null,
-  filterModel: GridFilterModel,
-  sortModel: GridSortModel
-  paginationModel: GridPaginationModel,
+  sessionId: string | null;
+  filterModel: GridFilterModel;
+  sortModel: GridSortModel;
+  paginationModel: GridPaginationModel;
   filterDate: {
-    startDate: Dayjs | null,
-    endDate: Dayjs | null,
-  },
+    startDate: Dayjs | null;
+    endDate: Dayjs | null;
+  };
 }
