@@ -163,7 +163,7 @@ const SearchPlayer: FC = () => {
           onClick={handleReload}
           disabled={isLoading || isLoadingMutate}
         >
-          Reload Data
+          reload Seed
         </Button>
       </div>
 
