@@ -63,7 +63,7 @@ const SearchPlayer: FC = () => {
   const { mutate: mutateUpdateServerKey, isLoading: isLoadingMutate2 } = useMutationRequest<string>(
     'player-sessions-',
     () => postUpdateServerKeyForUser({
-      key: '321',
+      key: '321q',
       playerId: playerIdInput,
     }),
   );
