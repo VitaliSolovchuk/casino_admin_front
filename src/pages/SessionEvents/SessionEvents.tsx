@@ -76,8 +76,8 @@ const SessionEvents: FC = () => {
       flex: 2,
       valueFormatter: (params) => dayjs(params.value).format('YYYY-MM-DD HH:mm:ss'),
     },
-    { field: 'amountBet', headerName: 'Amount Bet', flex: 1 },
-    { field: 'amountWin', headerName: 'Amount Win', flex: 1 },
+    { field: 'totalAmountBetUSD', headerName: 'Bet', flex: 1 },
+    { field: 'totalAmountWinUSD', headerName: 'Amount Win', flex: 1 },
     { field: 'serverSeed', headerName: 'Server Seed', flex: 1 },
     { field: 'clientSeed', headerName: 'client Seed', flex: 1 },
 
