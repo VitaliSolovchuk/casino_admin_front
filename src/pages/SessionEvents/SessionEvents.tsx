@@ -82,7 +82,7 @@ const SessionEvents: FC = () => {
     { field: 'serverSeed', headerName: 'Server Seed', flex: 1 },
     { field: 'clientSeed', headerName: 'client Seed', flex: 1 },
     {
-      field: 'betCoefs',
+      field: 'BetCoefficientes',
       headerName: 'Bet Coefficients',
       flex: 2,
       renderCell: (params) => {
