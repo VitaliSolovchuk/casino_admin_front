@@ -80,6 +80,13 @@ const SessionEvents: FC = () => {
     { field: 'totalAmountWinUSD', headerName: 'Amount Win', flex: 1 },
     { field: 'serverSeed', headerName: 'Server Seed', flex: 1 },
     { field: 'clientSeed', headerName: 'client Seed', flex: 1 },
+    {
+      field: 'BetCoefficientes',
+      headerName: 'Bet Coefficients',
+      flex: 2,
+      // eslint-disable-next-line max-len
+      valueGetter: (params) => (params.value ? Object.entries(params.value).map(([key, val]) => `${key}: ${val}`).join(', ') : ''),
+    },
 
   ], []);
 
