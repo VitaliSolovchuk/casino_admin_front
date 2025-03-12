@@ -10,6 +10,7 @@ import { postSessionsData } from 'features/sessions/api';
 import useTableGrid from 'widgets/tableGrid/model/tableGridStore';
 import useFilterDateRange from 'entities/dateRangeCalendar/model/dateRangeStore';
 import { useMutationRequest } from 'shared/lib/hooks/useMutationRequest';
+import { Tooltip, Typography } from '@mui/material';
 import TableGrid from '../../shared/ui/TableGrid/TableGrid';
 
 interface Row {
@@ -81,11 +82,20 @@ const SessionEvents: FC = () => {
     { field: 'serverSeed', headerName: 'Server Seed', flex: 1 },
     { field: 'clientSeed', headerName: 'client Seed', flex: 1 },
     {
-      field: 'BetCoefficientes',
+      field: 'betCoefs',
       headerName: 'Bet Coefficients',
       flex: 2,
-      // eslint-disable-next-line max-len
-      valueGetter: (params) => (params.value ? Object.entries(params.value).map(([key, val]) => `${key}: ${val}`).join(', ') : ''),
+      renderCell: (params) => {
+        const betCoefs = params.value as { value: string; coefficient: string }[];
+
+        return (
+          <Tooltip title={JSON.stringify(betCoefs, null, 2)}>
+            <Typography variant="body2" noWrap>
+              {betCoefs.map((coef) => `${coef.value} (${coef.coefficient})`).join(', ')}
+            </Typography>
+          </Tooltip>
+        );
+      },
     },
 
   ], []);
