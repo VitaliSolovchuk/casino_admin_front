@@ -86,12 +86,14 @@ const SessionEvents: FC = () => {
       headerName: 'Bet Coefficients',
       flex: 2,
       renderCell: (params) => {
-        const betCoefs = params.value as { value: string; coefficient: string }[];
+        const betCoefs = Array.isArray(params.value) ? params.value : [];
 
         return (
           <Tooltip title={JSON.stringify(betCoefs, null, 2)}>
             <Typography variant="body2" noWrap>
-              {betCoefs.map((coef) => `${coef.value} (${coef.coefficient})`).join(', ')}
+              {betCoefs.length > 0
+                ? betCoefs.map((coef) => `${coef.value} (${coef.coefficient})`).join(', ')
+                : '—'}
             </Typography>
           </Tooltip>
         );
