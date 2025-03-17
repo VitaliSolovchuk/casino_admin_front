@@ -105,7 +105,7 @@ const SessionEvents: FC = () => {
 
     if (hasRoundResult) {
       baseColumns.push({
-        field: 'roundResult',
+        field: 'Round',
         headerName: 'Result',
         flex: 2,
         valueGetter: (params) => {
