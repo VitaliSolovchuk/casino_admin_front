@@ -106,9 +106,12 @@ const SessionEvents: FC = () => {
     if (hasRoundResult) {
       baseColumns.push({
         field: 'roundResult',
-        headerName: 'Round Result',
+        headerName: 'Result',
         flex: 2,
-        valueGetter: (params) => params.row.Round?.result || ' ',
+        valueGetter: (params) => {
+          const round = params.row.Round;
+          return Array.isArray(round) ? round[0]?.result || ' ' : round?.result || ' ';
+        },
       });
     }
 
