@@ -67,40 +67,53 @@ const SessionEvents: FC = () => {
     }
   }, [mutate, paginationModel, localFilterModel, filterDate, dateRange]);
 
-  const columns: GridColDef[] = useMemo(() => [
-    { field: 'betId', headerName: 'Bet ID', flex: 1 },
-    { field: 'actionType', headerName: 'Action Type', flex: 1 },
-    {
-      field: 'dataTime',
-      headerName: 'Date Time',
-      type: 'date',
-      flex: 2,
-      valueFormatter: (params) => dayjs(params.value).format('YYYY-MM-DD HH:mm:ss'),
-    },
-    { field: 'totalAmountBetUSD', headerName: 'Bet', flex: 1 },
-    { field: 'totalAmountWinUSD', headerName: 'Amount Win', flex: 1 },
-    { field: 'serverSeed', headerName: 'Server Seed', flex: 1 },
-    { field: 'clientSeed', headerName: 'client Seed', flex: 1 },
-    {
-      field: 'BetCoefficientes',
-      headerName: 'Bet Coefficients',
-      flex: 2,
-      renderCell: (params) => {
-        const betCoefs = Array.isArray(params.value) ? params.value : [];
+  const columns: GridColDef[] = useMemo(() => {
+    const hasRoundResult = data && data.length > 0 && data[0].Round?.result !== undefined;
 
-        return (
-          <Tooltip title={JSON.stringify(betCoefs, null, 2)}>
-            <Typography variant="body2" noWrap>
-              {betCoefs.length > 0
-                ? betCoefs.map((coef) => `${coef.value} (${coef.coefficient})`).join(', ')
-                : '—'}
-            </Typography>
-          </Tooltip>
-        );
+    const baseColumns: GridColDef[] = [
+      { field: 'betId', headerName: 'Bet ID', flex: 1 },
+      { field: 'actionType', headerName: 'Action Type', flex: 1 },
+      {
+        field: 'dataTime',
+        headerName: 'Date Time',
+        type: 'date',
+        flex: 2,
+        valueFormatter: (params) => dayjs(params.value).format('YYYY-MM-DD HH:mm:ss'),
       },
-    },
+      { field: 'totalAmountBetUSD', headerName: 'Bet', flex: 1 },
+      { field: 'totalAmountWinUSD', headerName: 'Amount Win', flex: 1 },
+      { field: 'serverSeed', headerName: 'Server Seed', flex: 1 },
+      { field: 'clientSeed', headerName: 'Client Seed', flex: 1 },
+      {
+        field: 'BetCoefficientes',
+        headerName: 'Bet Coefficients',
+        flex: 2,
+        renderCell: (params) => {
+          const betCoefs = Array.isArray(params.value) ? params.value : [];
+          return (
+            <Tooltip title={JSON.stringify(betCoefs, null, 2)}>
+              <Typography variant="body2" noWrap>
+                {betCoefs.length > 0
+                  ? betCoefs.map((coef) => `${coef.value} (${coef.coefficient})`).join(', ')
+                  : '—'}
+              </Typography>
+            </Tooltip>
+          );
+        },
+      },
+    ];
 
-  ], []);
+    if (hasRoundResult) {
+      baseColumns.push({
+        field: 'roundResult',
+        headerName: 'Round Result',
+        flex: 2,
+        valueGetter: (params) => params.row.Round?.result || ' ',
+      });
+    }
+
+    return baseColumns;
+  }, [data]);
 
   const rowId = (row: Row) => row.dataTime;
 
