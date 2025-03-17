@@ -68,7 +68,11 @@ const SessionEvents: FC = () => {
   }, [mutate, paginationModel, localFilterModel, filterDate, dateRange]);
 
   const columns: GridColDef[] = useMemo(() => {
-    const hasRoundResult = data && data.length > 0 && data[0].Round?.result !== undefined;
+    const hasRoundResult = Array.isArray(data)
+    && data.length > 0
+    && Array.isArray(data[0]?.Round)
+    && data[0].Round.length > 0
+    && data[0].Round[0]?.Round?.result !== undefined;
 
     const baseColumns: GridColDef[] = [
       { field: 'betId', headerName: 'Bet ID', flex: 1 },
@@ -81,7 +85,12 @@ const SessionEvents: FC = () => {
         valueFormatter: (params) => dayjs(params.value).format('YYYY-MM-DD HH:mm:ss'),
       },
       { field: 'totalAmountBetUSD', headerName: 'Bet', flex: 1 },
-      { field: 'totalAmountWinUSD', headerName: 'Amount Win', flex: 1 },
+      {
+        field: 'totalAmountWinUSD',
+        headerName: 'Amount Win',
+        flex: 1,
+        cellClassName: (params) => (params.row.Refound !== null ? 'highlight-cell' : ''),
+      },
       { field: 'serverSeed', headerName: 'Server Seed', flex: 1 },
       { field: 'clientSeed', headerName: 'Client Seed', flex: 1 },
       {
@@ -105,16 +114,18 @@ const SessionEvents: FC = () => {
 
     if (hasRoundResult) {
       baseColumns.push({
-        field: 'Round',
+        field: 'roundResult',
         headerName: 'Result',
         flex: 2,
         valueGetter: (params) => {
-          const round = params.row.Round;
-          return Array.isArray(round) ? round[0]?.result || ' ' : round?.result || ' ';
+          const roundArray = params.row.Round;
+          if (Array.isArray(roundArray) && roundArray.length > 0) {
+            return roundArray[0]?.Round?.result || ' ';
+          }
+          return ' ';
         },
       });
     }
-
     return baseColumns;
   }, [data]);
 
