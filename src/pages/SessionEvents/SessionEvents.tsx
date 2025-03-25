@@ -72,7 +72,8 @@ const SessionEvents: FC = () => {
     && data.length > 0
     && Array.isArray(data[0]?.Round)
     && data[0].Round.length > 0
-    && data[0].Round[0]?.Round?.result !== undefined;
+    && data[0].Round[0]?.Round?.result !== undefined
+    && data[0].result === 'empty';
 
     const baseColumns: GridColDef[] = [
       { field: 'betId', headerName: 'Bet ID', flex: 1 },
