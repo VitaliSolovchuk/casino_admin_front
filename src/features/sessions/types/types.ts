@@ -19,6 +19,8 @@ export interface SessionEvent {
   BetCoefficientes: any;
   Refound: any | null;
   Round: any;
+
+  result: string;
 }
 export interface getSessionsProps {
   sessionId: string | null;

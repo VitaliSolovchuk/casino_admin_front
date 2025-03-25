@@ -110,6 +110,8 @@ const SessionEvents: FC = () => {
           );
         },
       },
+      { field: 'result', headerName: 'game res', flex: 1 },
+
     ];
 
     if (hasRoundResult) {
