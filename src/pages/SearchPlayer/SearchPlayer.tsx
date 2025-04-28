@@ -160,7 +160,7 @@ const SearchPlayer: FC = () => {
         <Button
           variant="contained"
           color="primary"
-          onClick={handleReload}
+          // onClick={handleReload}
           disabled={isLoading || isLoadingMutate}
         >
           reload Seed
