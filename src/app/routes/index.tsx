@@ -10,6 +10,7 @@ import CurrencyGames from 'pages/CurrencyGames/CurrencyGames';
 import PartnerCurrency from 'pages/PartnerCurrenсy/PartnerCurrency';
 import Sessions from 'pages/Sessions/Sessions';
 import SearchPlayer from 'pages/SearchPlayer/SearchPlayer';
+import SearchPlayerByBetid from 'pages/SearchPlayerByBetid/SearchPlayerByBetid';
 import Auth from '../../widgets/auth/ui/Auth';
 
 export type AppRoute = RouteProps & {
@@ -74,6 +75,11 @@ export const authProtectedRoutes: AppRoute[] = [
     path: paths.searchplayer,
     name: names.SearchPlayer,
     element: <SearchPlayer />,
+  },
+  {
+    path: paths.searchsession,
+    name: names.SearchSession,
+    element: <SearchPlayerByBetid />,
   },
   {
     path: paths.sessionEvents,
