@@ -10,4 +10,6 @@ export const paths = {
   login: '/login',
   partnerCurrency: '/partner-currency',
   searchplayer: '/searchplayer',
+  searchsession: '/searchsession',
+
 };
