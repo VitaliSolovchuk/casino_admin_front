@@ -87,3 +87,36 @@ export const authProtectedRoutes: AppRoute[] = [
     element: <SessionEvents />,
   },
 ];
+
+export const adminRoutes: AppRoute[] = [
+  // те же маршруты, что и authProtectedRoutes
+  ...authProtectedRoutes,
+];
+
+export const userRoutes: AppRoute[] = [
+  {
+    path: paths.home,
+    name: names.Home,
+    element: <Navigate to={paths.dashboard} replace />,
+  },
+  {
+    path: paths.dashboard,
+    name: names.Dashboard,
+    element: <Dashboard />,
+  },
+  {
+    path: paths.searchplayer,
+    name: names.SearchPlayer,
+    element: <SearchPlayer />,
+  },
+  {
+    path: paths.searchsession,
+    name: names.SearchSession,
+    element: <SearchPlayerByBetid />,
+  },
+  {
+    path: paths.sessionEvents,
+    name: names.SessionEvents,
+    element: <SessionEvents />,
+  },
+];
