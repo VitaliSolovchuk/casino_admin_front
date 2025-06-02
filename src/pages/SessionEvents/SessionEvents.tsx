@@ -10,7 +10,7 @@ import { postSessionsData } from 'features/sessions/api';
 import useTableGrid from 'widgets/tableGrid/model/tableGridStore';
 import useFilterDateRange from 'entities/dateRangeCalendar/model/dateRangeStore';
 import { useMutationRequest } from 'shared/lib/hooks/useMutationRequest';
-import { Tooltip, Typography } from '@mui/material';
+import { Box, Tooltip, Typography } from '@mui/material';
 import TableGrid from '../../shared/ui/TableGrid/TableGrid';
 
 interface Row {
@@ -68,13 +68,6 @@ const SessionEvents: FC = () => {
   }, [mutate, paginationModel, localFilterModel, filterDate, dateRange]);
 
   const columns: GridColDef[] = useMemo(() => {
-    const hasRoundResult = Array.isArray(data)
-    && data.length > 0
-    && Array.isArray(data[0]?.Round)
-    && data[0].Round.length > 0
-    && data[0].Round[0]?.Round?.result !== undefined
-    && data[0].result === 'empty';
-
     const baseColumns: GridColDef[] = [
       { field: 'betId', headerName: 'Bet ID', flex: 1 },
       { field: 'actionType', headerName: 'Action Type', flex: 1 },
@@ -111,24 +104,44 @@ const SessionEvents: FC = () => {
           );
         },
       },
-      { field: 'result', headerName: 'game res', flex: 1 },
+      {
+        field: 'result',
+        headerName: 'Game Result',
+        flex: 2,
+        renderCell: (params) => {
+          const { value } = params;
+
+          if (typeof value === 'string') {
+            return <Typography variant="body2">{value}</Typography>;
+          }
+
+          if (Array.isArray(value)) {
+            const resultMap: Record<string, string> = {
+              mine: 'мина',
+              diamond: 'брильянт',
+            };
+
+            return (
+              <Tooltip title={JSON.stringify(value, null, 2)}>
+                <Box>
+                  {value.map((item: any, index: number) => (
+                    <Typography variant="body2" key={index} noWrap>
+                      {item.pick}
+                      :
+                      {resultMap[item.result] || item.result}
+                    </Typography>
+                  ))}
+                </Box>
+              </Tooltip>
+            );
+          }
+
+          return <Typography variant="body2">—</Typography>;
+        },
+      },
 
     ];
 
-    if (hasRoundResult) {
-      baseColumns.push({
-        field: 'roundResult',
-        headerName: 'Result',
-        flex: 2,
-        valueGetter: (params) => {
-          const roundArray = params.row.Round;
-          if (Array.isArray(roundArray) && roundArray.length > 0) {
-            return roundArray[0]?.Round?.result || ' ';
-          }
-          return ' ';
-        },
-      });
-    }
     return baseColumns;
   }, [data]);
 

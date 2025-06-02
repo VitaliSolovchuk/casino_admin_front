@@ -67,7 +67,7 @@ const Dashboard = () => {
         <Button
           variant="contained"
           color="primary"
-          onClick={handleResetKeys}
+          // onClick={handleResetKeys}
           disabled={isLoading}
         >
           Reset Keys

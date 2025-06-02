@@ -6,8 +6,11 @@ import {
   responsiveFontSizes,
   ThemeProvider,
 } from '@mui/material/styles';
+import { getUserRoleFromToken } from 'utils/getUserRoleFromToken';
 import { AuthMiddleware, NonAuthMiddleware } from './routes/authMiddleware';
-import { AppRoute, authProtectedRoutes, publicRoutes } from './routes';
+import {
+  adminRoutes, AppRoute, publicRoutes, userRoutes,
+} from './routes';
 import Layout from './layout/authLayout';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import NonAuthLayout from './layout/nonAuthLayout';
@@ -48,6 +51,14 @@ const App: FC = () => {
   );
   theme = responsiveFontSizes(theme);
   // const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
+  const role = getUserRoleFromToken();
+
+  // eslint-disable-next-line operator-linebreak
+  const protectedRoutes =
+  // eslint-disable-next-line no-nested-ternary
+  role === 'ADMIN' ? adminRoutes
+    : role === 'USER' ? userRoutes
+      : [];
   return (
     <Router>
       <div className="root-container">
@@ -57,7 +68,7 @@ const App: FC = () => {
               {/* Отображение маршрутов для неавторизованных пользователей */}
               {renderPublicRoutes(publicRoutes)}
               {/* Отображение маршрутов для авторизованных пользователей */}
-              {renderProtectedRoutes(authProtectedRoutes)}
+              {renderProtectedRoutes(protectedRoutes)}
             </Routes>
           </TotalGGRProvider>
         </ThemeProvider>

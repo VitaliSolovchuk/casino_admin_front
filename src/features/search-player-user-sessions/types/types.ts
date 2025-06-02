@@ -39,3 +39,7 @@ export interface postPlayerUserSessionsProps extends SessionsForUserDto {
 export interface SessionsForUserDto {
   playerId: string;
 }
+
+export interface SessionForUserForBetDto {
+  betId: number;
+}
