@@ -100,6 +100,11 @@ export const userRoutes: AppRoute[] = [
     element: <Navigate to={paths.dashboard} replace />,
   },
   {
+    path: paths.login,
+    name: names.Login,
+    element: <Navigate to={paths.dashboard} replace />,
+  },
+  {
     path: paths.dashboard,
     name: names.Dashboard,
     element: <Dashboard />,
