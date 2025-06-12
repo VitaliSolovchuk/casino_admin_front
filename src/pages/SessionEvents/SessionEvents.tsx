@@ -12,6 +12,7 @@ import useFilterDateRange from 'entities/dateRangeCalendar/model/dateRangeStore'
 import { useMutationRequest } from 'shared/lib/hooks/useMutationRequest';
 import { Box, Tooltip, Typography } from '@mui/material';
 import TableGrid from '../../shared/ui/TableGrid/TableGrid';
+import styles from './SessionEvents.module.scss';
 
 interface Row {
   dataTime: string
@@ -69,7 +70,13 @@ const SessionEvents: FC = () => {
 
   const columns: GridColDef[] = useMemo(() => {
     const baseColumns: GridColDef[] = [
-      { field: 'betId', headerName: 'Bet ID', flex: 1 },
+      {
+        field: 'betId',
+        headerName: 'Bet ID',
+        flex: 1,
+        cellClassName: (params) => (params.row.Refound ? styles.highlightCell : ''),
+
+      },
       { field: 'actionType', headerName: 'Action Type', flex: 1 },
       {
         field: 'dataTime',
@@ -83,7 +90,7 @@ const SessionEvents: FC = () => {
         field: 'totalAmountWinUSD',
         headerName: 'Amount Win',
         flex: 1,
-        cellClassName: (params) => (params.row.Refound !== null ? 'highlight-cell' : ''),
+        // cellClassName: (params) => (params.row.Refound ? styles.highlightCell : ''),
       },
       { field: 'serverSeed', headerName: 'Server Seed', flex: 1 },
       { field: 'clientSeed', headerName: 'Client Seed', flex: 1 },
