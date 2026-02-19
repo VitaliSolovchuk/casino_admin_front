@@ -6,6 +6,7 @@ import {
   responsiveFontSizes,
   ThemeProvider,
 } from '@mui/material/styles';
+import { onAuthTokenChanged } from 'shared/lib/utils/authEvents';
 import { getUserRoleFromToken } from 'utils/getUserRoleFromToken';
 import { AuthMiddleware, NonAuthMiddleware } from './routes/authMiddleware';
 import {
@@ -15,7 +16,6 @@ import Layout from './layout/authLayout';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import NonAuthLayout from './layout/nonAuthLayout';
 import TotalGGRProvider from '../TotalGGRProvider';
-import { onAuthTokenChanged } from 'shared/lib/utils/authEvents';
 
 const renderPublicRoutes = (routes: AppRoute[]) => routes.map((route) => (
   <Route
