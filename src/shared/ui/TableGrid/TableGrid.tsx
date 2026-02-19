@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import {
   // eslint-disable-next-line max-len
-  GridColDef, GridFilterModel, GridFilterPanel, GridRowIdGetter, GridRowParams, GridToolbar, GridSortModel, GridFeatureMode,
+  GridColDef, GridFilterModel, GridFilterPanel, GridRowIdGetter, GridRowParams, GridToolbar, GridSortModel, GridFeatureMode, GridRowClassNameParams,
 } from '@mui/x-data-grid';
 import { DataGridPro } from '@mui/x-data-grid-pro';
 import { Button, Typography } from '@mui/material';
@@ -26,6 +26,7 @@ import styles from './TableGrid.module.scss';
     showDateRangeFilter?: boolean;
     setLocalFilterModel:(model: GridFilterModel)=>void;
     sortingMode?:GridFeatureMode
+    getRowClassName?: (params: GridRowClassNameParams) => string;
   }
 
 const TableGrid: FC<TableGridProps> = ({
@@ -42,6 +43,7 @@ const TableGrid: FC<TableGridProps> = ({
   showDateRangeFilter = true,
   setLocalFilterModel,
   sortingMode = 'client',
+  getRowClassName,
 }) => {
   const {
     paginationModel,
@@ -138,6 +140,7 @@ const TableGrid: FC<TableGridProps> = ({
         onFilterModelChange={handleFilterModelChange}
         loading={isLoading}
         onRowClick={handleRowClickWrapper}
+        getRowClassName={getRowClassName}
         slots={{
           toolbar: GridToolbar,
           filterPanel: CustomFilterPanel,

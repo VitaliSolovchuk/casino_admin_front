@@ -74,8 +74,6 @@ const SessionEvents: FC = () => {
         field: 'betId',
         headerName: 'Bet ID',
         flex: 1,
-        cellClassName: (params) => (params.row.Refound ? styles.highlightCell : ''),
-
       },
       { field: 'actionType', headerName: 'Action Type', flex: 1 },
       {
@@ -90,7 +88,9 @@ const SessionEvents: FC = () => {
         field: 'totalAmountWinUSD',
         headerName: 'Amount Win',
         flex: 1,
-        // cellClassName: (params) => (params.row.Refound ? styles.highlightCell : ''),
+        cellClassName: (params) => (params.row.Refound?.description === 'CashOut err'
+          ? styles.highlightCell
+          : ''),
       },
       { field: 'serverSeed', headerName: 'Server Seed', flex: 1 },
       { field: 'clientSeed', headerName: 'Client Seed', flex: 1 },
@@ -167,6 +167,9 @@ const SessionEvents: FC = () => {
         sortModel={sortModel}
         setLocalFilterModel={setLocalFilterModel}
         sortingMode="server"
+        getRowClassName={(params) => (params.row.Refound && params.row.Refound?.description !== 'CashOut err'
+          ? styles.highlightRow
+          : '')}
       />
     </div>
   );

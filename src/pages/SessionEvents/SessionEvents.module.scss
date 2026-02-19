@@ -1,3 +1,10 @@
+.highlightRow {
+  background-color: rgba(255, 0, 0, 0.687) !important;
+  :global(.MuiDataGrid-cell) {
+    background-color: rgba(255, 0, 0, 0.687) !important;
+  }
+}
+
 .highlightCell {
   background-color: rgba(255, 0, 0, 0.687) !important;
 }
