@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './index.scss';
 import {
@@ -15,6 +15,7 @@ import Layout from './layout/authLayout';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import NonAuthLayout from './layout/nonAuthLayout';
 import TotalGGRProvider from '../TotalGGRProvider';
+import { onAuthTokenChanged } from 'shared/lib/utils/authEvents';
 
 const renderPublicRoutes = (routes: AppRoute[]) => routes.map((route) => (
   <Route
@@ -40,6 +41,19 @@ const renderProtectedRoutes = (routes: AppRoute[]) => routes.map((route) => (
 ));
 
 const App: FC = () => {
+  const [token, setToken] = useState<string | null>(() => localStorage.getItem('token'));
+
+  useEffect(() => {
+    const handleAuthChange = () => setToken(localStorage.getItem('token'));
+    const unsubscribe = onAuthTokenChanged(handleAuthChange);
+    window.addEventListener('storage', handleAuthChange);
+
+    return () => {
+      window.removeEventListener('storage', handleAuthChange);
+      unsubscribe();
+    };
+  }, []);
+
   let theme = createTheme(
     {
       palette: {
@@ -51,7 +65,7 @@ const App: FC = () => {
   );
   theme = responsiveFontSizes(theme);
   // const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
-  const role = getUserRoleFromToken();
+  const role = getUserRoleFromToken(token);
 
   // eslint-disable-next-line operator-linebreak
   const protectedRoutes =

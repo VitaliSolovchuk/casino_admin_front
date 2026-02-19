@@ -12,6 +12,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { useNavigate } from 'react-router-dom';
 import { paths } from 'shared/lib/consts/paths';
+import { emitAuthTokenChanged } from 'shared/lib/utils/authEvents';
 
 const settings = ['Profile', 'Account'];
 
@@ -29,6 +30,7 @@ const Header: FC = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    emitAuthTokenChanged();
     navigate(paths.login);
   };
   return (

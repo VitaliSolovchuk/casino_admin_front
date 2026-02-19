@@ -1,5 +1,5 @@
-export const getUserRoleFromToken = (): 'ADMIN' | 'USER' | null => {
-  const token = localStorage.getItem('token');
+export const getUserRoleFromToken = (tokenOverride?: string | null): 'ADMIN' | 'USER' | null => {
+  const token = tokenOverride !== undefined ? tokenOverride : localStorage.getItem('token');
   if (!token) {
     console.log('протух токен');
     return 'ADMIN';

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import AuthModal from 'entities/auth/modal/ui/AuthModal';
 import { useNavigate } from 'react-router-dom';
 import { paths } from 'shared/lib/consts/paths';
+import { emitAuthTokenChanged } from 'shared/lib/utils/authEvents';
 import { login } from '../../../features/login/api';
 
 const Auth: React.FC = () => {
@@ -23,6 +24,7 @@ const Auth: React.FC = () => {
         password,
       });
       localStorage.setItem('token', response.access_token);
+      emitAuthTokenChanged();
       handleCloseModal();
       navigate(paths.dashboard);
     } catch (error) {
